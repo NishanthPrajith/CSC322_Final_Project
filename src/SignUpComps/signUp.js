@@ -2,15 +2,27 @@
 import './signUp.css'
 import { Link } from 'react-router-dom';
 
+import { useAuth } from "../contexts/Authcontext"
+
 export default function SignUp() {
 
+    const { signup } = useAuth();
 
     async function SignUp(event) {
         event.preventDefault();
         var x = document.getElementsByClassName("input");
+        var a = x[0].value;
+        var b = x[1].value;
         console.log("---Sign Up---");
-        console.log("Username ", x[0].value);
-        console.log("Password ", x[1].value);
+        console.log("Username ", a);
+        console.log("Password ", b);
+
+        try {
+            const useruiid = await signup(a, b);
+            alert('registered');
+        } catch {
+            alert("error");
+        }
     }
 
     return (

@@ -2,14 +2,27 @@
 import './signIn.css'
 import { Link } from 'react-router-dom';
 
+import { useAuth } from "../contexts/Authcontext"
+
 export default function SignIn() {
+
+    const { login } = useAuth();
 
     async function SignIn(event) {
         event.preventDefault();
         var x = document.getElementsByClassName("input");
+        var a = x[0].value;
+        var b = x[1].value;
         console.log("---Sign In---");
-        console.log("Username ", x[0].value);
-        console.log("Password ", x[1].value);
+        console.log("Username ", a);
+        console.log("Password ", b);
+
+        try {
+            const useruiid = await login(a, b);
+            alert('Logged In');
+        } catch {
+            alert("error");
+        }
     }
 
     return (
