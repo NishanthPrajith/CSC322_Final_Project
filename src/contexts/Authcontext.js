@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from "react"
 import { auth } from "../firebase"
 import { onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
-const AuthContext = React.createContext()
+const AuthContext = React.createContext();
 
 export function useAuth() {
     return useContext(AuthContext)
@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
         });
         return ret2
     }
-    
+
     useEffect(() => {
         onAuthStateChanged(auth, user => {
         setCurrentUser(user);

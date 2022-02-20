@@ -1,0 +1,18 @@
+
+
+.search {
+    margin: 0% 10%;
+    width: 80%;
+    margin-top: 3%;
+}
+
+.searchHeading {
+    font-size: 1.6em;
+    font-weight: 600;
+    margin-bottom: 3%;
+    letter-spacing: 2px;
+}
+
+.search > div {
+    margin-bottom: 7%;
+}

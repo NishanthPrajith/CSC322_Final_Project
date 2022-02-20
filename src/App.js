@@ -18,10 +18,17 @@ import Navbar from './navComps/navbar';
 import FinalPage from './checkoutComps/finalPage';
 import CheckoutCart from './checkoutComps/checkoutCart';
 
+import MainSearch from './searchComps/search';
+import { FoodProvider } from './contexts/foodContext';
+
 function App() {
   return (
     <div className="App">
-      <Navbar />
+      <FoodProvider>
+        <Navbar />
+        <MainSearch />  
+      </FoodProvider>
+      
       <FinalPage />
       {/* <AuthProvider>
         <Routes>
@@ -36,3 +43,5 @@ function App() {
 }
 
 export default App;
+
+
