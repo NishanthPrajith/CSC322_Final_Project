@@ -12,12 +12,16 @@ import SignUp from './SignUpComps/signUp';
 import SignIn from './SignInComps/signIn';
 
 import Footer from './recycleComps/footer';
+
+import Navbar from './navComps/navbar';
+
 import FinalPage from './checkoutComps/finalPage';
 import CheckoutCart from './checkoutComps/checkoutCart';
 
 function App() {
   return (
     <div className="App">
+      <Navbar />
       <FinalPage />
       {/* <AuthProvider>
         <Routes>

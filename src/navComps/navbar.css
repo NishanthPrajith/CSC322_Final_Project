@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
+
+nav {
+    width: 90%;
+    padding: 0.5% 5%;
+    margin-top: 1%;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo p:nth-child(1) {
+    font-family: 'Rock Salt', cursive;
+}
+
+.logo p:nth-child(2) {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+
+.logo p {
+    text-align: center;
+    color: var(--red);
+    margin: 0;
+}
+
+.navBarRightSide {
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navBarLeftSide {
+    display: flex;
+    align-items: center;
+}
+.searchBar {
+    width: 100%;
+    margin-left: 8%;
+}
+
+.navBarRightSide button {
+    background-color: var(--yellow);
+    color: var(--black);
+    border: none;
+    border-radius: 15px;
+    padding: 5% 10%;
+    float: right;
+    margin-right: 40%;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+.navBarRightSide div:nth-child(2) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cartCount {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: var(--red);
+    color: var(--beige);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.cartCount p {
+    margin: 0;
+}
