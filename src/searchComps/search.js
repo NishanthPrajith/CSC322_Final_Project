@@ -14,7 +14,6 @@ export default function MainSearch() {
 
     if (loading) {
         if (filteredFoodItems.length > 0) {
-            setTimeout(() => {console.log("this is the first message")}, 5000);
             setLoading(false);
         }
         return <div className='Loading'>
