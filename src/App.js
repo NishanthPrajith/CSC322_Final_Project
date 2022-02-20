@@ -13,17 +13,19 @@ import SignIn from './SignInComps/signIn';
 
 import Footer from './recycleComps/footer';
 import FinalPage from './checkoutComps/finalPage';
+import CheckoutCart from './checkoutComps/checkoutCart';
 
 function App() {
   return (
     <div className="App">
       <FinalPage />
-      <AuthProvider>
+      {/* <AuthProvider>
         <Routes>
           <Route exact path="/" element={<SignUp />} />
           <Route exact path="/signIn" element={<SignIn />} />
         </Routes>
-      </AuthProvider>
+      </AuthProvider> */}
+    
       <Footer></Footer>
     </div>
   );

@@ -1,0 +1,83 @@
+
+.checkout-cart {
+  width: 70%;
+  margin: 0 15%;
+  margin-bottom: 10%;
+}
+
+
+.totalCheckoutPage {
+    width: 60%;
+    margin-top: 5%;
+    float: right;
+}
+
+.totalCheckoutPage hr {
+    border: 1px solid var(--yellow);
+}
+
+.totalCheckoutPage div {
+    margin-left: 2%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.checkoutPageHeading {
+    margin-bottom: 5%;
+}
+
+.checkoutPageButton {
+    width: 48%;
+    margin-top: 15%;
+    border-radius: 15px;
+    border: none;
+    background-color: var(--red);
+    color: var(--beige);
+    font-size: 1.1rem;
+    padding: 2% 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkoutArrow {
+    margin-left: 3%;
+    stroke-width: 2.5;
+    font-size: 1.3rem;
+}
+
+.checkoutItem {
+    background-color: var(--white);
+    display: flex;
+    align-items: center;
+    padding: 1% 5%;
+    border-radius: 15px;
+    margin-bottom: 2%;
+    justify-content: space-between;
+}
+
+.checkoutItemPrice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkoutItemPrice span {
+    margin: 0 20%;
+}
+
+.checkoutItemPrice h4 {
+    font-size: 1.8rem;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+.checkoutItemPrice p {
+    font-weight: bold;
+}
+
+.checkoutItemDes {
+    font-size: 1.1rem;
+}

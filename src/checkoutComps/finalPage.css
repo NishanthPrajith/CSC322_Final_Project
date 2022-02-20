@@ -9,3 +9,16 @@
     padding-bottom: 1%;
     color: var(--yellow);
 }
+
+.finalPageParent {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.finalPage {
+    text-align: center;
+}

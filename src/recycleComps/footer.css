@@ -1,7 +1,8 @@
 
 footer {
+    margin-top: auto;
     width: 90%;
-    padding: 1% 5%;
+    padding: 0.5% 5%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     background-color: var(--red);
