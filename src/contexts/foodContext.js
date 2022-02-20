@@ -25,6 +25,30 @@ export function FoodProvider({ children }) {
           "email": "Lucio_Hettinger@annie.ca"
         },
         {
+          "id": 1,
+          "name": "Leanne Graham",
+          "username": "Bret",
+          "email": "Sincere@april.biz",
+        },
+        {
+          "id": 5,
+          "name": "Chelsey Dietrich",
+          "username": "Kamren",
+          "email": "Lucio_Hettinger@annie.ca"
+        },
+        {
+          "id": 1,
+          "name": "Leanne Graham",
+          "username": "Bret",
+          "email": "Sincere@april.biz",
+        },
+        {
+          "id": 5,
+          "name": "Chelsey Dietrich",
+          "username": "Kamren",
+          "email": "Lucio_Hettinger@annie.ca"
+        },
+        {
           "id": 6,
           "name": "Mrs. Dennis Schulist",
           "username": "Leopoldo_Corkery",
@@ -55,7 +79,7 @@ export function FoodProvider({ children }) {
     ];
 
     useEffect(() => {
-        setfilteredFoodItems(allFoodItems);
+      setfilteredFoodItems(allFoodItems);
     }, [])
 
     function changeFlilteredFoodItems(value) {

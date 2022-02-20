@@ -28,8 +28,6 @@ function App() {
         <Navbar />
         <MainSearch />  
       </FoodProvider>
-      
-      <FinalPage />
       {/* <AuthProvider>
         <Routes>
           <Route exact path="/" element={<SignUp />} />
