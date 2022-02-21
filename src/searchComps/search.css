@@ -82,12 +82,14 @@
 
 .cardSeperation, .cardSeperationRight {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .cardSeperation div p {
     color: var(--black);
     font-size: 1.1em;
+    margin: 0;
+    margin: 10% 0;
 }
 
 .cardSeperation h5, .cardSeperationRight h5 {
@@ -139,4 +141,27 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.cardSeperation .quantity {
+    display: grid;
+    grid-template-columns: repeat(3, 25%) 25%;   
+    justify-items: center;
+    align-items: center;
+    margin: 9.5% 0%;
+}
+
+.cardSeperation .quantity p {
+    margin: 0;
+}
+
+.cardSeperation .quantity button {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--yellow);
+    border: none;
+    height: 100%;
+    width: 85%;
+    border-radius: 50%;
 }

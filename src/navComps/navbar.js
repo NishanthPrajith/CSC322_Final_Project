@@ -3,9 +3,9 @@ import { BiSearch } from "react-icons/bi";
 
 import { useFood } from '../contexts/foodContext';
 
-export default function Navbar() {
+export default function Navbar({ changeState }) {
 
-    var { allFoodItems, changeFlilteredFoodItems  } = useFood();
+    var { allFoodItems, changeState, changeFlilteredFoodItems } = useFood();
 
     var loginSwitch = false;
 
@@ -26,8 +26,9 @@ export default function Navbar() {
                 });
                 changeFlilteredFoodItems(temp);
             }
-        })
+        });
     }
+
     return (
         <nav>
             <div className='navBarLeftSide'>
@@ -51,7 +52,7 @@ export default function Navbar() {
                 </div> }
                 <div>
                     <div className='cartCount'>
-                        <p>11</p>
+                        <p>{ changeState }</p>
                     </div>
                     <p style = {{fontWeight: "bold"}}>Cart</p>
                 </div>

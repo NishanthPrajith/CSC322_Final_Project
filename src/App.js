@@ -20,13 +20,17 @@ import CheckoutCart from './checkoutComps/checkoutCart';
 
 import MainSearch from './searchComps/search';
 import { FoodProvider } from './contexts/foodContext';
+import { useState } from 'react';
 
 function App() {
+
+  const [change, changeStateDone] = useState(false);
+
   return (
     <div className="App">
       <FoodProvider>
-        <Navbar />
-        <MainSearch />  
+        <Navbar changeState = {changeStateDone}/>
+        <MainSearch changeState = {changeStateDone}/>  
       </FoodProvider>
       {/* <AuthProvider>
         <Routes>
