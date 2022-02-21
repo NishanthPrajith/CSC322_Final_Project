@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { RiAddFill, RiSubtractFill } from "react-icons/ri";
 
-export default function MainSearch({changeState}) {
+export default function MainSearch() {
 
     const { filteredFoodItems, changeFlilteredFoodItems } = useFood();
     const [loading, setLoading] = useState(true);

@@ -3,7 +3,7 @@ import { BiSearch } from "react-icons/bi";
 
 import { useFood } from '../contexts/foodContext';
 
-export default function Navbar({ changeState }) {
+export default function Navbar() {
 
     var { allFoodItems, changeState, changeFlilteredFoodItems } = useFood();
 
