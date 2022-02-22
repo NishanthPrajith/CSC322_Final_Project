@@ -13,6 +13,9 @@ export default function MainSearch() {
     if (loading) {
         if (filteredFoodItems.length > 0) {
             setLoading(false);
+            console.log("-------");
+            console.log(filteredFoodItems);
+            console.log("-------");
         }
         return <div className='Loading'>
         </div>
@@ -193,7 +196,7 @@ export default function MainSearch() {
                                         </div>
                                         <div>
                                             <h5>Price</h5>
-                                            <p>$10</p>
+                                            <p>$ { item.price } </p>
                                         </div>
                                         <div>
                                             <h5>Quantity</h5>

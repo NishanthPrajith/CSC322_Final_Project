@@ -3,6 +3,8 @@ import { BiSearch } from "react-icons/bi";
 
 import { useFood } from '../contexts/foodContext';
 
+import { Link, useNavigate } from "react-router-dom";
+
 export default function Navbar() {
 
     var { allFoodItems, changeState, changeFlilteredFoodItems } = useFood();
@@ -33,8 +35,10 @@ export default function Navbar() {
         <nav>
             <div className='navBarLeftSide'>
                 <div className='logo'>
-                    <p>Norm's</p>
-                    <p>PIZZA</p>
+                    <Link to = "/">
+                        <p>Norm's</p>
+                        <p>PIZZA</p>
+                    </Link>
                 </div>
                 <div className='searchBar'>
                     <label>
@@ -48,13 +52,19 @@ export default function Navbar() {
                     Nishanth Prajith Kumar
                 </div> }
                 {!loginSwitch && <div>
-                    <button>Sign In</button>
+                    <Link to = "/signIn">
+                        <button>Sign In</button>
+                    </Link>
                 </div> }
                 <div>
-                    <div className='cartCount'>
-                        <p>{ changeState }</p>
-                    </div>
-                    <p style = {{fontWeight: "bold"}}>Cart</p>
+                    <Link to = "/checkoutCart">
+                        <div className='cartCount'>
+                            <p>{ changeState }</p>
+                        </div>
+                    </Link>
+                    <Link to = "/checkoutCart">
+                        <p style = {{fontWeight: "bold"}}>Cart</p>
+                    </Link>
                 </div>
             </div>
         </nav>

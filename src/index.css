@@ -21,3 +21,11 @@ code {
   --yellow: #FFC443;
   --lightBlack: rgb(83, 83, 83);
 }
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: inherit;
+}

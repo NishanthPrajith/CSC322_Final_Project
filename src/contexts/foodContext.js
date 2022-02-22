@@ -1,5 +1,9 @@
 
 import React, { useContext, useState, useEffect } from "react"
+import { collection, onSnapshot } from "firebase/firestore";
+
+import { db } from "../firebase";
+import { type } from "@testing-library/user-event/dist/type";
 
 const FoodContext = React.createContext();
 
@@ -21,6 +25,7 @@ export function FoodProvider({ children }) {
           "username": "Bret",
           "email": "Sincere@april.biz",
           "quantity": 0,
+          "price": 18.00,
         },
         {
           "id": 5,
@@ -28,6 +33,7 @@ export function FoodProvider({ children }) {
           "username": "Kamren",
           "email": "Lucio_Hettinger@annie.ca",
           "quantity": 0,
+          "price": 18.00,
         },
         {
           "id": 6,
@@ -35,6 +41,7 @@ export function FoodProvider({ children }) {
           "username": "Leopoldo_Corkery",
           "email": "Karley_Dach@jasper.info",
           "quantity": 0,
+          "price": 18.00,
         },
         {
           "id": 7,
@@ -42,6 +49,7 @@ export function FoodProvider({ children }) {
           "username": "Elwyn.Skiles",
           "email": "Telly.Hoeger@billy.biz",
           "quantity": 0,
+          "price": 18.00,
         },
         {
           "id": 8,
@@ -49,24 +57,38 @@ export function FoodProvider({ children }) {
           "username": "Maxime_Nienow",
           "email": "Sherwood@rosamond.me",
           "quantity": 0,
+          "price": 18.00,
         },
         {
           "id": 9,
           "name": "Glenna Reichert",
           "email": "Chaim_McDermott@dana.io",
           "quantity": 0,
+          "price": 18.00,
         },
         {
           "id": 10,
           "name": "Clementina DuBuque",
           "email": "Rey.Padberg@karina.biz",
           "quantity": 0,
+          "price": 18.00,
         }
     ];
 
+    async function getDishes(db){
+      const food = collection(db, "Dishes");
+      onSnapshot(food, (querySnapshot) => {
+          const data = [];
+          querySnapshot.forEach((doc) => {
+            data.push(doc.data());
+          });
+          setAllFoodItems(data);
+          setfilteredFoodItems(data);
+        });
+    }
+
     useEffect(() => {
-      setAllFoodItems(FoodItems);
-      setfilteredFoodItems(FoodItems);
+      getDishes(db);
     }, [])
 
     function changeFlilteredFoodItems(value) {

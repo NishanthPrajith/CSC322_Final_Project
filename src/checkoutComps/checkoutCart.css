@@ -25,6 +25,7 @@
 
 .checkoutPageHeading {
     margin-bottom: 5%;
+    margin-top: 6%;
 }
 
 .checkoutPageButton {
@@ -49,7 +50,8 @@
 
 .checkoutItem {
     background-color: var(--white);
-    display: flex;
+    display: grid;
+    grid-template-columns: 86% 14%;
     align-items: center;
     padding: 1% 5%;
     border-radius: 15px;

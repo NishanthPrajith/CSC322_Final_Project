@@ -25,16 +25,21 @@ import { FoodProvider } from './contexts/foodContext';
 function App() {
   return (
     <div className="App">
-      <FoodProvider>
-        <Navbar/>
-        <MainSearch/>  
-      </FoodProvider>
-      {/* <AuthProvider>
-        <Routes>
-          <Route exact path="/" element={<SignUp />} />
-          <Route exact path="/signIn" element={<SignIn />} />
-        </Routes>
-      </AuthProvider> */}
+      
+      <AuthProvider>
+        <FoodProvider>
+          <Navbar />
+          <Routes>
+            <Route exact path="/" element={
+              <MainSearch />
+            } />
+            <Route exact path="/signUp" element={<SignUp />} />
+            <Route exact path="/signIn" element={<SignIn />} />
+            <Route exact path="/checkoutCart" element={<CheckoutCart />} />
+            <Route exact path="/finalPage" element={<FinalPage />} />
+          </Routes>
+        </FoodProvider>
+      </AuthProvider>
     
       <Footer></Footer>
     </div>
