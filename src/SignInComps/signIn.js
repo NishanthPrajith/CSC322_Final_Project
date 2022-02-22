@@ -1,7 +1,5 @@
-
 import './signIn.css'
 import { Link } from 'react-router-dom';
-
 import { useAuth } from "../contexts/Authcontext"
 
 export default function SignIn() {
@@ -18,7 +16,7 @@ export default function SignIn() {
         console.log("Password ", b);
 
         try {
-            const useruiid = await login(a, b);
+            const useruid = await login(a, b);
             alert('Logged In');
         } catch {
             alert("error");
@@ -27,21 +25,36 @@ export default function SignIn() {
 
     return (
         <div className='SignIn'>
-            <Link to = "/">
-                <p>Go to Sign Up Page</p>
-            </Link>
+            {/*This Section is the Logo*/}
+            <div className='logo signTop'>
+                    <Link to = "/">
+                        <p>Norm's</p>
+                        <p>PIZZA</p>
+                    </Link>
+                </div>
 
-            <h1>Sign In</h1>
-            
-            <form>  
-                <div className="container">   
-                    <label>Username : </label>   
-                    <input type="text" className = "input" placeholder="Enter Username" name="username" required />  
-                    <label>Password : </label>   
-                    <input type="password" className = "input" placeholder="Enter Password" name="password" required />  
-                    <button onClick={SignIn}>Sign In</button>   
-                </div>   
-            </form> 
+            {/*This Section is the SignUp Box*/}
+            <div className={"signBox"}>
+                <h1 className={"signHeader"}>Sign In</h1>
+                <form onSubmit={() => { return false;} }>
+                    <div className={"labelSpacing"}>
+                        <label> Username : </label>
+                        <input type={"text"} className={"input"} placeholder="Enter Username" name="username" required />
+                    </div>
+                    <div className={"labelSpacing"}>
+                        <label > Password : </label>
+                        <input type={"password"} className={"input"} placeholder="Enter Password" name="password" required />
+                    </div>
+                    <div className={"labelSpacing"}>
+                        <button className={"btnSubmit"} onClick={SignIn()}>Sign In</button>
+                    </div>
+                </form>
+            </div>
+
+            {/*This Section is to switch to SignIn*/}
+            <h2 className={"divider"}><span className={"signMsg"}>New to Norm's Pizza? Sign Up instead!</span></h2>
+            <Link className={"linkSignUp"} role="button" to="/signUp"> Sign Up Instead</Link>
+
         </div>
     )
 }
