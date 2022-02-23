@@ -2,6 +2,8 @@
 import React, { useContext, useState, useEffect } from "react"
 import { auth } from "../firebase"
 import { onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from "firebase/firestore"; 
+import { db } from "../firebase";
 
 const AuthContext = React.createContext();
 
@@ -14,17 +16,25 @@ export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
 
-    async function signup(email, password) { // Our async function is important because this allows our data to update live rather than waiting to refresh.
+    async function addusertoDB(name, email, id) {
+        await setDoc(doc(db, "Users", id), {
+            name: name,
+            email: email,
+        });
+    }
+
+    async function signup(name, email, password) { // Our async function is important because this allows our data to update live rather than waiting to refresh.
 
         const ret2 = createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 let ret1 = userCredential.user.uid;
+                addusertoDB(name, email, ret1);
             })
             .catch((error) => {
                 console.log(error.message)
             }
         );
-        return ret2
+        return ret2;
     }
 
     async function login(email, password) { 

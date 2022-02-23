@@ -43,8 +43,7 @@ export default function MainSearch() {
                 <p className="searchHeading">Highest Rated Dishes</p>
                 <div className='recommendedUI'>
                     <div className="recommendedLeftSide">
-                        <div>
-                            <p>Temp</p>
+                        <div className="dishImage">
                         </div>
                         <div>
                             <h3>Done</h3>
@@ -61,10 +60,13 @@ export default function MainSearch() {
                                 <div>
                                     <h5>Quantity</h5>
                                     <div className='quantity'>
-                                        <RiSubtractFill />
+                                        <button onClick={() => {addToCartSubtract(1)}}>
+                                            <RiSubtractFill />
+                                        </button>
                                         <p>1</p>
-                                        <RiAddFill />
-                                        <div></div>
+                                        <button onClick={() => {addToCartAdd(1)}}>
+                                            <RiAddFill />
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -72,10 +74,9 @@ export default function MainSearch() {
                     </div>
                     <div className='recommendedRightSide'>
                         <div className="recommendRightTop">
-                            <div>
-                                <p>Temp Image</p>
+                            <div className="dishImage">
                             </div>
-                            <div>
+                            <div style={{margin: "4% 6% 4% 0"}}>
                                 <h3>Done</h3>
                                 <p style={{fontSize: "0.8em"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
                                 <div className="cardSeperationRight">
@@ -86,15 +87,26 @@ export default function MainSearch() {
                                     <div>
                                         <h5>Price</h5>
                                         <p>$10</p>
+                                    </div>
+                                    <div>
+                                        <h5>Quantity</h5>
+                                        <div className='quantity'>
+                                            <button onClick={() => {addToCartSubtract(1)}}>
+                                                <RiSubtractFill />
+                                            </button>
+                                            <p>1</p>
+                                            <button onClick={() => {addToCartAdd(1)}}>
+                                                <RiAddFill />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="recommendRightBottom">
-                            <div>
-                                <p>Temp Image</p>
+                            <div className="dishImage">
                             </div>
-                            <div>
+                            <div style={{margin: "4% 6% 4% 0"}}>
                                 <h3>Done</h3>
                                 <p style={{fontSize: "0.8em"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
                                 <div className="cardSeperationRight">
@@ -105,6 +117,18 @@ export default function MainSearch() {
                                     <div>
                                         <h5>Price</h5>
                                         <p>$10</p>
+                                    </div>
+                                    <div>
+                                        <h5>Quantity</h5>
+                                        <div className='quantity'>
+                                            <button onClick={() => {addToCartSubtract(1)}}>
+                                                <RiSubtractFill />
+                                            </button>
+                                            <p>1</p>
+                                            <button onClick={() => {addToCartAdd(1)}}>
+                                                <RiAddFill />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -116,11 +140,10 @@ export default function MainSearch() {
                 <p className="searchHeading">Popular Dishes</p>
                 <div className='recommendedUI'>
                     <div className="recommendedLeftSide">
-                        <div>
-                            <p>Temp Image</p>
+                        <div className="dishImage">
                         </div>
                         <div>
-                            <h3>done</h3>
+                            <h3>Done</h3>
                             <p style={{fontSize: "0.9em"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
                             <div className="cardSeperation">
                                 <div>
@@ -131,15 +154,26 @@ export default function MainSearch() {
                                     <h5>Price</h5>
                                     <p>$10</p>
                                 </div>
+                                <div>
+                                    <h5>Quantity</h5>
+                                    <div className='quantity'>
+                                        <button onClick={() => {addToCartSubtract(1)}}>
+                                            <RiSubtractFill />
+                                        </button>
+                                        <p>1</p>
+                                        <button onClick={() => {addToCartAdd(1)}}>
+                                            <RiAddFill />
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className='recommendedRightSide'>
                         <div className="recommendRightTop">
-                            <div>
-                                <p>Temp Image</p>
+                            <div className="dishImage">
                             </div>
-                            <div>
+                            <div style={{margin: "4% 6% 4% 0"}}>
                                 <h3>Done</h3>
                                 <p style={{fontSize: "0.8em"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
                                 <div className="cardSeperationRight">
@@ -150,15 +184,26 @@ export default function MainSearch() {
                                     <div>
                                         <h5>Price</h5>
                                         <p>$10</p>
+                                    </div>
+                                    <div>
+                                        <h5>Quantity</h5>
+                                        <div className='quantity'>
+                                            <button onClick={() => {addToCartSubtract(1)}}>
+                                                <RiSubtractFill />
+                                            </button>
+                                            <p>1</p>
+                                            <button onClick={() => {addToCartAdd(1)}}>
+                                                <RiAddFill />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="recommendRightBottom">
-                            <div>
-                                <p>Temp Image</p>
+                            <div className="dishImage">
                             </div>
-                            <div>
+                            <div style={{margin: "4% 6% 4% 0"}}>
                                 <h3>Done</h3>
                                 <p style={{fontSize: "0.8em"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
                                 <div className="cardSeperationRight">
@@ -169,6 +214,18 @@ export default function MainSearch() {
                                     <div>
                                         <h5>Price</h5>
                                         <p>$10</p>
+                                    </div>
+                                    <div>
+                                        <h5>Quantity</h5>
+                                        <div className='quantity'>
+                                            <button onClick={() => {addToCartSubtract(1)}}>
+                                                <RiSubtractFill />
+                                            </button>
+                                            <p>1</p>
+                                            <button onClick={() => {addToCartAdd(1)}}>
+                                                <RiAddFill />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -183,10 +240,10 @@ export default function MainSearch() {
                     filteredFoodItems.map((item, index) => {
                         return (
                             <div className="recommendedLeftSideMain" key = {index}>
-                                <div>
-                                    <p>Temp Image</p>
+                                <div className="dishImage">
+                                    <p></p>
                                 </div>
-                                <div>
+                                <div style  = {{margin: "6% 0"}}>
                                     <h3>{item.name}</h3>
                                     <p style={{fontSize: "0.9em", margin: "7% 0 10% 0"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
                                     <div className="cardSeperation">

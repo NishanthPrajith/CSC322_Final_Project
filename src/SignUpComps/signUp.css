@@ -1,16 +1,13 @@
 
 .SignIn button {   
     background-color: #4CAF50;   
-    width: 25%;   
+    width: 100%;   
     padding: 15px;   
     margin: 10px 0px;   
     border: none;   
     cursor: pointer;   
+    border-radius: 25px;  
 }
-
-.SignIn form {   
-    border: 3px solid #f1f1f1;   
-}   
 
 .SignIn form {
     display: grid;
@@ -18,12 +15,13 @@
 }
 
 .SignIn input[type=text], .SignIn input[type=password] {   
-    width: 25%;   
+    width: 100%;   
     margin: 8px 0;  
     padding: 12px 20px;   
     display: inline-block;   
     border: 2px solid green;   
     box-sizing: border-box;   
+    border-radius: 25px;
 }
 
 .SignIn button:hover {   

@@ -11,14 +11,15 @@ export default function SignUp() {
     async function SignUp(event) {
         event.preventDefault();
         var x = document.getElementsByClassName("input");
-        var a = x[0].value;
-        var b = x[1].value;
+        var name = x[0].value;
+        var email = x[1].value;
+        var pass = x[2].value;
         console.log("---Sign Up---");
-        console.log("Username ", a);
-        console.log("Password ", b);
+        console.log("Email ", email);
+        console.log("Password ", pass);
 
         try {
-            const useruiid = await signup(a, b);
+            const useruiid = await signup(name, email, pass);
             alert('registered');
         } catch {
             alert("error");
@@ -27,20 +28,37 @@ export default function SignUp() {
 
     return (
         <div className='SignIn'>
-            <Link to = "/signIn">
-                <p>Go to Sign In Page</p>
-            </Link>
-            <h1>Sign Up</h1>
-            
-            <form onSubmit={() => { return false;} }>
-                <div className="container">   
-                    <label>Username : </label>   
-                    <input type="text" className = "input" placeholder="Enter Username" name="username" required />  
-                    <label>Password : </label>   
-                    <input type="password" className = "input" placeholder="Enter Password" name="password" required />  
-                    <button onClick={SignUp}>Sign Up</button>   
-                </div>   
-            </form> 
+            {/*This Section is the Logo*/}
+            <div className='logo signTop'>
+                <p style={{fontSize: "0.7em"}}>Norm's</p>
+                <p style={{fontSize: "1em"}}>PIZZA</p>
+            </div>
+
+            {/*This Section is the SignUp Box*/}
+            <div className={"signBox"}>
+                <h1 className={"signHeader"}>Sign Up</h1>
+                <form onSubmit={() => { return false;} }>
+                    <div className={"labelSpacing"}>
+                        <label> Name : </label>
+                        <input type={"text"} className={"input"} placeholder="Enter Name" name="name" required />
+                    </div>
+                    <div className={"labelSpacing"}>
+                        <label> Email : </label>
+                        <input type={"text"} className={"input"} placeholder="Enter Email" name="email" required />
+                    </div>
+                    <div className={"labelSpacing"}>
+                        <label > Password : </label>
+                        <input type={"password"} className={"input"} placeholder="Enter Password" name="password" required />
+                    </div>
+                    <div className={"labelSpacingButton"}>
+                        <button className={"btnSubmit"} onClick={SignUp}>Sign Up</button>
+                    </div>
+                </form>
+            </div>
+
+            {/*This Section is to switch to SignIn*/}
+            <h2 className={"divider"}><span className={"signMsg"}>Already have an account?</span></h2>
+            <Link className={"linkSignUp"} role="button" to="/signIn" style={{color: "var(--white)"}}>Sign In Instead</Link>
         </div>
     );
 }
