@@ -1,6 +1,6 @@
 import './userProfile.css';
 
-export default function userProfile() {
+export default function UserProfile() {
     return (
         <div>
             <h1>User Profile</h1>

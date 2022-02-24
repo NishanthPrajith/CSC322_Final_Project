@@ -18,7 +18,7 @@ import Navbar from './navComps/navbar';
 import FinalPage from './checkoutComps/finalPage';
 import CheckoutCart from './checkoutComps/checkoutCart';
 
-import userProfile from './userComps/userProfile';
+import UserProfile from './userComps/userProfile';
 
 import MainSearch from './searchComps/search';
 import { FoodProvider } from './contexts/foodContext';
@@ -39,7 +39,7 @@ function App() {
             <Route exact path="/signIn" element={<SignIn />} />
             <Route exact path="/checkoutCart" element={<CheckoutCart />} />
             <Route exact path="/finalPage" element={<FinalPage />} />
-            <Route exact path='/userProfile' element={<userProfile />} />
+            <Route exact path='/userProfile' element={<UserProfile />} />
           </Routes>
         </FoodProvider>
       </AuthProvider>
