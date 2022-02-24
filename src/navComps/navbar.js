@@ -5,11 +5,13 @@ import { useFood } from '../contexts/foodContext';
 
 import { Link, useNavigate } from "react-router-dom";
 
+import { useAuth } from '../contexts/Authcontext';
+
 export default function Navbar() {
 
     var { allFoodItems, changeState, changeFlilteredFoodItems } = useFood();
 
-    var loginSwitch = false;
+    const {loggedIn, userName} = useAuth();
 
     function searchClick() {
         const searchInput = document.querySelector("[data-search]");
@@ -48,10 +50,10 @@ export default function Navbar() {
                 </div>
             </div>
             <div className='navBarRightSide'>
-                { loginSwitch && <div>
-                    Nishanth Prajith Kumar
+                {loggedIn && <div>
+                    {userName}
                 </div> }
-                {!loginSwitch && <div>
+                {!loggedIn && <div>
                     <Link to = "/signIn">
                         <button>Sign In</button>
                     </Link>

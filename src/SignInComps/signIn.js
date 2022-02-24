@@ -4,9 +4,14 @@ import { useAuth } from "../contexts/Authcontext"
 
 import { useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 export default function SignIn() {
 
     const { login } = useAuth();
+    const [signInError, setSignInError] = useState("");
+    
+    const history = useNavigate();
     
     async function SignIn(event) {
         event.preventDefault();
@@ -22,7 +27,12 @@ export default function SignIn() {
                 console.log("Email ", email);
                 console.log("Password ", pass);
                 var temp = await login(email, pass);
-                console.log(temp);
+                if (temp != 1 && temp != undefined) {
+                    setSignInError(temp.message);
+                } else {
+                    alert("Login Successful");
+                    history("/");
+                }
             } catch (error) {
                 alert(error.message);
             }
@@ -52,7 +62,7 @@ export default function SignIn() {
                     <div className={"labelSpacingButton"}>
                         <button className={"btnSubmit"} onClick={SignIn}>Sign In</button>
                     </div>
-                    <div className='error' style = {{color: "var(--red)", textAlign: "center", marginTop: "2%"}}></div>
+                    <div className='error' style = {{color: "var(--red)", textAlign: "center", marginTop: "2%"}}>{signInError}</div>
                 </form>
             </div>
 

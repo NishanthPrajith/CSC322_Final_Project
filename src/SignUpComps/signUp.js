@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 export default function SignUp() {
 
-    const { signup } = useAuth();
+    const { signup, loggedIn } = useAuth();
     
     const [error, setError] = useState("");
 
@@ -27,10 +27,11 @@ export default function SignUp() {
                 console.log("Email ", email);
                 console.log("Password ", pass);
                 var temp = await signup(name, email, pass);
-                console.log(temp);
                 if (temp != 1) {
                     console.log("temp: ", temp);
                     setError(temp.message);
+                } else {
+                    alert("Sign Up Successful");
                 }
             } catch (error) {
                 alert(error.message);
