@@ -25,30 +25,31 @@ export function AuthProvider({ children }) {
 
     async function signup(name, email, password) { // Our async function is important because this allows our data to update live rather than waiting to refresh.
 
-        const ret2 = createUserWithEmailAndPassword(auth, email, password)
+        const ret3 = await createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 let ret1 = userCredential.user.uid;
                 addusertoDB(name, email, ret1);
+                return 1;
             })
             .catch((error) => {
-                console.log(error.message)
+                console.log("Sign Up Error: ", error);
+                return error;
             }
         );
-        return ret2;
+        return ret3;
     }
 
     async function login(email, password) { 
         await signOut(auth);
 
-        await signInWithEmailAndPassword(auth, email, password)
+        const ret2 = signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) =>{
             let ret1 = userCredential.user.uid;
         })
         .catch((error) => {
-            console.log(error.message);
-            return 0;
+            return error;
         });
-        return 0;
+        return 1;
     }
 
     useEffect(() => {

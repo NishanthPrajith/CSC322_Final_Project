@@ -119,21 +119,18 @@
 
 .filteredResultsUI {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
 }
 
 .recommendedLeftSideMain:nth-child(even) {
-    flex: 1;
-    width: 42%;
+    width: 45%;
     margin: 1% 0 1% 1%;
 }
 
 .recommendedLeftSideMain:nth-child(odd) {
-    flex: 1;
     margin: 1% 1% 1% 0;
-    width: 42%;
+    width: 45%;
 }
 
 .Loading {

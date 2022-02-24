@@ -3,10 +3,13 @@ import './signUp.css'
 import { Link } from 'react-router-dom';
 
 import { useAuth } from "../contexts/Authcontext"
+import { useState } from 'react';
 
 export default function SignUp() {
 
     const { signup } = useAuth();
+    
+    const [error, setError] = useState("");
 
     async function SignUp(event) {
         event.preventDefault();
@@ -20,11 +23,17 @@ export default function SignUp() {
         } else {
             try {
                 console.log("---Sign Up---");
+                console.log("Name ", name);
                 console.log("Email ", email);
                 console.log("Password ", pass);
-                await signup(name, email, pass);
-            } catch {
-                alert("error");
+                var temp = await signup(name, email, pass);
+                console.log(temp);
+                if (temp != 1) {
+                    console.log("temp: ", temp);
+                    setError(temp.message);
+                }
+            } catch (error) {
+                alert(error.message);
             }
         }
     }
@@ -56,7 +65,7 @@ export default function SignUp() {
                     <div className={"labelSpacingButton"}>
                         <button className={"btnSubmit"} onClick={SignUp}>Sign Up</button>
                     </div>
-                    <div className='error' style = {{color: "var(--red)", textAlign: "center", marginTop: "2%"}}></div>
+                    <div className='error' style = {{color: "var(--red)", textAlign: "center", marginTop: "2%"}}>{error}</div>
                 </form>
             </div>
 

@@ -2,10 +2,12 @@ import './signIn.css'
 import { Link } from 'react-router-dom';
 import { useAuth } from "../contexts/Authcontext"
 
+import { useState } from 'react';
+
 export default function SignIn() {
 
     const { login } = useAuth();
-
+    
     async function SignIn(event) {
         event.preventDefault();
         var x = document.getElementsByClassName("input");
@@ -16,12 +18,13 @@ export default function SignIn() {
             document.getElementsByClassName("error")[0].innerHTML = "Please fill out all fields";
         } else {
             try {
-                console.log("---Sign Up---");
+                console.log("---Sign In---");
                 console.log("Email ", email);
                 console.log("Password ", pass);
-                var g = await login(email, pass);
-            } catch {
-                alert("error");
+                var temp = await login(email, pass);
+                console.log(temp);
+            } catch (error) {
+                alert(error.message);
             }
         }
     }
