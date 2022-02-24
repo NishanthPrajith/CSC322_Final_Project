@@ -40,14 +40,15 @@ export function AuthProvider({ children }) {
     async function login(email, password) { 
         await signOut(auth);
 
-        const ret2 = signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            let ret1 = userCredential.user.uid
+        await signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) =>{
+            let ret1 = userCredential.user.uid;
         })
         .catch((error) => {
-            console.log(error.message)
+            console.log(error.message);
+            return 0;
         });
-        return ret2
+        return 0;
     }
 
     useEffect(() => {

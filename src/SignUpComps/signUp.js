@@ -14,15 +14,18 @@ export default function SignUp() {
         var name = x[0].value;
         var email = x[1].value;
         var pass = x[2].value;
-        console.log("---Sign Up---");
-        console.log("Email ", email);
-        console.log("Password ", pass);
 
-        try {
-            const useruiid = await signup(name, email, pass);
-            alert('registered');
-        } catch {
-            alert("error");
+        if (name === "" || email === "" || pass === "") {
+            document.getElementsByClassName("error")[0].innerHTML = "Please fill out all fields";
+        } else {
+            try {
+                console.log("---Sign Up---");
+                console.log("Email ", email);
+                console.log("Password ", pass);
+                await signup(name, email, pass);
+            } catch {
+                alert("error");
+            }
         }
     }
 
@@ -53,6 +56,7 @@ export default function SignUp() {
                     <div className={"labelSpacingButton"}>
                         <button className={"btnSubmit"} onClick={SignUp}>Sign Up</button>
                     </div>
+                    <div className='error' style = {{color: "var(--red)", textAlign: "center", marginTop: "2%"}}></div>
                 </form>
             </div>
 

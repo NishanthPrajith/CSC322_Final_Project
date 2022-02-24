@@ -9,17 +9,20 @@ export default function SignIn() {
     async function SignIn(event) {
         event.preventDefault();
         var x = document.getElementsByClassName("input");
-        var a = x[0].value;
-        var b = x[1].value;
-        console.log("---Sign In---");
-        console.log("Username ", a);
-        console.log("Password ", b);
+        var email = x[0].value;
+        var pass = x[1].value;
 
-        try {
-            const useruid = await login(a, b);
-            alert('Logged In');
-        } catch {
-            alert("error");
+        if (email === "" || pass === "") {
+            document.getElementsByClassName("error")[0].innerHTML = "Please fill out all fields";
+        } else {
+            try {
+                console.log("---Sign Up---");
+                console.log("Email ", email);
+                console.log("Password ", pass);
+                var g = await login(email, pass);
+            } catch {
+                alert("error");
+            }
         }
     }
 
@@ -46,6 +49,7 @@ export default function SignIn() {
                     <div className={"labelSpacingButton"}>
                         <button className={"btnSubmit"} onClick={SignIn}>Sign In</button>
                     </div>
+                    <div className='error' style = {{color: "var(--red)", textAlign: "center", marginTop: "2%"}}></div>
                 </form>
             </div>
 
