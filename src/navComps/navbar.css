@@ -1,104 +1,177 @@
-@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap");
 
 nav {
-    width: 90%;
-    padding: 0.5% 5%;
-    margin-top: 1%;
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-    justify-content: center;
-    align-items: center;
+  width: 90%;
+  padding: 0.5% 5%;
+  margin-top: 1%;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo p:nth-child(1) {
-    font-family: 'Rock Salt', cursive;
+  font-family: "Rock Salt", cursive;
 }
 
 .logo p:nth-child(2) {
-    font-size: 1.5rem;
-    font-weight: bold;
-    letter-spacing: 5px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 5px;
 }
 
 .logo p {
-    text-align: center;
-    color: var(--red);
-    margin: 0;
+  text-align: center;
+  color: var(--red);
+  margin: 0;
 }
 
 .navBarRightSide {
-    display: grid;
-    grid-template-columns: 5fr 2fr;
-    justify-content: space-between;
-    align-items: center;
+  display: grid;
+  grid-template-columns: 5fr 2fr;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .navBarLeftSide {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 .searchBar {
-    margin-left: 7%;
-    width: 50%;
-    border-radius: 25px;
-    color: var(--black);
-    background-color: var(--white);
-    padding: 1% 2%;
-    font-size: 0.9rem;
-    border: var(--yellow) 1px solid;
+  margin-left: 7%;
+  width: 50%;
+  border-radius: 25px;
+  color: var(--black);
+  background-color: var(--white);
+  padding: 1% 2%;
+  font-size: 0.9rem;
+  border: var(--yellow) 1px solid;
 }
 
 .searchBar label {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
-.searchBar label input[type = search] {
-    margin-left: 2%;
-    width: 100%;
-    font-size: 1.1em;
-    border: none;
+.searchBar label input[type="search"] {
+  margin-left: 2%;
+  width: 100%;
+  font-size: 1.1em;
+  border: none;
 }
 
-.searchBar label input[type = search]::-webkit-search-cancel-button{
-    color: green;
+.searchBar label input[type="search"]::-webkit-search-cancel-button {
+  color: green;
 }
 
-.searchBar label input[type = search]:focus {
-    border: none;
-    outline: none;
+.searchBar label input[type="search"]:focus {
+  border: none;
+  outline: none;
 }
-
 
 .navBarRightSide button {
-    background-color: var(--yellow);
-    color: var(--black);
-    border: none;
-    border-radius: 15px;
-    padding: 5% 10%;
-    float: right;
-    margin-right: 40%;
-    letter-spacing: 1px;
-    font-size: 0.9rem;
+  background-color: var(--yellow);
+  color: var(--black);
+  border: none;
+  border-radius: 15px;
+  padding: 5% 20%;
+  float: right;
+  margin-right: 40%;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
 }
 
 .navBarRightSide div:nth-child(2) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .cartCount {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background-color: var(--red);
-    color: var(--beige);
-    display: grid;
-    align-items: center;
-    justify-content: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: var(--red);
+  color: var(--beige);
+  display: grid;
+  align-items: center;
+  justify-content: center;
 }
 
 .cartCount p {
-    margin: 0;
+  margin: 0;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  padding: 16px;
+  font-size: 14px;
+  border: none;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none !important;
+  position: absolute;
+  background-color: #ffefd5;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropbtn {
+  font-size: 13px !important;
+}
+.dropbtn p {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 0.3;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ffe4b5;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block !important;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #98fb98;
+}
+
+.header__option {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-right: 10px;
+  color: var(--black);
+  align-items: center;
+}
+.header__option:hover {
+  border: 1px solid #32cd32;
+  color: #0000cd;
+  background: #ffdab9;
+  border-radius: 15px;
+}
+.header__optionLineOne {
+  font-size: 13px;
+}
+
+.header__optionLineTwo {
+  font-size: 13px;
+  font-weight: 800;
 }
