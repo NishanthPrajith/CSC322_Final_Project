@@ -60,9 +60,9 @@ export default function Navbar() {
             {/* {userName} */}
             <Link to="/userProfile">
               <div class="dropdown">
-                <button class="dropbtn">
-                  Hello,<p className="username"> {userName} </p>
-                </button>
+                <div class="dropbtn">
+                  Hello,  <p className="username"> {userName} </p>
+                </div>
                 <div class="dropdown-content">
                   <Link to="/userProfile">User Profile</Link>
                   <Link to="/vipProfile">Vip Profile</Link>
@@ -79,14 +79,14 @@ export default function Navbar() {
           </div>
         )}
         {!loggedIn && (
-          <div>
-            <Link to="/signIn">
+          <div style = {{width: "100%"}}>
               {/* <button>Sign In</button> */}
               <div className="header__option">
                 <span className="header__optionLineOne">Hello, Guest</span>
-                <span className="header__optionLineTwo">Sign In</span>
+                <Link to="/signIn">
+                  <span className="header__optionLineTwo">Sign In</span>
+                </Link>
               </div>
-            </Link>
           </div>
         )}
         <div>

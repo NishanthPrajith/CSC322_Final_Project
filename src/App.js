@@ -15,22 +15,17 @@ import FinalPage from "./checkoutComps/finalPage";
 import CheckoutCart from "./checkoutComps/checkoutCart";
 
 import UserProfile from "./userComps/userProfile";
-import ChefProfile from "./userComps/chefProfile";
-import DeliveryProfile from "./userComps/deliveryProfile";
-import ManagerProfile from "./userComps/managerProfile";
-import VipProfile from "./userComps/vipProfile";
-import Guest from "./userComps/guest";
-import Missing from "./userComps/missing";
+import ChefProfile from "./chefComps/chefProfile";
+import DeliveryProfile from "./deliveryComps/deliveryProfile";
+import ManagerProfile from "./managerComps/managerProfile";
+import Missing from "./404Page/missing";
 import Unauthorized from "./userComps/unauthorized";
-
-import RequireAuth from "./userComps/requireAuth";
 
 import MainSearch from "./searchComps/search";
 import { FoodProvider } from "./contexts/foodContext";
 
 const ROLES = {
   User: 11,
-  Vip: 111,
   Chef: 22,
   Delivery: 33,
   Manager: 1001,
@@ -48,7 +43,6 @@ function App() {
             {/* Public Routes */}
             <Route exact path="/signUp" element={<SignUp />} />
             <Route exact path="/signIn" element={<SignIn />} />
-            <Route exact path="/guest" element={<Guest />} />
             <Route exact path="/unauthorized" element={<Unauthorized />} />
 
             {/* Need to Protect these Routes */}
@@ -58,9 +52,6 @@ function App() {
             <Route exact path="/userProfile" element={<UserProfile />} />
             {/* </Route> */}
 
-            {/* <Route element={<RequireAuth allowedRoles={[ROLES.Vip]} />}> */}
-            <Route exact path="/vipProfile" element={<VipProfile />} />
-            {/* </Route> */}
 
             {/* <Route element={<RequireAuth allowedRoles={[ROLES.Chef]} />}> */}
             <Route exact path="/chefProfile" element={<ChefProfile />} />

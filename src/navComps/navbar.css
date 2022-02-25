@@ -69,17 +69,7 @@ nav {
   outline: none;
 }
 
-.navBarRightSide button {
-  background-color: var(--yellow);
-  color: var(--black);
-  border: none;
-  border-radius: 15px;
-  padding: 5% 20%;
-  float: right;
-  margin-right: 40%;
-  letter-spacing: 1px;
-  font-size: 0.9rem;
-}
+
 
 .navBarRightSide div:nth-child(2) {
   display: flex;
@@ -109,6 +99,7 @@ nav {
   padding: 16px;
   font-size: 14px;
   border: none;
+  width: 100%;
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -122,12 +113,16 @@ nav {
 }
 
 .dropbtn {
-  font-size: 13px !important;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 1em;
 }
+
 .dropbtn p {
-  font-size: 14px;
   font-weight: 800;
   line-height: 0.3;
+  margin-left: 10px;
 }
 
 /* Links inside the dropdown */
@@ -149,23 +144,13 @@ nav {
 }
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {
-  background-color: #98fb98;
-}
+
 
 .header__option {
-  display: flex;
-  flex-direction: column;
-  margin-left: 10px;
-  margin-right: 10px;
+  display: grid;
+  grid-template-columns: 40% 60%;
   color: var(--black);
   align-items: center;
-}
-.header__option:hover {
-  border: 1px solid #32cd32;
-  color: #0000cd;
-  background: #ffdab9;
-  border-radius: 15px;
 }
 .header__optionLineOne {
   font-size: 13px;
@@ -174,4 +159,13 @@ nav {
 .header__optionLineTwo {
   font-size: 13px;
   font-weight: 800;
+  background-color: var(--yellow);
+  color: var(--black);
+  border: none;
+  border-radius: 15px;
+  padding: 5% 20%;
+  float: right;
+  margin-right: 20%;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
 }

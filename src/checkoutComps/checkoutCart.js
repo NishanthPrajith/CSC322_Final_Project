@@ -3,10 +3,13 @@ import { FiArrowRightCircle } from "react-icons/fi";
 
 import { useFood } from '../contexts/foodContext';
 import { useState } from 'react';
+import { useAuth } from '../contexts/Authcontext';
 
 export default function CheckoutCart() {
     
     var { allFoodItems } = useFood();
+    var { loggedIn } = useAuth();
+
     const [loading, setLoading] = useState(true);
     const [totalCount, setTotalCount] = useState(0.00);
 
@@ -61,6 +64,13 @@ export default function CheckoutCart() {
                         $ { totalCount == NaN ? "0" : totalCount }
                     </h2>
                 </div>
+                {
+                    !loggedIn &&
+                    <div style={{marginTop: "10%", fontSize: "1.2em", color: "var(--red)"}}>
+                        <p>You have to be a registered customer to purchase!</p>
+                    </div>
+                }
+                { loggedIn &&   
                 <div>
                     <button className='checkoutPageButton'>
                         Pick Up <FiArrowRightCircle className='checkoutArrow'/>
@@ -69,6 +79,7 @@ export default function CheckoutCart() {
                         Delivery <FiArrowRightCircle className='checkoutArrow'/>
                     </button>
                 </div>
+                }
             </div>
         </div>
     );

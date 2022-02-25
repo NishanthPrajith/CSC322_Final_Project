@@ -1,0 +1,28 @@
+
+.ErrorPage {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    flex: 1 1 auto;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5%;
+}
+
+
+.GobackButton {
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+}
+
+.GobackButtonButton {
+    width: 100%;
+    background-color: var(--yellow);
+    border-radius: 15px;
+    padding: 7% 20%;
+    margin-top: 15%;
+}
