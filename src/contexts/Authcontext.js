@@ -6,7 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, setDoc, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, getDoc, updateDoc, collection, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 
 const AuthContext = React.createContext();
@@ -20,27 +20,56 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  // User Relative Data
+  // User Related Data
   const [userName, setUserName] = useState("");
   const [userWallet, setUserWallet] = useState(0);
+  const [userRole, setUserRole] = useState(-1);
 
-  const handleLogout = (e) => {
-    e.preventDefault();
+
+  // Manager related Data
+  const [getUsers, setGetUsers] = useState([]);
+
+  async function handleLogout() {
     setLoggedIn(false);
-    alert("Logged Out");
+    setCurrentUser(null);
+    setUserRole(-1);
+    setGetUsers([]);
+    await signOut(auth);
   };
 
+  async function getNewUser() {
+    console.log("getNewUser");
+    const q = await query(collection(db, "Users"), where("role", "==", 0));
+    onSnapshot(q, (querySnapshot) => {
+      const cities = [];
+      querySnapshot.forEach((doc) => {
+        cities.push(doc.data());
+      });
+      setGetUsers(cities);
+      console.log(cities);
+    });
+  }
+
+  async function updateRole(id, role) {
+    await updateDoc(doc(db, "Users", id), {
+      role: role,
+    });
+  }
+
   async function addusertoDB(name, email, id) {
-    await setDoc(doc(db, "Users", id), {
+    var temp = id;
+    await handleLogout();
+    await setDoc(doc(db, "Users", temp), {
       name: name,
       email: email,
       wallet: 0.0,
-    });
+      role: 0,
+      id: id
+    }); 
   }
 
   async function signup(name, email, password) {
     // Our async function is important because this allows our data to update live rather than waiting to refresh.
-
     const ret3 = await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         let ret1 = userCredential.user.uid;
@@ -55,8 +84,6 @@ export function AuthProvider({ children }) {
   }
 
   async function login(email, password) {
-    await signOut(auth);
-    setLoggedIn(false);
     const ret2 = signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         let ret1 = userCredential.user.uid;
@@ -69,33 +96,37 @@ export function AuthProvider({ children }) {
   }
 
   async function getUserData(id) {
-    const info = onSnapshot(doc(db, "Users", id), (doc) => {
-      console.log(doc.data());
+    const info = await getDoc(doc(db, "Users", id), (doc) => {
+      setUserRole(doc.data().role);
       setUserName(doc.data().name);
       setUserWallet(doc.data().wallet);
+      if (doc.data().role === 0) {
+        handleLogout();
+        alert("You are not authorized to access this page");
+      } else if (doc.data().role === 1001) {
+        getNewUser();
+      }
     });
   }
 
   useEffect(() => {
-    signOut(auth);
-    setLoggedIn(false);
-    setCurrentUser(null);
+    handleLogout();
     onAuthStateChanged(auth, (user) => {
       console.log("User: ", user);
       if (user != null) {
-        console.log("This One");
         setCurrentUser(user);
         setLoggedIn(true);
         getUserData(user.uid);
         setLoading(false);
       } else {
-        console.log("check me");
+        setCurrentUser(null);
         setLoading(false);
       }
     });
   }, []);
 
   const value = {
+    updateRole, 
     currentUser,
     login,
     signup,
@@ -103,6 +134,9 @@ export function AuthProvider({ children }) {
     userName,
     userWallet,
     handleLogout,
+    userRole,
+    getUsers,
+    getNewUser
   };
 
   return (

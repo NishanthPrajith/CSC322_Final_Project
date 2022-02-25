@@ -30,7 +30,6 @@ export default function SignIn() {
         if (temp != 1 && temp != undefined) {
           setSignInError(temp.message);
         } else {
-          alert("Login Successful");
           history(from, { replcae: true });
         }
       } catch (error) {

@@ -57,11 +57,17 @@ export default function CheckoutCart() {
             <div className="totalCheckoutPage">
                 <hr></hr>
                 <div>
+                    <h4>VIP Discount</h4>
+                    <div>
+                        <p>-$ {totalCount == NaN ? "0" : totalCount * 0.05}</p>
+                    </div>
+                </div>
+                <div>
                     <h3>
                         Total
                     </h3>
                     <h2>
-                        $ { totalCount == NaN ? "0" : totalCount }
+                        $ { totalCount == NaN ? "0" : totalCount - (totalCount * 0.05)}
                     </h2>
                 </div>
                 {

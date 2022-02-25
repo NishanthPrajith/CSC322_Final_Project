@@ -32,6 +32,7 @@ const ROLES = {
 };
 
 function App() {
+
   return (
     <div className="App">
       <AuthProvider>
@@ -49,9 +50,9 @@ function App() {
             {/* <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}> */}
             <Route exact path="/checkoutCart" element={<CheckoutCart />} />
             <Route exact path="/finalPage" element={<FinalPage />} />
+            
             <Route exact path="/userProfile" element={<UserProfile />} />
-            {/* </Route> */}
-
+             
 
             {/* <Route element={<RequireAuth allowedRoles={[ROLES.Chef]} />}> */}
             <Route exact path="/chefProfile" element={<ChefProfile />} />

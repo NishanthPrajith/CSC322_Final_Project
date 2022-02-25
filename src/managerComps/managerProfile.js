@@ -1,16 +1,54 @@
-import { Link } from "react-router-dom"
+import './managerProfile.css'
 
-const Admin = () => {
+import { useEffect, useState } from "react"
+import { useAuth } from "../contexts/Authcontext";
+
+export default function() {
+
+    const [choice, setChoice] = useState(0);
+
+    const { getUsers, updateRole } = useAuth();
+
+    function handleClick(i) {
+        console.log(getUsers);
+        setChoice(i);
+    }
+
     return (
-        <section>
+        <div className="managerProfile">
             <h1>Managers Page</h1>
-            <br />
-            <p>You must have been assigned an Manager role.</p>
-            <div className="flexGrow">
-                <Link to="/">Home</Link>
+            <div className="ChoicesLink">
+                <div onClick = {() => {handleClick(0)}} style={choice == 0 ? {backgroundColor: "var(--yellow)"} : {}}>
+                    Customer Approvals
+                </div>
+                <div onClick = {() => {handleClick(1)}} style={choice == 1 ? {backgroundColor: "var(--yellow)"} : {}}>
+                    Complaints
+                </div>
+                <div onClick = {() => {handleClick(2)}} style={choice == 2 ? {backgroundColor: "var(--yellow)"} : {}}>
+                    Delivery
+                </div>
             </div>
-        </section>
+            {choice == 0 && 
+                <div>
+                    { 
+                    getUsers.map((item) => {
+                        return (
+                            <div className="userCard">
+                                <div>
+                                    <h3>{ item.name }</h3>
+                                    <p>{ item.email }</p>
+                                </div>
+                                <div>
+                                    <button onClick={() => {updateRole(item.id, 11)}}>
+                                        Approve
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    })
+                    }
+                </div>
+            }
+        </div>
     )
 }
-
-export default Admin

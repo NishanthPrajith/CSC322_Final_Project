@@ -16,64 +16,7 @@ export function FoodProvider({ children }) {
     const [filteredFoodItems, setfilteredFoodItems] = useState([]);
     const [changeState, setChangeState] = useState(0);
 
-    const [allFoodItems, setAllFoodItems] = useState([]);
-
-    const FoodItems = [
-        {
-          "id": 1,
-          "name": "Leanne Graham",
-          "username": "Bret",
-          "email": "Sincere@april.biz",
-          "quantity": 0,
-          "price": 18.00,
-        },
-        {
-          "id": 5,
-          "name": "Chelsey Dietrich",
-          "username": "Kamren",
-          "email": "Lucio_Hettinger@annie.ca",
-          "quantity": 0,
-          "price": 18.00,
-        },
-        {
-          "id": 6,
-          "name": "Mrs. Dennis Schulist",
-          "username": "Leopoldo_Corkery",
-          "email": "Karley_Dach@jasper.info",
-          "quantity": 0,
-          "price": 18.00,
-        },
-        {
-          "id": 7,
-          "name": "Kurtis Weissnat",
-          "username": "Elwyn.Skiles",
-          "email": "Telly.Hoeger@billy.biz",
-          "quantity": 0,
-          "price": 18.00,
-        },
-        {
-          "id": 8,
-          "name": "Nicholas Runolfsdottir V",
-          "username": "Maxime_Nienow",
-          "email": "Sherwood@rosamond.me",
-          "quantity": 0,
-          "price": 18.00,
-        },
-        {
-          "id": 9,
-          "name": "Glenna Reichert",
-          "email": "Chaim_McDermott@dana.io",
-          "quantity": 0,
-          "price": 18.00,
-        },
-        {
-          "id": 10,
-          "name": "Clementina DuBuque",
-          "email": "Rey.Padberg@karina.biz",
-          "quantity": 0,
-          "price": 18.00,
-        }
-    ];
+    const [allFoodItems, setAllFoodItems] = useState([]);     
 
     async function getDishes(db){
       const food = collection(db, "Dishes");

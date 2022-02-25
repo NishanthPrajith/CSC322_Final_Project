@@ -10,7 +10,7 @@ import { useAuth } from "../contexts/Authcontext";
 export default function Navbar() {
   var { allFoodItems, changeState, changeFlilteredFoodItems } = useFood();
 
-  const { loggedIn, userName, handleLogout } = useAuth();
+  const { loggedIn, userName, handleLogout, userRole } = useAuth();
 
   function searchClick() {
     const searchInput = document.querySelector("[data-search]");
@@ -64,12 +64,14 @@ export default function Navbar() {
                   Hello,  <p className="username"> {userName} </p>
                 </div>
                 <div class="dropdown-content">
-                  <Link to="/userProfile">User Profile</Link>
-                  <Link to="/vipProfile">Vip Profile</Link>
-                  <Link to="/chefProfile">Chef Profile</Link>
-                  <Link to="/deliveryProfile">Delivery Profile</Link>
-                  <Link to="/managerProfile">Manager Profile</Link>
-
+                  {userRole === 11 && 
+                    <Link to="/userProfile">User Profile</Link> }
+                  {userRole === 22 &&
+                    <Link to="/chefProfile">Chef Profile</Link> }
+                  {userRole === 33 &&
+                    <Link to="/deliveryProfile">Delivery Profile</Link> }
+                  {userRole === 1001 &&
+                    <Link to="/managerProfile">Manager Profile</Link> }
                   <Link to="/" onClick={handleLogout}>
                     Sign Out
                   </Link>
