@@ -3,7 +3,6 @@ import React, { useContext, useState, useEffect } from "react"
 import { collection, onSnapshot } from "firebase/firestore";
 
 import { db } from "../firebase";
-import { type } from "@testing-library/user-event/dist/type";
 
 const FoodContext = React.createContext();
 
@@ -30,7 +29,18 @@ export function FoodProvider({ children }) {
         });
     }
 
+    async function clearData() {
+      var temp = allFoodItems;
+      for (var i = 0; i < temp.length; i++) {
+        temp[i].quantity = 0;
+      } 
+      setAllFoodItems(temp);
+      setfilteredFoodItems(temp);
+      setChangeState(0);
+    }
+
     useEffect(() => {
+      setChangeState(0);
       getDishes(db);
     }, [])
 
@@ -63,6 +73,7 @@ export function FoodProvider({ children }) {
         filteredFoodItems,
         allFoodItems,
         changeState,
+        clearData
     }
 
     return (

@@ -35,8 +35,8 @@ function App() {
 
   return (
     <div className="App">
-      <AuthProvider>
-        <FoodProvider>
+      <FoodProvider>
+        <AuthProvider>
           <Navbar />
           <Routes>
             <Route exact path="/" element={<MainSearch />} />
@@ -73,8 +73,8 @@ function App() {
             {/* Catch all */}
             <Route exact path="*" element={<Missing />} />
           </Routes>
-        </FoodProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </FoodProvider>
 
       <Footer></Footer>
     </div>

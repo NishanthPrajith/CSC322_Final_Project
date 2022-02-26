@@ -5,13 +5,48 @@ import { useFood } from '../contexts/foodContext';
 import { useState } from 'react';
 import { useAuth } from '../contexts/Authcontext';
 
+import {useNavigate} from 'react-router-dom';
+
+
 export default function CheckoutCart() {
     
-    var { allFoodItems } = useFood();
-    var { loggedIn } = useAuth();
+    var { loggedIn, userRole, addToOrder } = useAuth();
+
+    var {clearData, allFoodItems} = useFood();
+
+    var history = useNavigate();
 
     const [loading, setLoading] = useState(true);
     const [totalCount, setTotalCount] = useState(0.00);
+
+    async function placeOrder(state) {
+        var total = totalCount;
+        if (state == 2) {
+            total = totalCount * 0.95;
+        }
+        var document = {};
+        document.totalPrice = total;
+        document.state = state;
+        var order = [];
+        for (var i = 0; i < allFoodItems.length; i++) {
+            var done = {}; 
+            console.log(allFoodItems[i].name);
+            if (allFoodItems[i].quantity > 0) {
+                done.name = allFoodItems[i].name;
+                done.count = allFoodItems[i].quantity;
+                order.push(done);
+            }
+        }
+        console.log(allFoodItems);
+        document.order = order;
+        // await addToOrder(document);
+        console.log(document);
+
+        await clearData();
+
+        history("/finalPage", {replace: true});
+    }
+
 
     function calculateTotal() {
         var total = 0.00;
@@ -56,19 +91,29 @@ export default function CheckoutCart() {
             </div>
             <div className="totalCheckoutPage">
                 <hr></hr>
-                <div>
-                    <h4>VIP Discount</h4>
+                {userRole == 111 &&
                     <div>
-                        <p>-$ {totalCount == NaN ? "0" : totalCount * 0.05}</p>
+                        <h4>VIP Discount</h4>
+                        <div>
+                            <p>-$ {totalCount == NaN ? "0" : totalCount * 0.05}</p>
+                        </div>
                     </div>
-                </div>
+            }
                 <div>
                     <h3>
                         Total
                     </h3>
-                    <h2>
-                        $ { totalCount == NaN ? "0" : totalCount - (totalCount * 0.05)}
-                    </h2>
+                    {userRole == 111 &&
+                        <h2>
+                            $ { totalCount == NaN ? "0" : totalCount - (totalCount * 0.05)}
+                        </h2>
+                    }
+                    {userRole == 11 &&
+                        <h2>
+                            $ { totalCount == NaN ? "0" : totalCount}
+                        </h2>
+                    }
+                          
                 </div>
                 {
                     !loggedIn &&
@@ -76,12 +121,12 @@ export default function CheckoutCart() {
                         <p>You have to be a registered customer to purchase!</p>
                     </div>
                 }
-                { loggedIn &&   
+                {!loggedIn &&   
                 <div>
-                    <button className='checkoutPageButton'>
+                    <button className='checkoutPageButton' onClick={() => {placeOrder(1)}}>
                         Pick Up <FiArrowRightCircle className='checkoutArrow'/>
                     </button>
-                    <button className='checkoutPageButton'>
+                    <button className='checkoutPageButton' onClick={() => {placeOrder(2)}}>
                         Delivery <FiArrowRightCircle className='checkoutArrow'/>
                     </button>
                 </div>

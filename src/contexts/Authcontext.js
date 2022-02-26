@@ -16,6 +16,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
+
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -24,6 +25,8 @@ export function AuthProvider({ children }) {
   const [userName, setUserName] = useState("");
   const [userWallet, setUserWallet] = useState(0);
   const [userRole, setUserRole] = useState(-1);
+  const [userId, setUserId] = useState("");
+  const [orderIds, setOrderIds] = useState([]);
 
 
   // Manager related Data
@@ -83,6 +86,10 @@ export function AuthProvider({ children }) {
     return ret3;
   }
 
+  async function addToOrder() {
+    console.log("addToOrder");
+  }
+
   async function login(email, password) {
     const ret2 = signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -100,12 +107,26 @@ export function AuthProvider({ children }) {
       setUserRole(doc.data().role);
       setUserName(doc.data().name);
       setUserWallet(doc.data().wallet);
+      setUserId(doc.data().id);
       if (doc.data().role === 0) {
         handleLogout();
         alert("You are not authorized to access this page");
+        info();
       } else if (doc.data().role === 1001) {
         getNewUser();
       }
+    });
+  }
+
+  async function addToOrder(document) {
+    const newCityRef = doc(collection(db, "Orders"));
+    document.userId = userId;
+    await setDoc(newCityRef, document);
+    var temp = orderIds;
+    temp.push(newCityRef.id);
+    setOrderIds(temp);
+    await updateDoc(doc(db, "Users", userId), {
+      orders: orderIds
     });
   }
 
@@ -136,7 +157,7 @@ export function AuthProvider({ children }) {
     handleLogout,
     userRole,
     getUsers,
-    getNewUser
+    addToOrder
   };
 
   return (
