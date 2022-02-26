@@ -6,7 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, setDoc, onSnapshot, getDoc, updateDoc, collection, query, where } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, updateDoc, collection, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 
 const AuthContext = React.createContext();
@@ -96,7 +96,7 @@ export function AuthProvider({ children }) {
   }
 
   async function getUserData(id) {
-    const info = await getDoc(doc(db, "Users", id), (doc) => {
+    const info = await onSnapshot(doc(db, "Users", id), (doc) => {
       setUserRole(doc.data().role);
       setUserName(doc.data().name);
       setUserWallet(doc.data().wallet);

@@ -64,13 +64,13 @@ export default function Navbar() {
                   Hello,  <p className="username"> {userName} </p>
                 </div>
                 <div class="dropdown-content">
-                  {userRole === 11 && 
+                  {userRole == 11 && 
                     <Link to="/userProfile">User Profile</Link> }
                   {userRole === 22 &&
                     <Link to="/chefProfile">Chef Profile</Link> }
                   {userRole === 33 &&
                     <Link to="/deliveryProfile">Delivery Profile</Link> }
-                  {userRole === 1001 &&
+                  {userRole == 1001 &&
                     <Link to="/managerProfile">Manager Profile</Link> }
                   <Link to="/" onClick={handleLogout}>
                     Sign Out
