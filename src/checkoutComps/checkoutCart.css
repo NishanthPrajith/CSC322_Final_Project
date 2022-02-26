@@ -14,6 +14,7 @@
 
 .totalCheckoutPage hr {
     border: 1px solid var(--yellow);
+    background-color: var(--yellow);
 }
 
 .totalCheckoutPage div {
