@@ -30,7 +30,7 @@ export default function SignIn() {
         if (temp != 1 && temp != undefined) {
           setSignInError(temp.message);
         } else {
-          history(from, { replcae: true });
+          history(from, { replace: true });
         }
       } catch (error) {
         alert(error.message);

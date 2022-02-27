@@ -267,6 +267,10 @@ export default function MainSearch() {
                                                 </button>
                                             </div>
                                         </div>
+                                        <div>
+                                            <h5>Chef</h5>
+                                            <p>{ item.chef } </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

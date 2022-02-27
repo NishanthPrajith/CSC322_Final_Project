@@ -1,11 +1,12 @@
 
 import './signUp.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from "../contexts/Authcontext"
 import { useState } from 'react';
 
 export default function SignUp() {
+    const history = useNavigate();
 
     const { signup, loggedIn } = useAuth();
     
@@ -32,6 +33,7 @@ export default function SignUp() {
                     setError(temp.message);
                 } else {
                     alert("Sign Up Successful");
+                    history("/signIn");
                 }
             } catch (error) {
                 alert(error.message);

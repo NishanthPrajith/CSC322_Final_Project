@@ -1,0 +1,56 @@
+.chefProfile {
+    width: 80%;
+    margin: 3% 10%;
+}
+
+.ChoicesLink {
+    width: 100%;
+    display: flex;
+    margin-top: 3%;
+}
+
+.ChoicesLink div {
+    border-radius: 25px;
+    margin-right: 2%;
+    padding: 0.5% 1%;
+    border: 1px solid var(--yellow);
+    cursor: pointer;
+}
+
+.userCard {
+    margin: 1% 0;
+    background-color: var(--white);
+    padding: 0.5% 3%;
+    border-radius: 25px;
+    display: grid;
+    grid-template-columns: 90% 10%;
+    justify-content: center;
+    align-items: center;
+}
+
+.userCard:nth-child(1) {
+    margin-top: 5%;
+}
+
+.userCard button {
+    background-color: var(--yellow);
+    border-radius: 25px;
+    border: none;
+    padding: 10% 20%;
+    font-size: 0.9em;
+}
+
+hr {
+    width: 45%;
+    margin: 3% 0%;
+    color: black;
+    height: 2px;
+    background-color: black;
+    border: none;
+}
+
+.foodItemsUI {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}

@@ -24,6 +24,7 @@ export function AuthProvider({ children }) {
   // User Related Data
   const [userName, setUserName] = useState("");
   const [userWallet, setUserWallet] = useState(0);
+  const [userJoined, setUserJoined] = useState(0);
   const [userRole, setUserRole] = useState(-1);
   const [userId, setUserId] = useState("");
   const [orderIds, setOrderIds] = useState([]);
@@ -61,13 +62,16 @@ export function AuthProvider({ children }) {
 
   async function addusertoDB(name, email, id) {
     var temp = id;
+    let today = new Date();
+    let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     await handleLogout();
     await setDoc(doc(db, "Users", temp), {
       name: name,
       email: email,
       wallet: 0.0,
-      role: 0,
-      id: id
+      role: 11,
+      id: id,
+      joined: date
     }); 
   }
 
@@ -107,6 +111,7 @@ export function AuthProvider({ children }) {
       setUserRole(doc.data().role);
       setUserName(doc.data().name);
       setUserWallet(doc.data().wallet);
+      setUserJoined(doc.data().joined);
       setUserId(doc.data().id);
       if (doc.data().role === 0) {
         handleLogout();
@@ -154,6 +159,7 @@ export function AuthProvider({ children }) {
     loggedIn,
     userName,
     userWallet,
+    userJoined,
     handleLogout,
     userRole,
     getUsers,
