@@ -166,6 +166,19 @@ export function AuthProvider({ children }) {
     }
   }
 
+  async function writeOrderReviewUser(id, rating, chef, delivery) {
+    const orders = doc(db, "Orders", id);
+    console.log(orders);
+    await updateDoc(orders, {
+      rating: rating,
+      chefReview: chef,
+      deliveryReview: delivery,
+      reviewed: true
+    });
+    console.log("done---");
+
+  }
+
   useEffect(() => {
     handleLogout();
     onAuthStateChanged(auth, (user) => {
@@ -196,6 +209,7 @@ export function AuthProvider({ children }) {
     getUsers,
     addToOrder,
     orders,
+    writeOrderReviewUser
   };
 
   return (

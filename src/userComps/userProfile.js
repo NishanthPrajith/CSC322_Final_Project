@@ -3,17 +3,36 @@ import './previousOrders';
 import PreviousOrders from './previousOrders';
 import { useAuth } from '../contexts/Authcontext';
 import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 
 export default function UserProfile() {
 
-    const { orders } = useAuth();
+    const { orders, writeOrderReviewUser } = useAuth();
     const [orderChoice, setOrderChoice] = useState(-1);
+
+    const rating = useRef();
+    const chefRating = useRef();
+    const deliveryRating = useRef();
+
 
     function changeOrderChoice(i) {
         if (orderChoice === i) {
             setOrderChoice(-1);
         } else {
             setOrderChoice(i);
+        }
+    }
+
+    async function formSubmission(event, id) {
+        event.preventDefault();
+        var a = rating.current.value;
+        var b = chefRating.current.value;
+        var c = deliveryRating.current.value;
+        if (a < 0 || a > 5 || a === "") {
+            alert("Please enter a rating between 0 and 5!");
+        } else {
+            await writeOrderReviewUser(id, a, b, c);
+            alert("Thank you for your rating!");
         }
     }
 
@@ -34,6 +53,8 @@ export default function UserProfile() {
                     return (
                         <div className='UserOrderCard' key={i}>
                             <h2>Order #{i + 1}</h2>
+                            <p>{item.reviewed}</p>
+                            <p>{item.reviewed}</p>
                             <div className='userCardInner'>
                                 <div>
                                     {
@@ -50,7 +71,7 @@ export default function UserProfile() {
                             </div>
                             <div className='OrderReview'>
                                 <button onClick={() => {changeOrderChoice(i)}}>
-                                    Review Order
+                                    {!item.reviewed ? "Review Order" : "Order Reviewed"}
                                 </button>
                             </div>
                             {
@@ -58,18 +79,29 @@ export default function UserProfile() {
                                 <div className='OrderRatingForm'>
                                     <form onSubmit={() => {return false;}}>
                                         <div>
-                                            <label for="rating">Rating :   </label>
-                                                <input type="number" name="rating" min ="0" max = "5" placeholder="Enter Rating" />
+                                            <label>Rating :   </label>
+                                            {!item.reviewed &&
+                                                <input type="number" ref= {rating} name="rating" min ="0" max = "5" placeholder="Enter Rating" />
+                                            } {item.reviewed &&
+                                                <p style = {{width: "10%", textAlign: "center", backgroundColor: "var(--white)", padding: "0.5% 1%", borderRadius: "15px"}}>{item.rating}</p>    
+                                            }
                                         </div>
-                                        <label for="rating">Chef Complaint :   </label>
-                                            <textarea name="chefComplaint" rows = "4">
-                                                Write your complaint for the chef here...
+                                        <label>Chef Complaint :   </label>
+                                        {!item.reviewed &&
+                                            <textarea ref= {chefRating} name="chefComplaint" rows = "4" defaultValue="Write your complaint for the chef here...">
                                             </textarea>
-                                        <label for="rating">Delivery Complaint :   </label>
-                                            <textarea name="deliveryComplaint" rows = "4">
-                                                Write your complaint for the delivery here...
-                                            </textarea>
-                                        <button>Submit</button>
+                                        } {item.reviewed &&  
+                                            <p style = {{backgroundColor: "var(--white)", padding: "0.5% 1%", borderRadius: "15px"}}>{item.chefReview}</p>
+                                        }   
+                                        <label>Delivery Complaint :   </label>
+                                            {!item.reviewed &&
+                                                <textarea ref={deliveryRating} name="deliveryComplaint" rows = "4" defaultValue = "Write your complaint for the delivery here...">
+                                                </textarea>
+                                            } {item.reviewed &&  
+                                                <p style = {{backgroundColor: "var(--white)", padding: "0.5% 1%", borderRadius: "15px"}}>{item.deliveryReview}</p>
+                                            }
+                                        {!item.reviewed &&
+                                        <button onClick={function(e) {formSubmission(e, item.orderId)}}>Submit</button>}
                                     </form>
                                 </div>
                             }

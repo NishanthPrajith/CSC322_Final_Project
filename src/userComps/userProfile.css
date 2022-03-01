@@ -29,7 +29,7 @@
 
 .OrderRatingForm input[type = "number"] {
     border: 1px solid #976627;
-    padding: 0.5% 0.5%;
+    padding: 0.5% 1%;
     margin-left: 0.5%;
     border-radius: 25px;
 }
@@ -46,7 +46,7 @@
 .OrderRatingForm textarea {
     resize: none;
     margin-top: 0.5%;
-    padding: 0.5%;
+    padding: 1%;
     border: 1px solid #976627;
     border-radius: 15px;
 }
@@ -62,4 +62,8 @@
     background-color: var(--yellow);
     border-radius: 25px;
     padding: 1% 2%;
+}
+
+.ratingInput {
+    display: inherit;
 }
