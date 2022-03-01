@@ -15,6 +15,7 @@ export default function MainSearch() {
             setLoading(false);
             console.log("-------");
             console.log(filteredFoodItems);
+            console.log(typeof filteredFoodItems);
             console.log("-------");
         }
         return <div className='Loading'>
@@ -266,10 +267,6 @@ export default function MainSearch() {
                                                     <RiAddFill />
                                                 </button>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <h5>Chef</h5>
-                                            <p>{ item.chef } </p>
                                         </div>
                                     </div>
                                 </div>

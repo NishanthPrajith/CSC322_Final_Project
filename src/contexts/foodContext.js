@@ -65,6 +65,7 @@ export function FoodProvider({ children }) {
         sum += allFoodItems[i].quantity;
       }
       console.log(allFoodItems);
+      console.log(sum);
       setChangeState(sum);
     }
 

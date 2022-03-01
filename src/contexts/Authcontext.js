@@ -6,7 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, setDoc, onSnapshot, updateDoc, collection, query, where } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 
 const AuthContext = React.createContext();
@@ -27,7 +27,8 @@ export function AuthProvider({ children }) {
   const [userJoined, setUserJoined] = useState(0);
   const [userRole, setUserRole] = useState(-1);
   const [userId, setUserId] = useState("");
-  const [orderIds, setOrderIds] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [orderId, setOrderId] = useState([]);
 
 
   // Manager related Data
@@ -38,6 +39,8 @@ export function AuthProvider({ children }) {
     setCurrentUser(null);
     setUserRole(-1);
     setGetUsers([]);
+    setOrderId([]);
+    setOrders([]);
     await signOut(auth);
   };
 
@@ -113,6 +116,9 @@ export function AuthProvider({ children }) {
       setUserWallet(doc.data().wallet);
       setUserJoined(doc.data().joined);
       setUserId(doc.data().id);
+      setOrderId(doc.data().orders);
+      console.log(doc.data().orders);
+      getOrders(doc.data().orders);
       if (doc.data().role === 0) {
         handleLogout();
         alert("You are not authorized to access this page");
@@ -126,13 +132,38 @@ export function AuthProvider({ children }) {
   async function addToOrder(document) {
     const newCityRef = doc(collection(db, "Orders"));
     document.userId = userId;
+    document.orderId = newCityRef.id;
     await setDoc(newCityRef, document);
-    var temp = orderIds;
+    var temp = orderId;
     temp.push(newCityRef.id);
-    setOrderIds(temp);
     await updateDoc(doc(db, "Users", userId), {
-      orders: orderIds
+      orders: orderId
     });
+  }
+
+  async function getOrders(ord) {
+    for (let i = 0; i < ord.length; i++) {
+      console.log(ord[i]);
+      const q = query(collection(db, "Orders"), where("orderId", "==", ord[i]));
+      const querySnapshot = await getDocs(q);
+      const data = orders;
+      console.log(data);
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        var check = true;
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].orderId === doc.data().orderId) {
+            check = false;
+            break;
+          }
+        }
+        if (check) {
+          data.unshift(doc.data());
+        }      
+      });
+      setOrders(data);
+      console.log(orders);
+    }
   }
 
   useEffect(() => {
@@ -163,7 +194,8 @@ export function AuthProvider({ children }) {
     handleLogout,
     userRole,
     getUsers,
-    addToOrder
+    addToOrder,
+    orders,
   };
 
   return (

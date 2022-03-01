@@ -39,7 +39,7 @@ export default function CheckoutCart() {
         }
         console.log(allFoodItems);
         document.order = order;
-        // await addToOrder(document);
+        await addToOrder(document);
         console.log(document);
 
         await clearData();
@@ -53,7 +53,7 @@ export default function CheckoutCart() {
         for (var i = 0; i < allFoodItems.length; i++) {
             total += allFoodItems[i].price * allFoodItems[i].quantity;
         }
-        console.log(total); 
+        console.log("Total : ", total); 
         setTotalCount(total);
     }
 
@@ -121,7 +121,7 @@ export default function CheckoutCart() {
                         <p>You have to be a registered customer to purchase!</p>
                     </div>
                 }
-                {!loggedIn &&   
+                {loggedIn &&   
                 <div>
                     <button className='checkoutPageButton' onClick={() => {placeOrder(1)}}>
                         Pick Up <FiArrowRightCircle className='checkoutArrow'/>

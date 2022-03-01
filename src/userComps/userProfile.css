@@ -1,3 +1,65 @@
 .userProfileTitle{
     text-align: center;
 }
+
+.userProfile {
+    width: 80%;
+    margin: 3% 10%;
+}
+
+
+.OrderReview {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.OrderReview button {
+    padding: 1% 2%;
+    border-radius: 25px;
+    border: none;
+}
+
+.OrderRatingForm {
+    padding: 1% 2%;
+    margin-top: 2.5%;
+    border-radius: 35px;
+    background-color: var(--beige);
+}
+
+.OrderRatingForm input[type = "number"] {
+    border: 1px solid #976627;
+    padding: 0.5% 0.5%;
+    margin-left: 0.5%;
+    border-radius: 25px;
+}
+
+.OrderRatingForm form {
+    display: flex;
+    flex-direction: column;
+}
+
+.OrderRatingForm label {
+    margin-top: 1%;
+}
+
+.OrderRatingForm textarea {
+    resize: none;
+    margin-top: 0.5%;
+    padding: 0.5%;
+    border: 1px solid #976627;
+    border-radius: 15px;
+}
+
+.OrderRatingForm textarea:focus {
+    outline: none;
+}
+
+.OrderRatingForm form button {
+    float: right;
+    margin-top: 2%;
+    border: none;
+    background-color: var(--yellow);
+    border-radius: 25px;
+    padding: 1% 2%;
+}

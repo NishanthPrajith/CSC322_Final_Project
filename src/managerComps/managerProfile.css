@@ -40,3 +40,22 @@
     padding: 10% 20%;
     font-size: 0.9em;
 }
+
+
+.UserOrderCard {
+    margin: 3% 0;
+    background-color: var(--white);
+    border-radius: 25px;
+    padding: 0.5% 2% 1.5% 2%;
+}
+
+.userCardInner {
+    display: flex;
+    padding: 0 3% 0 2%;
+    justify-content: space-between;
+}
+
+.userCardInner h3 {
+    font-size: 2em;
+    margin: 0;
+}

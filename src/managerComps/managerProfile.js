@@ -3,9 +3,10 @@ import './managerProfile.css'
 import { useEffect, useState } from "react"
 import { useAuth } from "../contexts/Authcontext";
 
-export default function() {
+export default function ManagerProfile() {
 
     const [choice, setChoice] = useState(0);
+    const [orderChoice, setOrderChoice] = useState(0);
 
     const { getUsers, updateRole } = useAuth();
 
@@ -13,6 +14,16 @@ export default function() {
         console.log(getUsers);
         setChoice(i);
     }
+
+    function changeOrderChoice(i) {
+        if (orderChoice === i) {
+            setOrderChoice(-1);
+        } else {
+            setOrderChoice(i);
+        }
+    }
+
+    var done = [1, 2, 3, 4, 5];
 
     return (
         <div className="managerProfile">
@@ -28,7 +39,7 @@ export default function() {
                     Delivery
                 </div>
             </div>
-            {choice == 0 && 
+            {choice === 0 && 
                 <div>
                     { 
                     getUsers.map((item) => {
@@ -47,6 +58,53 @@ export default function() {
                         );
                     })
                     }
+                </div>
+            }
+
+            {choice === 0 && 
+                <div>
+                    {done.map((item, i) => {
+                        return (
+                            <div className='UserOrderCard'>
+                                <h2>Order #1</h2>
+                                <div className='userCardInner'>
+                                    <div>
+                                        <p>Pineapple Pizza X 2</p>
+                                        <p>Pineapple Pizza X 2</p>
+                                    </div>
+                                    <div>
+                                        <h3>${item}</h3>
+                                    </div>
+                                </div>
+                                <div className='OrderReview'>
+                                    <button onClick={() => {changeOrderChoice(i)}}>
+                                        Review Order
+                                    </button>
+                                </div>
+                                {
+                                    orderChoice === i &&
+                                    <div className='OrderRatingForm'>
+                                        <form onSubmit={() => {return false;}}>
+                                            <div>
+                                                <label for="rating">Rating :   </label>
+                                                    <input type="number" name="rating" min ="0" max = "5" placeholder="Enter Rating" />
+                                            </div>
+                                            <label for="rating">Chef Complaint :   </label>
+                                                <textarea name="chefComplaint" rows = "4">
+                                                    Write your complaint for the chef here...
+                                                </textarea>
+                                            <label for="rating">Delivery Complaint :   </label>
+                                                <textarea name="deliveryComplaint" rows = "4">
+                                                    Write your complaint for the delivery here...
+                                                </textarea>
+                                            <button>Submit</button>
+                                        </form>
+                                    </div>
+                                }
+                            </div>
+                        )
+                    }
+                    )}
                 </div>
             }
         </div>
