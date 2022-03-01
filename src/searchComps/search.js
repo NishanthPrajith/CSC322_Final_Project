@@ -30,6 +30,11 @@ export default function MainSearch() {
         changeFlilteredFoodItems(temp);
     }
 
+    function getImage(imageName) {
+        var a = "url('" + imageName + "')";
+        return a;
+    }
+
     function addToCartSubtract(id) {
         console.log(id);
         var temp = filteredFoodItems;
@@ -241,7 +246,7 @@ export default function MainSearch() {
                     filteredFoodItems.map((item, index) => {
                         return (
                             <div className="recommendedLeftSideMain" key = {index}>
-                                <div className="dishImage">
+                                <div className="dishImage" style={{backgroundImage: getImage(item.image)}}>
                                     <p></p>
                                 </div>
                                 <div style  = {{margin: "6% 0"}}>

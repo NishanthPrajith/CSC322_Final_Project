@@ -23,11 +23,15 @@ export default function UserProfile() {
         }
     }
 
-    async function formSubmission(event, id) {
+    async function formSubmission(event, id, state) {
         event.preventDefault();
         var a = rating.current.value;
         var b = chefRating.current.value;
-        var c = deliveryRating.current.value;
+        if (state == 2) {
+            var c = deliveryRating.current.value;
+        } else {
+            var c = "";
+        }
         if (a < 0 || a > 5 || a === "") {
             alert("Please enter a rating between 0 and 5!");
         } else {
@@ -52,9 +56,10 @@ export default function UserProfile() {
                 orders.map((item, i) => {
                     return (
                         <div className='UserOrderCard' key={i}>
-                            <h2>Order #{i + 1}</h2>
-                            <p>{item.reviewed}</p>
-                            <p>{item.reviewed}</p>
+                            <div style={{display: "flex", justifyContent: "space-between"}}>
+                                <h2>Order #{i + 1}</h2>
+                                <h5>{item.orderDate}</h5>
+                            </div>
                             <div className='userCardInner'>
                                 <div>
                                     {
@@ -93,15 +98,15 @@ export default function UserProfile() {
                                         } {item.reviewed &&  
                                             <p style = {{backgroundColor: "var(--white)", padding: "0.5% 1%", borderRadius: "15px"}}>{item.chefReview}</p>
                                         }   
-                                        <label>Delivery Complaint :   </label>
-                                            {!item.reviewed &&
+                                        {(item.state == 2) && <label>Delivery Complaint :   </label>}
+                                            {!item.reviewed && (item.state == 2) &&
                                                 <textarea ref={deliveryRating} name="deliveryComplaint" rows = "4" defaultValue = "Write your complaint for the delivery here...">
                                                 </textarea>
-                                            } {item.reviewed &&  
+                                            } {item.reviewed && (item.state == 2) &&  
                                                 <p style = {{backgroundColor: "var(--white)", padding: "0.5% 1%", borderRadius: "15px"}}>{item.deliveryReview}</p>
                                             }
                                         {!item.reviewed &&
-                                        <button onClick={function(e) {formSubmission(e, item.orderId)}}>Submit</button>}
+                                        <button onClick={function(e) {formSubmission(e, item.orderId, item.state)}}>Submit</button>}
                                     </form>
                                 </div>
                             }

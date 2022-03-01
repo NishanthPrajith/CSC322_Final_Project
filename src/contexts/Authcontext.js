@@ -72,9 +72,10 @@ export function AuthProvider({ children }) {
       name: name,
       email: email,
       wallet: 0.0,
-      role: 11,
+      role: 0,
       id: id,
-      joined: date
+      joined: date,
+      orders: [],
     }); 
   }
 
@@ -130,40 +131,31 @@ export function AuthProvider({ children }) {
   }
 
   async function addToOrder(document) {
+    let today = new Date();
+    let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const newCityRef = doc(collection(db, "Orders"));
     document.userId = userId;
     document.orderId = newCityRef.id;
+    document.orderDate = date;
     await setDoc(newCityRef, document);
     var temp = orderId;
+    console.log("check: ", orderId);
     temp.push(newCityRef.id);
     await updateDoc(doc(db, "Users", userId), {
-      orders: orderId
+      orders: temp
     });
   }
 
   async function getOrders(ord) {
-    for (let i = 0; i < ord.length; i++) {
-      console.log(ord[i]);
-      const q = query(collection(db, "Orders"), where("orderId", "==", ord[i]));
-      const querySnapshot = await getDocs(q);
-      const data = orders;
-      console.log(data);
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        var check = true;
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].orderId === doc.data().orderId) {
-            check = false;
-            break;
-          }
-        }
-        if (check) {
-          data.unshift(doc.data());
-        }      
-      });
-      setOrders(data);
-      console.log(orders);
-    }
+    const q = query(collection(db, "Orders"), where("orderId", "in", ord));
+    const querySnapshot = await getDocs(q);
+    const data = [];
+    console.log(data);
+    querySnapshot.forEach((doc) => {
+      data.unshift(doc.data());      
+    });
+    setOrders(data);
+    console.log(orders);
   }
 
   async function writeOrderReviewUser(id, rating, chef, delivery) {
@@ -175,7 +167,7 @@ export function AuthProvider({ children }) {
       deliveryReview: delivery,
       reviewed: true
     });
-    console.log("done---");
+    await getOrders(orderId);
 
   }
 
