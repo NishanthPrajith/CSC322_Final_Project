@@ -7,7 +7,6 @@
     margin: 3% 10%;
 }
 
-
 .OrderReview {
     width: 100%;
     display: flex;
@@ -66,4 +65,72 @@
 
 .ratingInput {
     display: inherit;
+}
+
+
+.userMetaData {
+    display: grid;
+    grid-template-columns: repeat(3, 33.33%);
+    align-items: center;
+    align-content: center;
+    margin-top: 3%;
+}
+
+.userMetaDataOne, .userMetaDataTwo, .userMetaDataThree {
+    text-align: center;
+}
+
+.userMetaDataOne h3, .userMetaDataTwo h3, .userMetaDataThree h3 {
+    font-size: 1.8em;
+    padding: 0;
+    margin: 0;
+}
+
+.addMoney {
+    width: 100%;
+    margin-top: 1%;
+    display: flex;
+    margin-left: 8%;
+    height: 80%;
+}
+
+.addMoney button {
+    padding: 2.5% 10%;
+    background-color: rgb(43, 207, 43);
+    border-radius: 25px;
+    border: none;
+    color: white;
+    font-size: 1.3em;
+}
+
+.WalletForm {
+    position: absolute;
+    background-color: rgb(209, 209, 209);
+    top: 50%;
+    left: 50%;
+    width: 20%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+    padding: 2% 2%;
+    display: none;
+}
+
+.WalletForm form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ProfilePic {
+    width: 100%;
+    display: grid;
+    clear: both;
+    justify-content: center;
+}
+
+.profileImage {
+    background: lightblue;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
 }

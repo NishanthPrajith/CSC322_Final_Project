@@ -4,10 +4,11 @@ import PreviousOrders from './previousOrders';
 import { useAuth } from '../contexts/Authcontext';
 import { useEffect, useState } from 'react';
 import { useRef } from 'react';
+import { BiWallet } from "react-icons/bi";
 
 export default function UserProfile() {
 
-    const { orders, writeOrderReviewUser } = useAuth();
+    const { orders, writeOrderReviewUser, userRole, userWallet, userName } = useAuth();
     const [orderChoice, setOrderChoice] = useState(-1);
 
     const rating = useRef();
@@ -48,10 +49,64 @@ export default function UserProfile() {
         console.log(orders);
     }, []);
 
+    function openForm() {
+        console.log("Open form");
+        var a = document.getElementsByClassName("WalletForm");
+        a[0].style.display = "block";
+    }
+
+    function getRandomProfile(a) {
+        return "url('https://avatars.dicebear.com/api/initials/:" + a + ".svg')";
+    }
+
     return (
         <div className='userProfile'>
-            <h1 className = "userProfileTitle">User Profile</h1>
-            <div>
+            <div className='ProfilePic'>
+                <div className='profileImage' style={{backgroundImage: getRandomProfile(userName)}}>
+                </div>
+            </div>
+            <h1 className = "userProfileTitle">{userName}</h1>
+            <div className='userMetaData'>
+                <div className='userMetaDataOne'>
+                    <h4>Warnings</h4>
+                    <h3>{10}</h3>
+                </div>
+                <div className='userMetaDataTwo'>
+                    <h4>Your Current Level</h4>
+                    {userRole === 11 &&
+                        <h3>Regular</h3>
+                    }
+                    {userRole === 111 &&
+                        <h3 style={{color: "deeppink"}}>*VIP*</h3>
+                    }
+                </div>
+                <div className='userMetaDataThree'>
+                    <h4>Wallet</h4>
+                    <div style = {{
+                        display: "grid",
+                        textAlign: "right",
+                        gridTemplateColumns: "52% 48%",
+                        alignItems: "center",
+                        }}>
+                        <h3>$ {userWallet}</h3>
+                        <div className='addMoney'>
+                            <button onClick={openForm}>
+                                <BiWallet />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className='WalletForm'>
+                <form>
+                    <label>Card Number</label>
+                    <input type="text" />
+                    <label>Amount</label>
+                    <input type="text" />
+                </form>
+            </div>
+            <div style={{marginTop: "7%"}}>
+                <h2>Previous Orders</h2>
                 {
                 orders.map((item, i) => {
                     return (
