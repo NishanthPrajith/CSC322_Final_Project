@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, onSnapshot, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../firebase";
+import { type } from "@testing-library/user-event/dist/type";
 
 const AuthContext = React.createContext();
 
@@ -29,6 +30,7 @@ export function AuthProvider({ children }) {
   const [userId, setUserId] = useState("");
   const [orders, setOrders] = useState([]);
   const [orderId, setOrderId] = useState([]);
+  const [userWarnings, setUserWarning] = useState(0);
 
 
   // Manager related Data
@@ -76,6 +78,7 @@ export function AuthProvider({ children }) {
       id: id,
       joined: date,
       orders: [],
+      warning: 0,
     }); 
   }
 
@@ -88,14 +91,9 @@ export function AuthProvider({ children }) {
         return 1;
       })
       .catch((error) => {
-        console.log("Sign Up Error: ", error);
         return error;
       });
     return ret3;
-  }
-
-  async function addToOrder() {
-    console.log("addToOrder");
   }
 
   async function login(email, password) {
@@ -104,7 +102,6 @@ export function AuthProvider({ children }) {
         let ret1 = userCredential.user.uid;
       })
       .catch((error) => {
-        console.log(error);
         return error;
       });
     return ret2;
@@ -117,7 +114,9 @@ export function AuthProvider({ children }) {
       setUserWallet(doc.data().wallet);
       setUserJoined(doc.data().joined);
       setUserId(doc.data().id);
+      console.log("IDDD :", userId);
       setOrderId(doc.data().orders);
+      setUserWarning(doc.data().warnings);
       console.log(doc.data().orders);
       getOrders(doc.data().orders);
       if (doc.data().role === 0) {
@@ -139,23 +138,35 @@ export function AuthProvider({ children }) {
     document.orderDate = date;
     await setDoc(newCityRef, document);
     var temp = orderId;
-    console.log("check: ", orderId);
     temp.push(newCityRef.id);
+    var a = userWallet - document.totalPrice;
+    console.log(a);
     await updateDoc(doc(db, "Users", userId), {
-      orders: temp
+      wallet: a,
+      orders: temp,
     });
   }
 
   async function getOrders(ord) {
-    const q = query(collection(db, "Orders"), where("orderId", "in", ord));
-    const querySnapshot = await getDocs(q);
-    const data = [];
-    console.log(data);
-    querySnapshot.forEach((doc) => {
-      data.unshift(doc.data());      
+    console.log(ord);
+    if (ord !== []) {
+      console.log("check");
+      const q = query(collection(db, "Orders"), where("orderId", "in", ord));
+      const querySnapshot = await getDocs(q);
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        data.unshift(doc.data());      
+      });
+      setOrders(data);
+      console.log(orders);
+    }
+  }
+
+  async function AddWarning(id) {
+    await updateDoc(doc(db, "Users", id), {
+      warnings: userWarnings + 1
     });
-    setOrders(data);
-    console.log(orders);
+    setUserWarning(userWarnings + 1);
   }
 
   async function writeOrderReviewUser(id, rating, chef, delivery) {
@@ -168,7 +179,17 @@ export function AuthProvider({ children }) {
       reviewed: true
     });
     await getOrders(orderId);
+  }
 
+  async function updateWallet(amount, type) {
+    if (type === "add") {
+      var a = parseInt(amount);
+      console.log(typeof userWallet);
+      await updateDoc(doc(db, "Users", userId), {
+        wallet: userWallet + a
+      });
+      setUserWallet(userWallet + a);
+    }
   }
 
   useEffect(() => {
@@ -196,12 +217,16 @@ export function AuthProvider({ children }) {
     userName,
     userWallet,
     userJoined,
+    userId,
     handleLogout,
     userRole,
     getUsers,
     addToOrder,
     orders,
-    writeOrderReviewUser
+    writeOrderReviewUser,
+    updateWallet,
+    userWarnings,
+    AddWarning
   };
 
   return (

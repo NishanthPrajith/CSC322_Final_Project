@@ -10,7 +10,7 @@ import {useNavigate} from 'react-router-dom';
 
 export default function CheckoutCart() {
     
-    var { loggedIn, userRole, addToOrder } = useAuth();
+    var { loggedIn, userRole, userWallet, addToOrder, AddWarning, userId } = useAuth();
 
     var {clearData, allFoodItems} = useFood();
 
@@ -20,31 +20,34 @@ export default function CheckoutCart() {
     const [totalCount, setTotalCount] = useState(0.00);
 
     async function placeOrder(state) {
+        console.log(state);
         var total = totalCount;
-        if (state == 2) {
-            total = totalCount * 0.95;
-        }
-        var document = {};
-        document.totalPrice = total;
-        document.state = state;
-        var order = [];
-        for (var i = 0; i < allFoodItems.length; i++) {
-            var done = {}; 
-            console.log(allFoodItems[i].name);
-            if (allFoodItems[i].quantity > 0) {
-                done.name = allFoodItems[i].name;
-                done.count = allFoodItems[i].quantity;
-                order.push(done);
+        if (total > userWallet) {
+            alert("You don't have enough money in your wallet");
+            await AddWarning(userId);
+        } else {
+            var document = {};
+            document.totalPrice = total;
+            document.state = state;
+            var order = [];
+            for (var i = 0; i < allFoodItems.length; i++) {
+                var done = {}; 
+                console.log(allFoodItems[i].name);
+                if (allFoodItems[i].quantity > 0) {
+                    done.name = allFoodItems[i].name;
+                    done.count = allFoodItems[i].quantity;
+                    order.push(done);
+                }
             }
+            console.log(allFoodItems);
+            document.order = order;
+            await addToOrder(document);
+            console.log(document);
+
+            await clearData();
+
+            history("/finalPage", {replace: true});
         }
-        console.log(allFoodItems);
-        document.order = order;
-        await addToOrder(document);
-        console.log(document);
-
-        await clearData();
-
-        history("/finalPage", {replace: true});
     }
 
 

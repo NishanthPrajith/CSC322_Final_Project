@@ -8,12 +8,15 @@ import { BiWallet } from "react-icons/bi";
 
 export default function UserProfile() {
 
-    const { orders, writeOrderReviewUser, userRole, userWallet, userName } = useAuth();
+    const { orders, userWarnings, writeOrderReviewUser, updateWallet, userRole, userWallet, userName } = useAuth();
     const [orderChoice, setOrderChoice] = useState(-1);
 
     const rating = useRef();
     const chefRating = useRef();
     const deliveryRating = useRef();
+
+    const cardNumber = useRef();
+    const money = useRef();
 
 
     function changeOrderChoice(i) {
@@ -55,8 +58,79 @@ export default function UserProfile() {
         a[0].style.display = "block";
     }
 
+    const validateCardNumber = number => {
+        //Check if the number contains only numeric value  
+        //and is of between 13 to 19 digits
+        const regex = new RegExp("^[0-9]{13,19}$");
+        if (!regex.test(number)){
+            return false;
+        }
+      
+        return luhnCheck(number);
+    }
+    
+    const luhnCheck = val => {
+        let checksum = 0; // running checksum total
+        let j = 1; // takes value of 1 or 2
+    
+        // Process each digit one by one starting from the last
+        for (let i = val.length - 1; i >= 0; i--) {
+          let calc = 0;
+          // Extract the next digit and multiply by 1 or 2 on alternative digits.
+          calc = Number(val.charAt(i)) * j;
+    
+          // If the result is in two digits add 1 to the checksum total
+          if (calc > 9) {
+            checksum = checksum + 1;
+            calc = calc - 10;
+          }
+    
+          // Add the units element to the checksum total
+          checksum = checksum + calc;
+    
+          // Switch the value of j
+          if (j == 1) {
+            j = 2;
+          } else {
+            j = 1;
+          }
+        }
+      
+        //Check if it is divisible by 10 or not.
+        return (checksum % 10) == 0;
+    }
+
+    function closeForm(e) {
+        e.preventDefault();
+        console.log("Close form");
+        var a = document.getElementsByClassName("WalletForm");
+        a[0].style.display = "none";
+        cardNumber.current.value = "";
+        money.current.value = 0;
+    }
+
     function getRandomProfile(a) {
         return "url('https://avatars.dicebear.com/api/initials/:" + a + ".svg')";
+    }
+
+    async function addMoney(e) {
+        e.preventDefault();
+        var a = cardNumber.current.value;
+        var b = money.current.value;
+        if (b < 0) {
+            alert("Please enter a positive amount!");
+        } else if(b > 101) {
+            alert("Please enter an amount less than or equal to 100!"); 
+        } else if (validateCardNumber(a) == false) {
+            alert("Please enter a valid card number!");
+        } else {
+            alert("Your money has been added to your wallet!");
+            await updateWallet(b, "add");
+            cardNumber.current.value = "";
+            money.current.value = 0;
+
+            closeForm(e);
+        }
     }
 
     return (
@@ -69,7 +143,7 @@ export default function UserProfile() {
             <div className='userMetaData'>
                 <div className='userMetaDataOne'>
                     <h4>Warnings</h4>
-                    <h3>{10}</h3>
+                    <h3>{userWarnings}</h3>
                 </div>
                 <div className='userMetaDataTwo'>
                     <h4>Your Current Level</h4>
@@ -98,12 +172,24 @@ export default function UserProfile() {
                 </div>
             </div>
             <div className='WalletForm'>
-                <form>
-                    <label>Card Number</label>
-                    <input type="text" />
-                    <label>Amount</label>
-                    <input type="text" />
-                </form>
+                <div className='WalletBox'>
+                    <div style={{display: "grid", justifyItems: "center"}}>
+                        <h1>Wallet</h1>
+                        <form onSubmit={() => {return false}}>
+                            <label>Card Number</label>
+                            <input type="text" ref={cardNumber}/>
+                            <label>Amount</label>
+                            <input type="number" ref={money} min={0} max={101} />
+                            <button className='AddToWallet' onClick={addMoney}>
+                                Add Money
+                            </button>
+                            
+                            <button className='closeButtonForm' onClick={closeForm}>
+                                Close
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div style={{marginTop: "7%"}}>
                 <h2>Previous Orders</h2>

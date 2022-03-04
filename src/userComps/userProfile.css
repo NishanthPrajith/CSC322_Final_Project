@@ -105,20 +105,53 @@
 
 .WalletForm {
     position: absolute;
-    background-color: rgb(209, 209, 209);
+    background-color: var(--white);
     top: 50%;
     left: 50%;
-    width: 20%;
+    width: 100%;
+    height: 100%;
+    position: fixed;
     transform: translate(-50%, -50%);
     border-radius: 15px;
     padding: 2% 2%;
     display: none;
+    overflow-y: noscroll;
 }
 
 .WalletForm form {
-    width: 100%;
+    width: 17%;
     display: flex;
     flex-direction: column;
+}
+
+.WalletBox label {
+    margin-bottom: 3%;
+}
+
+.WalletBox input {
+    margin-bottom: 8%;
+    border-right: none;
+    border-left: none;
+    border-top: none;
+    border-bottom: 1px solid #976627;
+    padding: 3% 2%;
+}
+
+.WalletBox input:focus {
+    outline: none;
+}
+
+.WalletBox h1 {
+    margin-bottom: 2%;
+}
+
+.WalletBox {
+    width: 100%;
+    display: grid;
+    align-items: center;
+    height: 100%;
+    grid-template-columns: 100%;
+    justify-content: center;
 }
 
 .ProfilePic {
@@ -133,4 +166,27 @@
     border-radius: 50%;
     width: 200px;
     height: 200px;
+}
+
+.AddToWallet {
+    width: 100%;
+    background-color: rgb(43, 207, 43);
+    color: var(--white);
+    padding: 4%;
+    border-radius: 25px;
+    border: none;
+    font-weight: bold;
+    font-size: 1em;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.closeButtonForm {
+    width: 100%;
+    background-color: rgb(214, 214, 214);
+    color: var(--black);
+    padding: 4%;
+    border-radius: 25px;
+    border: none;
+    font-size: 1em;
 }
