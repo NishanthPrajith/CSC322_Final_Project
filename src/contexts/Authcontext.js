@@ -31,6 +31,7 @@ export function AuthProvider({ children }) {
   const [orders, setOrders] = useState([]);
   const [orderId, setOrderId] = useState([]);
   const [userWarnings, setUserWarning] = useState(0);
+  const [totalSpent, setTotalSpent] = useState(0);
 
 
   // Manager related Data
@@ -79,6 +80,7 @@ export function AuthProvider({ children }) {
       joined: date,
       orders: [],
       warning: 0,
+      totalSpent: 0
     }); 
   }
 
@@ -114,7 +116,7 @@ export function AuthProvider({ children }) {
       setUserWallet(doc.data().wallet);
       setUserJoined(doc.data().joined);
       setUserId(doc.data().id);
-      console.log("IDDD :", userId);
+      setTotalSpent(doc.data().totalSpent);
       setOrderId(doc.data().orders);
       setUserWarning(doc.data().warnings);
       console.log(doc.data().orders);
@@ -125,8 +127,33 @@ export function AuthProvider({ children }) {
         info();
       } else if (doc.data().role === 1001) {
         getNewUser();
+      } else if (doc.data().role === -111) {
+        handleLogout();
+        alert("You have been Banned from the system");
+        info();
       }
     });
+  }
+
+  async function accountStatusChange(state) {
+    if (state == 1) {
+      await updateDoc(doc(db, "Users", userId), {
+        role: 111,
+        warnings: 0,
+      });
+    } else if (state === 2 && userRole === 111) {
+      await updateDoc(doc(db, "Users", userId), {
+        role: 11,
+        warnings: 0,
+      });
+    } else if (state === 2 && userRole === 11) {
+      alert("You have been removed from the system");
+      alert("$" + userWallet + " has been refunded to your account");
+      await updateDoc(doc(db, "Users", userId), {
+        role: -111,
+        warnings: 0,
+      });
+    }
   }
 
   async function addToOrder(document) {
@@ -139,11 +166,17 @@ export function AuthProvider({ children }) {
     await setDoc(newCityRef, document);
     var temp = orderId;
     temp.push(newCityRef.id);
-    var a = userWallet - document.totalPrice;
-    console.log(a);
+    await updateWallet(document.totalPrice, "subtract");
+    var b = (totalSpent + parseFloat(document.totalPrice)).toFixed(2);
+    if (b > 100 && userRole === 11) {
+      await accountStatusChange(1);
+    }
+    if (temp.length === 5 && userRole === 11) {
+      await accountStatusChange(1);
+    }
     await updateDoc(doc(db, "Users", userId), {
-      wallet: a,
       orders: temp,
+      totalSpent: parseFloat(b)
     });
   }
 
@@ -166,6 +199,11 @@ export function AuthProvider({ children }) {
     await updateDoc(doc(db, "Users", id), {
       warnings: userWarnings + 1
     });
+    if (userWarnings + 1 === 2 && userRole === 111) {
+      await accountStatusChange(2);
+    } else if (userWarnings + 1 === 3 && userRole === 11) {
+      await accountStatusChange(2);
+    }
     setUserWarning(userWarnings + 1);
   }
 
@@ -189,6 +227,13 @@ export function AuthProvider({ children }) {
         wallet: userWallet + a
       });
       setUserWallet(userWallet + a);
+    } else if (type === "subtract") {
+      var a = (userWallet - parseFloat(amount)).toFixed(2);
+      console.log("final  ", a);
+      await updateDoc(doc(db, "Users", userId), {
+        wallet: parseFloat(a)
+      });
+      setUserWallet(a);
     }
   }
 

@@ -22,31 +22,38 @@ export default function CheckoutCart() {
     async function placeOrder(state) {
         console.log(state);
         var total = totalCount;
-        if (total > userWallet) {
-            alert("You don't have enough money in your wallet");
-            await AddWarning(userId);
-        } else {
-            var document = {};
-            document.totalPrice = total;
-            document.state = state;
-            var order = [];
-            for (var i = 0; i < allFoodItems.length; i++) {
-                var done = {}; 
-                console.log(allFoodItems[i].name);
-                if (allFoodItems[i].quantity > 0) {
-                    done.name = allFoodItems[i].name;
-                    done.count = allFoodItems[i].quantity;
-                    order.push(done);
+        if (userRole === 111) {
+            total = (totalCount - (totalCount * 0.05)).toFixed(2)
+        }
+        if (total > 0) {
+            if (total > userWallet) {
+                alert("You don't have enough money in your wallet");
+                await AddWarning(userId);
+            } else {
+                var document = {};
+                document.totalPrice = total;
+                document.state = state;
+                var order = [];
+                for (var i = 0; i < allFoodItems.length; i++) {
+                    var done = {}; 
+                    console.log(allFoodItems[i].name);
+                    if (allFoodItems[i].quantity > 0) {
+                        done.name = allFoodItems[i].name;
+                        done.count = allFoodItems[i].quantity;
+                        order.push(done);
+                    }
                 }
+                console.log(allFoodItems);
+                document.order = order;
+                await addToOrder(document);
+                console.log(document);
+
+                await clearData();
+
+                history("/finalPage", {replace: true});
             }
-            console.log(allFoodItems);
-            document.order = order;
-            await addToOrder(document);
-            console.log(document);
-
-            await clearData();
-
-            history("/finalPage", {replace: true});
+        } else {
+            alert("Add items to your cart");
         }
     }
 
@@ -98,7 +105,7 @@ export default function CheckoutCart() {
                     <div>
                         <h4>VIP Discount</h4>
                         <div>
-                            <p>-$ {totalCount == NaN ? "0" : totalCount * 0.05}</p>
+                            <p>-$ {(totalCount == NaN ? "0" : totalCount * 0.05).toFixed(2)}</p>
                         </div>
                     </div>
             }
@@ -108,7 +115,7 @@ export default function CheckoutCart() {
                     </h3>
                     {userRole == 111 &&
                         <h2>
-                            $ { totalCount == NaN ? "0" : totalCount - (totalCount * 0.05)}
+                            $ { totalCount == NaN ? "0" : (totalCount - (totalCount * 0.05)).toFixed(2) }
                         </h2>
                     }
                     {userRole == 11 &&
