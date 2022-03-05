@@ -1,0 +1,38 @@
+.biddingBox {
+    height: 100%;
+    background-color: var(--white);
+    box-shadow: 5px 5px 15px 5px #ece6bf;
+    border-radius: 15px;
+    margin: 10px 100px 10px 100px;
+}
+
+.biddingBoxArea {
+    border-radius: 15px;
+    margin-bottom: 2%;
+    background-color: var(--white);
+    box-shadow: 5px 5px 15px 5px #ece6bf;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 45% 50%;
+    column-gap: 5%;
+}
+
+
+.dishImage {
+    height: 100%;
+    width: 100%;
+    background-image: url("https://images.unsplash.com/photo-1506354666786-959d6d497f1a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80");
+    background-position: center;
+    background-size: cover;
+    border-radius: 15px 0 0 15px;
+}
+
+.btnBidSubmit {
+    background-color: #4CAF50;
+    padding: 5px 25px 5px 25px;
+    margin: 10px 0 0 0;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+}
