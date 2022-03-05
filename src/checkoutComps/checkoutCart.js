@@ -51,6 +51,11 @@ export default function CheckoutCart() {
                     }
                 }
                 document.order = order;
+                if (state === 2) {
+                    document.orderStatus = true;
+                } else {
+                    document.orderStatus = false;
+                }
                 console.log(document);
                 await addToOrder(document);
                 console.log(document);
