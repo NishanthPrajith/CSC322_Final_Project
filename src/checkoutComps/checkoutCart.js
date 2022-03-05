@@ -1,5 +1,6 @@
 import './checkoutCart.css';
 import { FiArrowRightCircle } from "react-icons/fi";
+import { MdOutlineDeliveryDining } from "react-icons/md";
 
 import { useFood } from '../contexts/foodContext';
 import { useState } from 'react';
@@ -10,7 +11,7 @@ import {useNavigate} from 'react-router-dom';
 
 export default function CheckoutCart() {
     
-    var { loggedIn, userRole, userWallet, addToOrder, AddWarning, userId } = useAuth();
+    var { loggedIn, userRole, userWallet, addToOrder, orderId, AddWarning, userId } = useAuth();
 
     var {clearData, allFoodItems} = useFood();
 
@@ -18,12 +19,19 @@ export default function CheckoutCart() {
 
     const [loading, setLoading] = useState(true);
     const [totalCount, setTotalCount] = useState(0.00);
+    const [foodDeliveryChoice, setfoodDeliveryChoice] = useState(true);
 
     async function placeOrder(state) {
         console.log(state);
         var total = totalCount;
         if (userRole === 111) {
-            total = (totalCount - (totalCount * 0.05)).toFixed(2)
+            total = (totalCount - (totalCount * 0.05)).toFixed(2);
+        }
+        if (state === 2) {
+            total = (parseFloat(total) + 3).toFixed(2);
+        }
+        if (userRole === 111 && state === 2 && (orderId.length % 4 === 3)) {
+            total = (parseFloat(total) - 3).toFixed(2);
         }
         if (total > 0) {
             if (total > userWallet) {
@@ -36,15 +44,14 @@ export default function CheckoutCart() {
                 var order = [];
                 for (var i = 0; i < allFoodItems.length; i++) {
                     var done = {}; 
-                    console.log(allFoodItems[i].name);
                     if (allFoodItems[i].quantity > 0) {
                         done.name = allFoodItems[i].name;
                         done.count = allFoodItems[i].quantity;
                         order.push(done);
                     }
                 }
-                console.log(allFoodItems);
                 document.order = order;
+                console.log(document);
                 await addToOrder(document);
                 console.log(document);
 
@@ -108,17 +115,40 @@ export default function CheckoutCart() {
                             <p>-$ {(totalCount == NaN ? "0" : totalCount * 0.05).toFixed(2)}</p>
                         </div>
                     </div>
-            }
+                }
+                {totalCount > 0 && !foodDeliveryChoice &&
+                <div>
+                    <h4 style= {{display: "flex", alignItems: "center", width: "100%"}}>Delivery Fee <MdOutlineDeliveryDining style={{paddingLeft: "2%"}} /> </h4>
+                    <div style={{ width: "100%", textAlign: "right"}}>
+                        {(orderId.length % 4 === 3) && (userRole == 111) ? <p style={{width: "100%"}}>Free Delivery</p> : <p style={{width: "100%"}}>+$3</p>}
+                    </div>
+                </div>
+            }                
                 <div>
                     <h3>
                         Total
                     </h3>
-                    {userRole == 111 &&
+                    {userRole == 111 && !foodDeliveryChoice && (orderId.length % 4 !== 3) &&
+                        <h2>
+                            $ { totalCount == NaN ? "0" : parseFloat((totalCount - (totalCount * 0.05)).toFixed(2)) + 3 }
+                        </h2>
+                    }
+                    {userRole == 111 && !foodDeliveryChoice && (orderId.length % 4 === 3) &&
+                        <h2>
+                            $ { totalCount == NaN ? "0" : parseFloat((totalCount - (totalCount * 0.05)).toFixed(2)) }
+                        </h2>
+                    }
+                    {userRole == 111 && foodDeliveryChoice &&
                         <h2>
                             $ { totalCount == NaN ? "0" : (totalCount - (totalCount * 0.05)).toFixed(2) }
                         </h2>
                     }
-                    {userRole == 11 &&
+                    {userRole == 11 && !foodDeliveryChoice &&
+                        <h2>
+                            $ { totalCount == NaN ? "0" : totalCount + 3}
+                        </h2>
+                    }
+                    {userRole == 11 && foodDeliveryChoice &&
                         <h2>
                             $ { totalCount == NaN ? "0" : totalCount}
                         </h2>
@@ -133,13 +163,21 @@ export default function CheckoutCart() {
                 }
                 {loggedIn &&   
                 <div>
-                    <button className='checkoutPageButton' onClick={() => {placeOrder(1)}}>
+                    <button className='checkoutPageButton' style = {foodDeliveryChoice ? {backgroundColor: "var(--yellow)"}: {}} onClick={() => {setfoodDeliveryChoice(true)}}>
                         Pick Up <FiArrowRightCircle className='checkoutArrow'/>
                     </button>
-                    <button className='checkoutPageButton' onClick={() => {placeOrder(2)}}>
+                    <button className='checkoutPageButton' style = {!foodDeliveryChoice ? {backgroundColor: "var(--yellow)"}: {}} onClick={() => {setfoodDeliveryChoice(false)}}>
                         Delivery <FiArrowRightCircle className='checkoutArrow'/>
                     </button>
                 </div>
+                }
+                {
+                    loggedIn &&
+                    <div>
+                        <button className='checkoutPageButtonFinal' onClick={() => {placeOrder(foodDeliveryChoice ? 1 : 2)}}>
+                            Checkout Out <FiArrowRightCircle className='checkoutArrow'/>
+                        </button>
+                    </div>        
                 }
             </div>
         </div>

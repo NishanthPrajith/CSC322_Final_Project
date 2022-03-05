@@ -32,11 +32,11 @@
 
 .checkoutPageButton {
     width: 48%;
-    margin-top: 15%;
+    margin-top: 10%;
     border-radius: 15px;
-    border: none;
-    background-color: var(--red);
-    color: var(--beige);
+    border: 2px solid var(--yellow);
+    color: var(--black);
+    background-color: var(--beige);
     font-size: 1.1rem;
     padding: 2% 0;
     display: flex;
@@ -84,4 +84,18 @@
 
 .checkoutItemDes {
     font-size: 1.1rem;
+}
+
+.checkoutPageButtonFinal {
+    width: 100%;
+    margin-top: 5%;
+    border-radius: 15px;
+    border: none;
+    background-color: var(--red);
+    color: var(--beige);
+    font-size: 1.1rem;
+    padding: 2% 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

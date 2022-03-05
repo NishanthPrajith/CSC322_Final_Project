@@ -33,7 +33,6 @@ export function AuthProvider({ children }) {
   const [userWarnings, setUserWarning] = useState(0);
   const [totalSpent, setTotalSpent] = useState(0);
 
-
   // Manager related Data
   const [getUsers, setGetUsers] = useState([]);
 
@@ -80,7 +79,8 @@ export function AuthProvider({ children }) {
       joined: date,
       orders: [],
       warning: 0,
-      totalSpent: 0
+      totalSpent: 0,
+      countOrders: 0,
     }); 
   }
 
@@ -271,7 +271,8 @@ export function AuthProvider({ children }) {
     writeOrderReviewUser,
     updateWallet,
     userWarnings,
-    AddWarning
+    AddWarning,
+    orderId
   };
 
   return (
