@@ -6,9 +6,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, setDoc, onSnapshot, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, collectionGroup, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../firebase";
-import { type } from "@testing-library/user-event/dist/type";
 
 const AuthContext = React.createContext();
 
@@ -32,6 +31,9 @@ export function AuthProvider({ children }) {
   const [orderId, setOrderId] = useState([]);
   const [userWarnings, setUserWarning] = useState(0);
   const [totalSpent, setTotalSpent] = useState(0);
+
+  // Delivery Related Data
+  const [deliveryOrders, setDeliveryOrders] = useState([]);
 
   // Manager related Data
   const [getUsers, setGetUsers] = useState([]);
@@ -80,7 +82,6 @@ export function AuthProvider({ children }) {
       orders: [],
       warning: 0,
       totalSpent: 0,
-      countOrders: 0,
     }); 
   }
 
@@ -119,8 +120,8 @@ export function AuthProvider({ children }) {
       setTotalSpent(doc.data().totalSpent);
       setOrderId(doc.data().orders);
       setUserWarning(doc.data().warnings);
-      console.log(doc.data().orders);
       getOrders(doc.data().orders);
+      console.log("Role : " + doc.data().role);
       if (doc.data().role === 0) {
         handleLogout();
         alert("You are not authorized to access this page");
@@ -131,8 +132,25 @@ export function AuthProvider({ children }) {
         handleLogout();
         alert("You have been Banned from the system");
         info();
+      } else if (doc.data().role === 33) {
+        getDeliveryOrders();
+        console.log(deliveryOrders);
       }
     });
+  }
+
+  async function getDeliveryOrders() {
+    console.log("running getDeliveryOrders");
+    const food = collection(db, "Orders");
+    const v = await onSnapshot(food, (querySnapshot) => {
+        const data = [];
+        querySnapshot.forEach((doc) => {
+          if (doc.data().orderStatus === true) {
+            data.push(doc.data());
+          }
+        });
+      setDeliveryOrders(data);
+      });
   }
 
   async function accountStatusChange(state) {
@@ -262,17 +280,19 @@ export function AuthProvider({ children }) {
     userName,
     userWallet,
     userJoined,
+    deliveryOrders,
     userId,
     handleLogout,
     userRole,
     getUsers,
+    totalSpent,
     addToOrder,
     orders,
     writeOrderReviewUser,
     updateWallet,
     userWarnings,
     AddWarning,
-    orderId
+    orderId,
   };
 
   return (

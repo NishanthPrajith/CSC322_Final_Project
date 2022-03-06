@@ -1,6 +1,4 @@
 import './userProfile.css';
-import './previousOrders';
-import PreviousOrders from './previousOrders';
 import { useAuth } from '../contexts/Authcontext';
 import { useEffect, useState } from 'react';
 import { useRef } from 'react';
