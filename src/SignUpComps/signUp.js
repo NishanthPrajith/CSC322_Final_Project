@@ -71,7 +71,6 @@ export default function SignUp() {
                     <div className='error' style = {{color: "var(--red)", textAlign: "center", marginTop: "2%"}}>{error}</div>
                 </form>
             </div>
-
             {/*This Section is to switch to SignIn*/}
             <h2 className={"divider"}><span className={"signMsg"}>Already have an account?</span></h2>
             <Link className={"linkSignUp"} role="button" to="/signIn" style={{color: "var(--white)"}}>Sign In Instead</Link>
