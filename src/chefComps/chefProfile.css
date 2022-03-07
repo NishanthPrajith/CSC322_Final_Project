@@ -54,3 +54,49 @@ hr {
     flex-wrap: wrap;
     width: 100%;
 }
+
+.createDish button {   
+    background-color: #4CAF50;   
+    width: 20%;   
+    padding: 16px;
+    padding-left: 5%;   
+    margin: 10px 0px;   
+    border: none;   
+    cursor: pointer;   
+    border-radius: 25px; 
+
+}
+
+.createDish form {
+    display: grid;
+    align-items: center;
+    padding-top: 4%;
+}
+
+.createDish input[type=text], .createDish input[type=number], .createDish textarea[name=description]{   
+    width: 80%;   
+    margin: 8px 0;  
+    padding: 12px 20px;   
+    display: inline-block;   
+    border: 2px solid green;   
+    box-sizing: border-box;   
+    border-radius: 25px;
+}
+
+.createDish select {
+    width: 20%;
+    margin: 8px 0;  
+    padding: 12px 20px;   
+    display: inline-block;   
+    box-sizing: border-box;   
+    border-radius: 25px;
+}
+
+.createDish textarea[name=description]{
+    padding-bottom: 2%;
+    padding-top:2%;
+}
+
+.createDish button:hover {   
+    opacity: 0.7;   
+}

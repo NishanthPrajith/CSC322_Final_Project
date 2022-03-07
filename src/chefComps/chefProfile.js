@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { useAuth } from "../contexts/Authcontext";
 import { useFood } from "../contexts/foodContext";
 
-
 export default function() {
 
     const [choice, setChoice] = useState(0);
@@ -77,6 +76,43 @@ export default function() {
                 <hr/>
                 <b>Employment Start Date :&nbsp;&nbsp;</b> {userJoined}
               </div>
+            }
+            {choice == 2 &&
+            <div className="createDish">
+                {/*This Section is the SignUp Box*/}
+                <div className={"dishBox"}>
+                    <form onSubmit={() => { return false;} }>
+                        <div className={"labelSpacing"}>
+                            <label> Dish Name : </label>
+                            <input type={"text"} className={"input"} placeholder="Enter Dish Name" name="dishName" required />
+                        </div>
+                        <div className={"labelSpacing"}>
+                            <label> Description : </label>
+                            <textarea type={"text"} className={"input"} placeholder="Enter Dish Description" name="description" required rows="8"/>
+                        </div>
+                        <div className={"labelSpacing"}>
+                            <label> Dish Image url : </label>
+                            <input type={"text"} className={"input"} placeholder="Enter an image URL for your dish" name="dishPic" required />
+                        </div>
+                        <div className={"labelSpacing"}>
+                            <label > Price : </label>
+                            <input type={"number"} className={"input"} placeholder="Enter Price" name="price" required />
+                        </div>
+                        <div className={"labelSpacing"}>
+                            <select>
+                                <option selected value="regukar">Regular</option>
+                                <option value="chefSpecial">Chef Special</option>
+                            </select>
+                        </div>
+                        <div className={"labelSpacingButton"}>
+                            <button className={"btnSubmit"}>Create Dish</button>
+                        </div>
+                        <div className='error' style = {{color: "var(--red)", textAlign: "center", marginTop: "2%"}}></div>
+                    </form>
+                </div>                
+
+
+            </div>
             }
         </div>
     )
