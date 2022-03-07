@@ -181,6 +181,9 @@ export function AuthProvider({ children }) {
     document.userId = userId;
     document.orderId = newCityRef.id;
     document.orderDate = date;
+    if (document.state === 2) {
+      document.bids = {}
+    }
     await setDoc(newCityRef, document);
     var temp = orderId;
     temp.push(newCityRef.id);
@@ -211,6 +214,14 @@ export function AuthProvider({ children }) {
       setOrders(data);
       console.log(orders);
     }
+  }
+
+  async function submitOrderBid(bidValue, orderid, v) {
+    const q = doc(db, "Orders", orderid);
+    v[userId] = parseFloat(bidValue);
+    await updateDoc(q, {
+      bids: v
+    });
   }
 
   async function AddWarning(id) {
@@ -293,6 +304,7 @@ export function AuthProvider({ children }) {
     userWarnings,
     AddWarning,
     orderId,
+    submitOrderBid
   };
 
   return (

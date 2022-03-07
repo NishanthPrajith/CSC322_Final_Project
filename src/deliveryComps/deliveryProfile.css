@@ -106,3 +106,9 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.bidAmount {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: bold;
+}

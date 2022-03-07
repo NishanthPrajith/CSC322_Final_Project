@@ -8,16 +8,18 @@ export default function DeliveryProfile() {
     const [values, setValues] = useState([]);
     const [loading, setLoading] = useState(true)
 
-    const { totalSpent, userWallet, deliveryOrders, getDeliveryOrders, userWarnings } = useAuth();
+    const { totalSpent, userWallet, deliveryOrders, userId, submitOrderBid, userWarnings } = useAuth();
     
     const check = useRef();
 
-    function submitBid(e, id, index) {
+    var test = {"name": 10};
+
+    async function submitBid(e, id, index, bids) {
         e.preventDefault();
         console.log(id);
         var a = document.getElementsByClassName("bidInput");
         console.log(a[index].value);
-        getDeliveryOrders();
+        await submitOrderBid(a[index].value, id, bids);
     }
 
     useEffect(() => {
@@ -69,19 +71,31 @@ export default function DeliveryProfile() {
                                 <div className="dishImage"/>
                                 <div style={{margin: "4% 6% 4% 0"}}>
                                     <div className="dishHeader">
-                                        <h2>Order #2342342</h2>
-                                        <h5>1/1/2022</h5>
+                                        <h2>Order #{index + 1}</h2>
+                                        <h5>{value.orderDate}</h5>
                                     </div>
                                     <div className='deliveryCard'>
                                         <div>
-                                            <p>pizza x {1}</p>
-                                            <p>pizza x {1}</p>
-                                            <p>pizza x {1}</p>
+                                            {
+                                                value.order.map((v) => {
+                                                    return (
+                                                        <p>{v.name} x {v.count}</p>
+                                                    )
+                                                })
+                                            }
                                         </div>
+                                        {value.bids[userId] ===  undefined &&
                                         <div style={{display: "flex", flexDirection: "column"}}>
                                             <input id="check" className="bidInput" ref={check} defaultValue={0} type="number"/>
-                                            <button className={"btnBidSubmit"} onClick={function(e) {submitBid(e, 1, index)}}>Submit Bid</button>
-                                        </div>
+                                            <button className={"btnBidSubmit"} onClick={function(e) {submitBid(e, value.orderId, index, value.bids)}}>Submit Bid</button>
+                                        </div>}
+                                        {
+                                            value.bids[userId] !== undefined &&
+                                            <div style={{display: "flex", flexDirection: "column"}}>
+                                                <p style={{margin: "0"}}>Your Bid</p>
+                                                <p className='bidAmount'>$ {value.bids[userId]}</p>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
