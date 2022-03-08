@@ -59,3 +59,34 @@
     font-size: 2em;
     margin: 0;
 }
+
+.deliveryCard {
+    margin-top: 10px;
+    background-color: var(--white);
+    border-radius: 25px;
+}
+
+.deliveryLabel {
+    margin-left: 10px;
+}
+
+.labelOrderDate {
+    margin-bottom: 100px;
+    padding-right: 10px;
+}
+
+.btnDelivery1 {
+    background-color: var(--yellow);
+    border-radius: 35px;
+    border: none;
+    font-size: 0.9em;
+    padding: 30px 30px 30px 30px;
+}
+
+.btnDelivery2 {
+    background-color: var(--yellow);
+    border-radius: 35px;
+    border: none;
+    font-size: 0.9em;
+    padding: 30px 30px 30px 30px;
+}
