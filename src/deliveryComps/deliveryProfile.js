@@ -2,17 +2,16 @@ import './deliveryProfile.css'
 import { useState, useRef, useEffect } from 'react'
 import { useAuth } from '../contexts/Authcontext';
 
+import {GoCheck} from 'react-icons/go'
+
 export default function DeliveryProfile() {
 
     const [selection, setSelection] = useState(true);
-    const [values, setValues] = useState([]);
     const [loading, setLoading] = useState(true)
 
-    const { totalSpent, userWallet, deliveryOrders, userId, submitOrderBid, userWarnings } = useAuth();
+    const { totalSpent, myOrders, userWallet, orderDelivered, deliveryOrders, userId, submitOrderBid, userWarnings } = useAuth();
     
     const check = useRef();
-
-    var test = {"name": 10};
 
     async function submitBid(e, id, index, bids) {
         e.preventDefault();
@@ -22,15 +21,15 @@ export default function DeliveryProfile() {
         await submitOrderBid(a[index].value, id, bids);
     }
 
+    async function delivered(e, id, bid){
+        e.preventDefault();
+        console.log(bid);
+        await orderDelivered(id, bid);
+    }
+
     useEffect(() => {
-        console.log(typeof deliveryOrders);
-        var temp = values;
-        console.log(deliveryOrders);
-        for (var i = 0; i < deliveryOrders.length; i++) {
-            temp.push(deliveryOrders[i]);
-        }
-        setValues(temp);
         setLoading(false);
+        console.log(myOrders);
     }, []);
 
     if (loading) {
@@ -97,6 +96,50 @@ export default function DeliveryProfile() {
                                             </div>
                                         }
                                     </div>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+                {
+                    !selection &&
+                    myOrders.map((value, index) => {
+                        return (
+                            <div className="biddingBoxArea" key={index}>
+                                <div className="dishImage"/>
+                                <div style={{margin: "4% 6% 4% 0"}}>
+                                    <div className="dishHeader">
+                                        <h2>Order #{index + 1}</h2>
+                                        <h5>{value.orderDate}</h5>
+                                    </div>
+                                    <div className='deliveryCard'>
+                                        <div>
+                                            {
+                                                value.order.map((v) => {
+                                                    return (
+                                                        <p>{v.name} x {v.count}</p>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                        <div style={{display: "flex", flexDirection: "column"}}>
+                                            <p style={{margin: "0"}}>Your Bid</p>
+                                            <p className='bidAmount'>$ {value.bids[userId]}</p>
+                                        </div>
+                                    </div>
+                                    {value.orderStatus == true &&
+                                    <div style= {{display: 'flex', alignItems: "flex-end", flexDirection: "column-reverse"}}>
+                                        <button className='OrderDelivered' onClick = {function(e) {delivered(e, value.orderId, value.bids[userId])}}>
+                                            Order Delivered
+                                        </button>
+                                    </div>
+                                    }   {value.orderStatus == false &&
+                                        <div style= {{display: 'flex', alignItems: "flex-end", flexDirection: "column-reverse"}}>
+                                        <button className='OrderDelivered' style = {{backgroundColor: "lightgreen"}}>
+                                            Delivered <GoCheck style={{marginLeft: "2%"}}/>
+                                        </button>
+                                    </div>
+                                    }
                                 </div>
                             </div>
                         )

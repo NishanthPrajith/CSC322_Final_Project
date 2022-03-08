@@ -34,6 +34,7 @@ export function AuthProvider({ children }) {
 
   // Delivery Related Data
   const [deliveryOrders, setDeliveryOrders] = useState([]);
+  const [myOrders, setMyOrders] = useState([]);
 
   // Manager related Data
   const [getUsers, setGetUsers] = useState([]);
@@ -144,13 +145,30 @@ export function AuthProvider({ children }) {
     const food = collection(db, "Orders");
     const v = await onSnapshot(food, (querySnapshot) => {
         const data = [];
+        const a = [];
         querySnapshot.forEach((doc) => {
           if (doc.data().orderStatus === true) {
             data.push(doc.data());
           }
+          if (doc.data().deliveryUserId === userId) {
+            a.push(doc.data());
+          }
         });
-      setDeliveryOrders(data);
+        setDeliveryOrders(data);
+        console.log("here");
+        console.log(a);
+        setMyOrders(a);
       });
+  }
+
+  async function orderDelivered(id, bid) {
+    await updateDoc(doc(db, "Orders", id), {
+      orderStatus: false,
+    });
+    await updateDoc(doc(db, "Users", userId), {
+      wallet: userWallet + 1,
+      totalSpent: totalSpent + parseFloat(bid), 
+    });
   }
 
   async function accountStatusChange(state) {
@@ -183,6 +201,7 @@ export function AuthProvider({ children }) {
     document.orderDate = date;
     if (document.state === 2) {
       document.bids = {}
+      document.deliveryUserId = "";
     }
     await setDoc(newCityRef, document);
     var temp = orderId;
@@ -293,6 +312,7 @@ export function AuthProvider({ children }) {
     userJoined,
     deliveryOrders,
     userId,
+    myOrders,
     handleLogout,
     userRole,
     getUsers,
@@ -304,7 +324,8 @@ export function AuthProvider({ children }) {
     userWarnings,
     AddWarning,
     orderId,
-    submitOrderBid
+    submitOrderBid,
+    orderDelivered
   };
 
   return (

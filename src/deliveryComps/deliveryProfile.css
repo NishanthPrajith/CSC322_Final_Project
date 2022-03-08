@@ -112,3 +112,13 @@
     font-size: 1.8em;
     font-weight: bold;
 }
+
+.OrderDelivered {
+    padding: 2% 3%;
+    background-color: lightgray;
+    border-radius: 15px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
