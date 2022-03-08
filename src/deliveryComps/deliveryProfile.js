@@ -9,7 +9,7 @@ export default function DeliveryProfile() {
     const [selection, setSelection] = useState(true);
     const [loading, setLoading] = useState(true)
 
-    const { totalSpent, myOrders, userWallet, orderDelivered, deliveryOrders, userId, submitOrderBid, userWarnings } = useAuth();
+    const { totalSpent, myOrders, userName, userWallet, orderDelivered, deliveryOrders, userId, submitOrderBid, userWarnings } = useAuth();
     
     const check = useRef();
 
@@ -28,8 +28,10 @@ export default function DeliveryProfile() {
     }
 
     useEffect(() => {
-        setLoading(false);
+        console.log(userId);
         console.log(myOrders);
+        
+        setLoading(false);
     }, []);
 
     if (loading) {
@@ -40,7 +42,7 @@ export default function DeliveryProfile() {
     return (
         <div className="deliveryProfile">
             <div className="deliveryProfileMainContent">
-                <h1>Nishanth Prajith</h1>
+                <h1>{ userName }</h1>
                 <div className="deliveryStats">
                     <div>
                         <p>Warnings</p>
@@ -90,7 +92,7 @@ export default function DeliveryProfile() {
                                         </div>}
                                         {
                                             value.bids[userId] !== undefined &&
-                                            <div style={{display: "flex", flexDirection: "column"}}>
+                                            <div style={{display: "flex", flexDirection: "column", textAlign: "center"}}>
                                                 <p style={{margin: "0"}}>Your Bid</p>
                                                 <p className='bidAmount'>$ {value.bids[userId]}</p>
                                             </div>

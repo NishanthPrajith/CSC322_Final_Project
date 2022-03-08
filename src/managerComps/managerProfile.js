@@ -12,6 +12,11 @@ export default function ManagerProfile() {
     const { deliveryOrders } = useAuth();
     let orderNumber = 1;
 
+    var deliveryName = {
+        "qO2pUOremGaTHm4LGHnh9lP30C82": "Delivery One",
+        "pF7O1rG6FIZre0Xpo4M5LQzUV7C2": "Delivery Two",
+    }
+
     function handleClick(i) {
         console.log(getUsers);
         setChoice(i);
@@ -24,6 +29,10 @@ export default function ManagerProfile() {
             // pick delivery 2
         }
     }
+    
+    useEffect(() => {
+        console.log(deliveryOrders);
+    }, []);
     
     return (
         <div className="managerProfile">
@@ -61,22 +70,32 @@ export default function ManagerProfile() {
                 </div>
             }
             {choice === 2 &&
-                <div>
+                <div style={{marginTop: "5%"}}>
                     {
-                    deliveryOrders.map((item) => {
+                    deliveryOrders.map((item, index) => {
                         return (
-                            <div className="deliveryCard">
+                            <div className="deliveryCardTwo">
                                 <div className={"deliveryLabel"}>
                                     <div>
-                                        <h1>Order #{ orderNumber++ }</h1>
-                                        <h3>Total Order Price: ${item.totalPrice}</h3>
+                                        <h2>Order #{ index + 1 }</h2>
+                                        <h4>Total Order Price : <span style={{fontSize: "1.5em"}}>${item.totalPrice}</span></h4>
                                     </div>
                                 </div>
-                                <button className={"btnDelivery1"} onClick={pickDelivery(1)}> Delivery Man #1 Bid: $xx</button>
-                                <button className={"btnDelivery2"} onClick={pickDelivery(2)}> Delivery Man #2 Bid: $xx</button>
-                                <div>
-                                    <h4 className={"labelOrderDate"}>{item.orderDate}</h4>
+                                <div style={{display: "flex", justifyContent: "flex-end"}}>
+                                    <h5 className={"labelOrderDate"}>{item.orderDate}</h5>
                                 </div>
+                                {item.bids["qO2pUOremGaTHm4LGHnh9lP30C82"] === undefined &&
+                                    <button className={"btnDelivery1"}>{deliveryName["qO2pUOremGaTHm4LGHnh9lP30C82"]} did not bid yet!</button>
+                                }
+                                {item.bids["qO2pUOremGaTHm4LGHnh9lP30C82"] !== undefined &&
+                                    <button className={"btnDelivery1"} onClick={pickDelivery(1)}>{deliveryName["qO2pUOremGaTHm4LGHnh9lP30C82"]} Bid : ${item.bids["qO2pUOremGaTHm4LGHnh9lP30C82"]}!</button>
+                                }
+                                {item.bids["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"] === undefined &&
+                                    <button className={"btnDelivery2"}>{deliveryName["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"]} did not bid yet!</button>
+                                }
+                                {item.bids["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"] !== undefined &&
+                                    <button className={"btnDelivery2"} onClick={pickDelivery(2)}>{deliveryName["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"]} Bid : $ {item.bids["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"]}!</button>
+                                }
                             </div>
                         );
                     })

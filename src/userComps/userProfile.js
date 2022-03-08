@@ -34,8 +34,8 @@ export default function UserProfile() {
         } else {
             var c = "";
         }
-        if (a < 0 || a > 5 || a === "") {
-            alert("Please enter a rating between 0 and 5!");
+        if (a < 1 || a > 5 || a === "") {
+            alert("Please enter a rating between 1 and 5!");
         } else {
             await writeOrderReviewUser(id, a, b, c);
             alert("Thank you for your rating!");

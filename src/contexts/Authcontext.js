@@ -46,6 +46,14 @@ export function AuthProvider({ children }) {
     setGetUsers([]);
     setOrderId([]);
     setOrders([]);
+    setMyOrders([]);
+    setDeliveryOrders([]);
+    setUserName("");
+    setUserId("");
+    setUserWallet(0);
+    setUserJoined(0);
+    setUserWarning(0);
+    setTotalSpent(0);
     await signOut(auth);
   };
 
@@ -81,7 +89,7 @@ export function AuthProvider({ children }) {
       id: id,
       joined: date,
       orders: [],
-      warning: 0,
+      warnings: 0,
       totalSpent: 0,
     }); 
   }
@@ -129,12 +137,14 @@ export function AuthProvider({ children }) {
         info();
       } else if (doc.data().role === 1001) {
         getNewUser();
+        getDeliveryOrders();
       } else if (doc.data().role === -111) {
         handleLogout();
         alert("You have been Banned from the system");
         info();
       } else if (doc.data().role === 33) {
         getDeliveryOrders();
+        getMyOrders(doc.data().id);
         console.log(deliveryOrders);
       }
     });
@@ -150,14 +160,23 @@ export function AuthProvider({ children }) {
           if (doc.data().orderStatus === true) {
             data.push(doc.data());
           }
-          if (doc.data().deliveryUserId === userId) {
-            a.push(doc.data());
-          }
         });
         setDeliveryOrders(data);
-        console.log("here");
-        console.log(a);
-        setMyOrders(a);
+      });
+  }
+
+  async function getMyOrders(id) {
+    const food = collection(db, "Orders");
+    const v = await onSnapshot(food, (querySnapshot) => {
+        const data = [];
+        querySnapshot.forEach((doc) => {
+          if (doc.data().deliveryUserId === id) {
+            console.log("made a push");
+            console.log("userId here is ", id)
+            data.push(doc.data());
+          }
+        });
+        setMyOrders(data);
       });
   }
 
