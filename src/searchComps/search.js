@@ -7,7 +7,7 @@ import { RiAddFill, RiSubtractFill } from "react-icons/ri";
 
 export default function MainSearch() {
 
-    const { filteredFoodItems, changeFlilteredFoodItems, changeHighestRatedDishes, highestRated } = useFood();
+    const { filteredFoodItems, changePopularDishes, popularDishes, changeFlilteredFoodItems, changeHighestRatedDishes, highestRated } = useFood();
     const [loading, setLoading] = useState(true);
 
     if (loading) {
@@ -35,35 +35,78 @@ export default function MainSearch() {
         return a;
     }
 
-    function modifiedAddToCart(name, price, index) {
-        var temp = 0;
+    function modifiedAddToCart(name, price) {
+        var temp = -1;
         for (let i = 0; i < filteredFoodItems.length; i++) {
             if (filteredFoodItems[i].name === name && filteredFoodItems[i].price === price) {
                 temp = i;
                 break;
             }
         }
-        changeHighestRatedDishes(index, 1);
-        addToCartAdd(temp);
+        if (temp !== -1) {
+            alert(temp);
+            addToCartAdd(temp);
+        }
+        var a = -1;
+        for (let i = 0; i < highestRated.length; i++) {
+            if (highestRated[i].name === name && highestRated[i].price === price) {
+                a = i;
+                break;
+            }
+        }
+        var b = -1;
+        for (let i = 0; i < popularDishes.length; i++) {
+            if (popularDishes[i].name === name && popularDishes[i].price === price) {
+                b = i;
+                break;
+            }
+        }
+        if (a !== -1) {
+            changeHighestRatedDishes(a, 1);
+        }
+        if (b !== - 1) {
+            changePopularDishes(b, 1);
+        }
     }
 
-    function modifiedSubtractToCart(name, price, index) {
-        var temp = 0;
+    function modifiedSubtractToCart(name, price) {
+        var temp = -1;
         for (let i = 0; i < filteredFoodItems.length; i++) {
             if (filteredFoodItems[i].name === name && filteredFoodItems[i].price === price) {
                 temp = i;
                 break;
             }
         }
-        changeHighestRatedDishes(index, 2);
-        addToCartSubtract(temp);
+        if (temp !== -1) {
+            addToCartSubtract(temp);
+        }
+        var a = -1;
+        for (let i = 0; i < highestRated.length; i++) {
+            if (highestRated[i].name === name && highestRated[i].price === price) {
+                a = i;
+                break;
+            }
+        }
+        var b = -1;
+        for (let i = 0; i < popularDishes.length; i++) {
+            if (popularDishes[i].name === name && popularDishes[i].price === price) {
+                b = i;
+                break;
+            }
+        }
+        if (a !== -1) {
+            changeHighestRatedDishes(a, 2);
+        }
+        if (b !== - 1) {
+            changePopularDishes(b, 2);
+        }
     }
 
     function addToCartSubtract(id) {
         console.log(id);
         var temp = filteredFoodItems;
         temp[id].quantity = temp[id].quantity == 0 ? 0 : temp[id].quantity - 1;
-        setLoading(true);
+        console.log("temp: , ", temp[id])
         changeFlilteredFoodItems(temp);
     }
 
@@ -90,11 +133,11 @@ export default function MainSearch() {
                                 <div>
                                     <h5>Quantity</h5>
                                     <div className='quantity'>
-                                        <button onClick={() => {modifiedSubtractToCart(highestRated[0].name, highestRated[0].price, 0)}}>
+                                        <button onClick={() => {modifiedSubtractToCart(highestRated[0].name, highestRated[0].price)}}>
                                             <RiSubtractFill />
                                         </button>
                                         <p>{highestRated[0].quantity}</p>
-                                        <button onClick={() => {modifiedAddToCart(highestRated[0].name, highestRated[0].price, 0)}}>
+                                        <button onClick={() => {modifiedAddToCart(highestRated[0].name, highestRated[0].price)}}>
                                             <RiAddFill />
                                         </button>
                                     </div>
@@ -121,11 +164,11 @@ export default function MainSearch() {
                                     <div>
                                         <h5>Quantity</h5>
                                         <div className='quantity'>
-                                            <button onClick={() => {modifiedSubtractToCart(highestRated[1].name, highestRated[1].price, 1)}}>
+                                            <button onClick={() => {modifiedSubtractToCart(highestRated[1].name, highestRated[1].price)}}>
                                                 <RiSubtractFill />
                                             </button>
                                             <p>{highestRated[1].quantity}</p>
-                                            <button onClick={() => {modifiedAddToCart(highestRated[1].name, highestRated[1].price, 1)}}>
+                                            <button onClick={() => {modifiedAddToCart(highestRated[1].name, highestRated[1].price)}}>
                                                 <RiAddFill />
                                             </button>
                                         </div>
@@ -151,11 +194,11 @@ export default function MainSearch() {
                                     <div>
                                         <h5>Quantity</h5>
                                         <div className='quantity'>
-                                            <button onClick={() => {modifiedSubtractToCart(highestRated[2].name, highestRated[2].price, 2)}}>
+                                            <button onClick={() => {modifiedSubtractToCart(highestRated[2].name, highestRated[2].price)}}>
                                                 <RiSubtractFill />
                                             </button>
                                             <p>{highestRated[2].quantity}</p>
-                                            <button onClick={() => {modifiedAddToCart(highestRated[2].name, highestRated[2].price, 2)}}>
+                                            <button onClick={() => {modifiedAddToCart(highestRated[2].name, highestRated[2].price)}}>
                                                 <RiAddFill />
                                             </button>
                                         </div>
@@ -173,25 +216,25 @@ export default function MainSearch() {
                         <div className="dishImage">
                         </div>
                         <div>
-                            <h3>Done</h3>
-                            <p style={{fontSize: "0.9em"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
+                            <h3>{popularDishes[0].name}</h3>
+                            <p style={{fontSize: "0.9em"}}>{popularDishes[0].description}</p>
                             <div className="cardSeperation">
                                 <div>
                                     <h5>Rating</h5>
-                                    <p>3.5</p>
+                                    <p>{popularDishes[0].rating}</p>
                                 </div>
                                 <div>
                                     <h5>Price</h5>
-                                    <p>$10</p>
+                                    <p>${popularDishes[0].price}</p>
                                 </div>
                                 <div>
                                     <h5>Quantity</h5>
                                     <div className='quantity'>
-                                        <button onClick={() => {addToCartSubtract(1)}}>
+                                        <button onClick={() => {modifiedSubtractToCart(popularDishes[0].name, popularDishes[0].price)}}>
                                             <RiSubtractFill />
                                         </button>
-                                        <p>1</p>
-                                        <button onClick={() => {addToCartAdd(1)}}>
+                                        <p>{popularDishes[0].quantity}</p>
+                                        <button onClick={() => {modifiedAddToCart(popularDishes[0].name, popularDishes[0].price)}}>
                                             <RiAddFill />
                                         </button>
                                     </div>
@@ -204,25 +247,25 @@ export default function MainSearch() {
                             <div className="dishImage">
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
-                                <h3>Done</h3>
-                                <p style={{fontSize: "0.8em"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
+                                <h3>{popularDishes[1].name}</h3>
+                                <p style={{fontSize: "0.8em"}}>{popularDishes[1].description}</p>
                                 <div className="cardSeperationRight">
                                     <div>
                                         <h5>Rating</h5>
-                                        <p>3.5</p>
+                                        <p>{popularDishes[1].rating}</p>
                                     </div>
                                     <div>
                                         <h5>Price</h5>
-                                        <p>$10</p>
+                                        <p>${popularDishes[1].price}</p>
                                     </div>
                                     <div>
                                         <h5>Quantity</h5>
                                         <div className='quantity'>
-                                            <button onClick={() => {addToCartSubtract(1)}}>
+                                            <button onClick={() => {modifiedSubtractToCart(popularDishes[1].name, popularDishes[1].price)}}>
                                                 <RiSubtractFill />
                                             </button>
-                                            <p>1</p>
-                                            <button onClick={() => {addToCartAdd(1)}}>
+                                            <p>{popularDishes[1].quantity}</p>
+                                            <button onClick={() => {modifiedAddToCart(popularDishes[1].name, popularDishes[1].price)}}>
                                                 <RiAddFill />
                                             </button>
                                         </div>
@@ -234,25 +277,25 @@ export default function MainSearch() {
                             <div className="dishImage">
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
-                                <h3>Done</h3>
-                                <p style={{fontSize: "0.8em"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
+                                <h3>{popularDishes[2].name}</h3>
+                                <p style={{fontSize: "0.8em"}}>{popularDishes[2].description}</p>
                                 <div className="cardSeperationRight">
                                     <div>
                                         <h5>Rating</h5>
-                                        <p>3.5</p>
+                                        <p>{popularDishes[2].rating}</p>
                                     </div>
                                     <div>
                                         <h5>Price</h5>
-                                        <p>$10</p>
+                                        <p>${popularDishes[2].price}</p>
                                     </div>
                                     <div>
                                         <h5>Quantity</h5>
                                         <div className='quantity'>
-                                            <button onClick={() => {addToCartSubtract(1)}}>
+                                            <button onClick={() => {modifiedSubtractToCart(popularDishes[2].name, popularDishes[2].price)}}>
                                                 <RiSubtractFill />
                                             </button>
-                                            <p>1</p>
-                                            <button onClick={() => {addToCartAdd(1)}}>
+                                            <p>{popularDishes[2].quantity}</p>
+                                            <button onClick={() => {modifiedAddToCart(popularDishes[2].name, popularDishes[2].price)}}>
                                                 <RiAddFill />
                                             </button>
                                         </div>

@@ -87,6 +87,8 @@ export function FoodProvider({ children }) {
         }
       }
       setAllFoodItems(temp);
+      console.log("This is : ", allFoodItems);
+      console.log("Next is : ", filteredFoodItems);
       totalCartCount();
     }
 
@@ -116,7 +118,6 @@ export function FoodProvider({ children }) {
         sum += allFoodItems[i].quantity;
       }
       console.log(allFoodItems);
-      console.log(sum);
       setChangeState(sum);
     }
 
