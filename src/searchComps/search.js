@@ -7,7 +7,7 @@ import { RiAddFill, RiSubtractFill } from "react-icons/ri";
 
 export default function MainSearch() {
 
-    const { filteredFoodItems, changeFlilteredFoodItems } = useFood();
+    const { filteredFoodItems, changeFlilteredFoodItems, changeHighestRatedDishes, highestRated } = useFood();
     const [loading, setLoading] = useState(true);
 
     if (loading) {
@@ -15,8 +15,8 @@ export default function MainSearch() {
             setLoading(false);
             console.log("-------");
             console.log(filteredFoodItems);
-            console.log(typeof filteredFoodItems);
             console.log("-------");
+            console.log(highestRated);
         }
         return <div className='Loading'>
         </div>
@@ -33,6 +33,30 @@ export default function MainSearch() {
     function getImage(imageName) {
         var a = "url('" + imageName + "')";
         return a;
+    }
+
+    function modifiedAddToCart(name, price, index) {
+        var temp = 0;
+        for (let i = 0; i < filteredFoodItems.length; i++) {
+            if (filteredFoodItems[i].name === name && filteredFoodItems[i].price === price) {
+                temp = i;
+                break;
+            }
+        }
+        changeHighestRatedDishes(index, 1);
+        addToCartAdd(temp);
+    }
+
+    function modifiedSubtractToCart(name, price, index) {
+        var temp = 0;
+        for (let i = 0; i < filteredFoodItems.length; i++) {
+            if (filteredFoodItems[i].name === name && filteredFoodItems[i].price === price) {
+                temp = i;
+                break;
+            }
+        }
+        changeHighestRatedDishes(index, 2);
+        addToCartSubtract(temp);
     }
 
     function addToCartSubtract(id) {
@@ -52,25 +76,25 @@ export default function MainSearch() {
                         <div className="dishImage">
                         </div>
                         <div>
-                            <h3>Done</h3>
-                            <p style={{fontSize: "0.9em"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
+                            <h3>{highestRated[0].name}</h3>
+                            <p style={{fontSize: "0.9em"}}>{highestRated[0].description}</p>
                             <div className="cardSeperation">
                                 <div>
                                     <h5>Rating</h5>
-                                    <p>3.5</p>
+                                    <p>{highestRated[0].rating}</p>
                                 </div>
                                 <div>
                                     <h5>Price</h5>
-                                    <p>$10</p>
+                                    <p>${highestRated[0].price}</p>
                                 </div>
                                 <div>
                                     <h5>Quantity</h5>
                                     <div className='quantity'>
-                                        <button onClick={() => {addToCartSubtract(1)}}>
+                                        <button onClick={() => {modifiedSubtractToCart(highestRated[0].name, highestRated[0].price, 0)}}>
                                             <RiSubtractFill />
                                         </button>
-                                        <p>1</p>
-                                        <button onClick={() => {addToCartAdd(1)}}>
+                                        <p>{highestRated[0].quantity}</p>
+                                        <button onClick={() => {modifiedAddToCart(highestRated[0].name, highestRated[0].price, 0)}}>
                                             <RiAddFill />
                                         </button>
                                     </div>
@@ -83,25 +107,25 @@ export default function MainSearch() {
                             <div className="dishImage">
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
-                                <h3>Done</h3>
-                                <p style={{fontSize: "0.8em"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
+                                <h3>{highestRated[1].name}</h3>
+                                <p style={{fontSize: "0.8em"}}>{highestRated[1].description}</p>
                                 <div className="cardSeperationRight">
                                     <div>
                                         <h5>Rating</h5>
-                                        <p>3.5</p>
+                                        <p>{highestRated[1].rating}</p>
                                     </div>
                                     <div>
                                         <h5>Price</h5>
-                                        <p>$10</p>
+                                        <p>${highestRated[1].price}</p>
                                     </div>
                                     <div>
                                         <h5>Quantity</h5>
                                         <div className='quantity'>
-                                            <button onClick={() => {addToCartSubtract(1)}}>
+                                            <button onClick={() => {modifiedSubtractToCart(highestRated[1].name, highestRated[1].price, 1)}}>
                                                 <RiSubtractFill />
                                             </button>
-                                            <p>1</p>
-                                            <button onClick={() => {addToCartAdd(1)}}>
+                                            <p>{highestRated[1].quantity}</p>
+                                            <button onClick={() => {modifiedAddToCart(highestRated[1].name, highestRated[1].price, 1)}}>
                                                 <RiAddFill />
                                             </button>
                                         </div>
@@ -113,25 +137,25 @@ export default function MainSearch() {
                             <div className="dishImage">
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
-                                <h3>Done</h3>
-                                <p style={{fontSize: "0.8em"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
+                                <h3>{highestRated[2].name}</h3>
+                                <p style={{fontSize: "0.8em"}}>{highestRated[2].description}</p>
                                 <div className="cardSeperationRight">
                                     <div>
                                         <h5>Rating</h5>
-                                        <p>3.5</p>
+                                        <p>{highestRated[2].rating}</p>
                                     </div>
                                     <div>
                                         <h5>Price</h5>
-                                        <p>$10</p>
+                                        <p>${highestRated[2].price}</p>
                                     </div>
                                     <div>
                                         <h5>Quantity</h5>
                                         <div className='quantity'>
-                                            <button onClick={() => {addToCartSubtract(1)}}>
+                                            <button onClick={() => {modifiedSubtractToCart(highestRated[2].name, highestRated[2].price, 2)}}>
                                                 <RiSubtractFill />
                                             </button>
-                                            <p>1</p>
-                                            <button onClick={() => {addToCartAdd(1)}}>
+                                            <p>{highestRated[2].quantity}</p>
+                                            <button onClick={() => {modifiedAddToCart(highestRated[2].name, highestRated[2].price, 2)}}>
                                                 <RiAddFill />
                                             </button>
                                         </div>
@@ -255,7 +279,7 @@ export default function MainSearch() {
                                     <div className="cardSeperation">
                                         <div>
                                             <h5>Rating</h5>
-                                            <p>3.5</p>
+                                            <p>{item.rating}</p>
                                         </div>
                                         <div>
                                             <h5>Price</h5>

@@ -39,7 +39,7 @@ export default function CheckoutCart() {
                 await AddWarning(userId);
             } else {
                 var document = {};
-                document.totalPrice = total;
+                document.totalPrice = parseFloat(total).toFixed(2);
                 document.state = state;
                 var order = [];
                 for (var i = 0; i < allFoodItems.length; i++) {
@@ -73,8 +73,9 @@ export default function CheckoutCart() {
     function calculateTotal() {
         var total = 0.00;
         for (var i = 0; i < allFoodItems.length; i++) {
-            total += allFoodItems[i].price * allFoodItems[i].quantity;
+            total += allFoodItems[i].price * allFoodItems[i].quantity
         }
+        total = parseFloat(total.toFixed(2));
         console.log("Total : ", total); 
         setTotalCount(total);
     }
