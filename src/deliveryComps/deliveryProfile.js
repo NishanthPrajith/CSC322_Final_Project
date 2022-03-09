@@ -6,7 +6,7 @@ import {GoCheck} from 'react-icons/go'
 
 export default function DeliveryProfile() {
 
-    const [selection, setSelection] = useState(true);
+    const [selection, setSelection] = useState(1);
     const [loading, setLoading] = useState(true)
 
     const { totalSpent, myOrders, userName, userWallet, orderDelivered, deliveryOrders, userId, submitOrderBid, userWarnings } = useAuth();
@@ -58,14 +58,14 @@ export default function DeliveryProfile() {
                     </div>
                 </div>
                 <div className="deliveryProfileButtons">
-                    <div onClick={() => {setSelection(true)}} style={selection ? {backgroundColor: "var(--yellow)"} : {}}>
+                    <div onClick={() => {setSelection(1)}} style={selection === 1 ? {backgroundColor: "var(--yellow)"} : {}}>
                         <p>Bidding</p>
                     </div>
-                    <div onClick={() => {setSelection(false)}} style={!selection ? {backgroundColor: "var(--yellow)"} : {}}>
+                    <div onClick={() => {setSelection(2)}} style={selection === 2 ? {backgroundColor: "var(--yellow)"} : {}}>
                         <p>Orders</p>
                     </div>
                 </div>
-                { selection && 
+                { selection === 1 && 
                     deliveryOrders.map((value, index) => {
                         return (
                             <div className="biddingBoxArea" key={index}>
@@ -104,7 +104,7 @@ export default function DeliveryProfile() {
                     })
                 }
                 {
-                    !selection &&
+                    selection === 2 &&
                     myOrders.map((value, index) => {
                         return (
                             <div className="biddingBoxArea" key={index}>
@@ -135,12 +135,20 @@ export default function DeliveryProfile() {
                                             Order Delivered
                                         </button>
                                     </div>
-                                    }   {value.orderStatus == false &&
+                                    }   
+                                    {value.orderStatus == false &&
                                         <div style= {{display: 'flex', alignItems: "flex-end", flexDirection: "column-reverse"}}>
                                         <button className='OrderDelivered' style = {{backgroundColor: "lightgreen"}}>
                                             Delivered <GoCheck style={{marginLeft: "2%"}}/>
                                         </button>
                                     </div>
+                                    }
+                                    {
+                                        value.memo !== undefined &&
+                                        <div style={{display: "flex", marginTop: "5%", flexDirection: "column"}}>
+                                            <h3 style={{margin: "0", color: "var(--red)"}}>Memo</h3>
+                                            <p style={{margin: "1.5% 0 0 0", fontSize: "0.9em"}}>{value.memo}</p>
+                                        </div>
                                     }
                                 </div>
                             </div>

@@ -98,3 +98,46 @@
     margin-bottom: 3%;
     font-weight: bold;
 }
+
+.memo {
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background-color: var(--beige);
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+.memoBox {
+    display: flex;
+    flex-direction: column;
+}
+
+.memoBox textarea {
+    background-color: var(--white);
+    border-radius: 15px;
+    padding: 2% 3%;
+}
+
+.memo button {
+    margin: 1% 0;
+    border: none;
+    border-radius: 15px;
+    padding: 2% 0
+}
+
+.memo button:nth-child(1) {
+    margin-top: 6.5%;
+    background-color: lightgreen;
+    border: none;
+}
+
+.memo button:nth-child(2) {
+    margin-top: 2%;
+    background-color: var(--black);
+    color: var(--white);
+}

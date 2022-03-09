@@ -6,7 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, setDoc, onSnapshot, collectionGroup, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, getDoc, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 
 const AuthContext = React.createContext();
@@ -148,6 +148,34 @@ export function AuthProvider({ children }) {
         console.log(deliveryOrders);
       }
     });
+  }
+
+  async function setDeliveryPerson(orderId, chosenId, secondId, memo) {
+    await updateDoc(doc(db, "Orders", orderId), {
+      deliveryUserId: chosenId,
+    });
+    if (memo !== "") {
+      await updateDoc(doc(db, "Orders", orderId), {
+        memo: memo,
+      });
+    }
+    await updateDoc(doc(db, "Users", chosenId), {
+      countOrders: 0
+    });
+
+    const docRef = doc(db, "Users", secondId);
+    const docSnap = await getDoc(docRef);
+    const count = docSnap.data().countOrders;
+    if (count % 5 === 4 && count !== 0) {
+      await updateDoc(doc(db, "Users", secondId), {
+        countOrders: 0,
+        warnings: docSnap.data().warnings + 1
+      });
+    } else {
+      await updateDoc(doc(db, "Users", secondId), {
+        countOrders: count + 1
+      });
+    }
   }
 
   async function getDeliveryOrders() {
@@ -330,6 +358,7 @@ export function AuthProvider({ children }) {
     userWallet,
     userJoined,
     deliveryOrders,
+    setDeliveryPerson,
     userId,
     myOrders,
     handleLogout,
