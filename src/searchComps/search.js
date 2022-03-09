@@ -7,7 +7,7 @@ import { RiAddFill, RiSubtractFill } from "react-icons/ri";
 
 export default function MainSearch() {
 
-    const { filteredFoodItems, changePopularDishes, popularDishes, changeFlilteredFoodItems, changeHighestRatedDishes, highestRated } = useFood();
+    const { filteredFoodItems, popularDishes, changeAllFoodItems, changePopularDishes, changeHighestRated, highestRated } = useFood();
     const [loading, setLoading] = useState(true);
 
     if (loading) {
@@ -22,12 +22,20 @@ export default function MainSearch() {
         </div>
     }
 
-    async function addToCartAdd(id) {
-        console.log(id);
-        var temp = filteredFoodItems;
-        temp[id].quantity += 1;
-        setLoading(true);
-        changeFlilteredFoodItems(temp);
+    async function addToCartAdd(id, arr) {
+        var temp = arr;
+        if (id !== -1) {
+            temp[id].quantity += 1;
+        }
+        changeAllFoodItems(temp, 1);
+    }
+
+    function addToCartSubtract(id, arr) {
+        var temp = arr;
+        if (id !== -1) {
+            temp[id].quantity = temp[id].quantity == 0 ? 0 : temp[id].quantity - 1;
+        }
+        changeAllFoodItems(temp, 2);
     }
 
     function getImage(imageName) {
@@ -43,30 +51,25 @@ export default function MainSearch() {
                 break;
             }
         }
-        if (temp !== -1) {
-            alert(temp);
-            addToCartAdd(temp);
-        }
-        var a = -1;
-        for (let i = 0; i < highestRated.length; i++) {
-            if (highestRated[i].name === name && highestRated[i].price === price) {
-                a = i;
-                break;
+        addToCartAdd(temp, filteredFoodItems);
+
+        var a = highestRated;
+        for (let i = 0; i < a.length; i++) {
+            if (a[i].name === name && a[i].price === price) {
+                a[i].quantity = a[i].quantity + 1;
             }
         }
-        var b = -1;
-        for (let i = 0; i < popularDishes.length; i++) {
-            if (popularDishes[i].name === name && popularDishes[i].price === price) {
-                b = i;
-                break;
+        changeHighestRated(a);
+        changeAllFoodItems(a, 1);
+        
+        var b = popularDishes;
+        for (let i = 0; i < b.length; i++) {
+            if (b[i].name === name && b[i].price === price) {
+                b[i].quantity = b[i].quantity + 1;
             }
         }
-        if (a !== -1) {
-            changeHighestRatedDishes(a, 1);
-        }
-        if (b !== - 1) {
-            changePopularDishes(b, 1);
-        }
+        changePopularDishes(b);
+        changeAllFoodItems(b, 1);
     }
 
     function modifiedSubtractToCart(name, price) {
@@ -77,37 +80,25 @@ export default function MainSearch() {
                 break;
             }
         }
-        if (temp !== -1) {
-            addToCartSubtract(temp);
-        }
-        var a = -1;
-        for (let i = 0; i < highestRated.length; i++) {
-            if (highestRated[i].name === name && highestRated[i].price === price) {
-                a = i;
-                break;
-            }
-        }
-        var b = -1;
-        for (let i = 0; i < popularDishes.length; i++) {
-            if (popularDishes[i].name === name && popularDishes[i].price === price) {
-                b = i;
-                break;
-            }
-        }
-        if (a !== -1) {
-            changeHighestRatedDishes(a, 2);
-        }
-        if (b !== - 1) {
-            changePopularDishes(b, 2);
-        }
-    }
+        addToCartSubtract(temp, filteredFoodItems);
 
-    function addToCartSubtract(id) {
-        console.log(id);
-        var temp = filteredFoodItems;
-        temp[id].quantity = temp[id].quantity == 0 ? 0 : temp[id].quantity - 1;
-        console.log("temp: , ", temp[id])
-        changeFlilteredFoodItems(temp);
+        var a = highestRated;
+        for (let i = 0; i < a.length; i++) {
+            if (a[i].name === name && a[i].price === price) {
+                a[i].quantity = a[i].quantity == 0 ? 0 : a[i].quantity - 1;
+            }
+        }
+        changeHighestRated(a);
+        changeAllFoodItems(a, 2);
+        
+        var b = popularDishes;
+        for (let i = 0; i < b.length; i++) {
+            if (b[i].name === name && b[i].price === price) {
+                b[i].quantity = b[i].quantity == 0 ? 0 : b[i].quantity - 1;
+            }
+        }
+        changePopularDishes(b);
+        changeAllFoodItems(b, 2);
     }
 
     return (
@@ -331,11 +322,11 @@ export default function MainSearch() {
                                         <div>
                                             <h5>Quantity</h5>
                                             <div className='quantity'>
-                                                <button onClick={() => {addToCartSubtract(index)}}>
+                                                <button onClick={() => {modifiedSubtractToCart(item.name, item.price)}}>
                                                     <RiSubtractFill />
                                                 </button>
                                                 <p>{item.quantity}</p>
-                                                <button onClick={() => {addToCartAdd(index)}}>
+                                                <button onClick={() => {modifiedAddToCart(item.name, item.price)}}>
                                                     <RiAddFill />
                                                 </button>
                                             </div>

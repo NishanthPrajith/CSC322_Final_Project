@@ -65,7 +65,16 @@ export function FoodProvider({ children }) {
       } 
       setAllFoodItems(temp);
       setfilteredFoodItems(temp);
-      getHighestRatedDishes();
+      var temp2 = highestRated;
+      for (var i = 0; i < temp2.length; i++) {
+        temp2[i].quantity = 0;
+      }
+      setHighestRated(temp2);
+      var temp3 = popularDishes;
+      for (var i = 0; i < temp3.length; i++) {
+        temp3[i].quantity = 0;
+      }
+      setPopularDishes(temp3);
       setChangeState(0);
     }
 
@@ -77,38 +86,31 @@ export function FoodProvider({ children }) {
 
     function changeFlilteredFoodItems(value) {
       setfilteredFoodItems(value);
-      var temp = allFoodItems;
-      for (let i = 0; i < value.length; i++) {
-        for (let j = 0; j < temp.length; j++) {
-          if (value[i].name === temp[j].name) {
-            temp[j].quantity = value[i].quantity;
-            break;
+   }
+
+    function changeAllFoodItems(temp, role) {
+      var a = allFoodItems;
+      console.log(a, temp);
+      for (var i = 0; i < temp.length; i++) {
+        for (var j = 0; j < a.length; j++) {
+          if (temp[i].name === a[j].name) {
+            if (role === 1) {
+              a[j].quantity = Math.max(temp[i].quantity, a[j].quantity);
+            } else {
+              a[j].quantity = Math.min(temp[i].quantity, a[j].quantity);
+            }
           }
         }
       }
-      setAllFoodItems(temp);
-      console.log("This is : ", allFoodItems);
-      console.log("Next is : ", filteredFoodItems);
+      setAllFoodItems(a);
       totalCartCount();
     }
 
-    function changeHighestRatedDishes(index, role) {
-      var temp = highestRated;
-      if (role === 1) {
-        temp[index].quantity = temp[index].quantity + 1;
-      } else {
-        temp[index].quantity = temp[index].quantity === 0 ? 0 : temp[index].quantity - 1; 
-      }
+    function changeHighestRated(temp) {
       setHighestRated(temp);
     }
 
-    function changePopularDishes(index, role) {
-      var temp = popularDishes;
-      if (role === 1) {
-        temp[index].quantity = temp[index].quantity + 1;
-      } else {
-        temp[index].quantity = temp[index].quantity === 0 ? 0 : temp[index].quantity - 1; 
-      }
+    function changePopularDishes(temp) {
       setPopularDishes(temp);
     }
 
@@ -128,9 +130,10 @@ export function FoodProvider({ children }) {
         changeState,
         clearData,
         highestRated,
-        changeHighestRatedDishes,
         popularDishes,
-        changePopularDishes
+        changeAllFoodItems,
+        changeHighestRated,
+        changePopularDishes,
     }
 
     return (
