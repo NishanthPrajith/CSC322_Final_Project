@@ -6,8 +6,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, setDoc, onSnapshot, getDoc, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, deleteDoc, getDoc, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../firebase";
+import { getAuth} from 'firebase/auth';
 
 const AuthContext = React.createContext();
 
@@ -38,15 +39,20 @@ export function AuthProvider({ children }) {
 
   // Manager related Data
   const [getUsers, setGetUsers] = useState([]);
+  const [getQuitUsers, setGetQuitUsers] = useState([]);
+  const [getBannedUsers, setGetBannedUsers] = useState([]);
 
   async function handleLogout() {
+    await signOut(auth);
     setLoggedIn(false);
     setCurrentUser(null);
     setUserRole(-1);
     setGetUsers([]);
+    setGetQuitUsers([]);
+    setGetBannedUsers([]);
     setOrderId([]);
     setOrders([]);
-    setMyOrders([]);
+    setMyOrders(true);
     setDeliveryOrders([]);
     setUserName("");
     setUserId("");
@@ -54,10 +60,9 @@ export function AuthProvider({ children }) {
     setUserJoined(0);
     setUserWarning(0);
     setTotalSpent(0);
-    await signOut(auth);
   };
 
-  async function getNewUser() {
+  async function getUserAccounts() {
     console.log("getNewUser");
     const q = await query(collection(db, "Users"), where("role", "==", 0));
     onSnapshot(q, (querySnapshot) => {
@@ -68,11 +73,33 @@ export function AuthProvider({ children }) {
       setGetUsers(cities);
       console.log(cities);
     });
+    console.log("get quit users");
+    const g = await query(collection(db, "Users"), where("role", "==", -1111));
+    onSnapshot(g, (querySnapshot) => {
+      const cities = [];
+      querySnapshot.forEach((doc) => {
+        cities.push(doc.data());
+      });
+      setGetQuitUsers(cities);
+      console.log(cities);
+    });
+    console.log("get banned users");
+    const h = await query(collection(db, "Users"), where("role", "==", -111));
+    onSnapshot(h, (querySnapshot) => {
+      const cities = [];
+      querySnapshot.forEach((doc) => {
+        cities.push(doc.data());
+      });
+      setGetBannedUsers(cities);
+      console.log(cities);
+    });
   }
 
   async function updateRole(id, role) {
     await updateDoc(doc(db, "Users", id), {
       role: role,
+      wallet: 0,
+      warnings: 0,
     });
   }
 
@@ -123,7 +150,7 @@ export function AuthProvider({ children }) {
     const info = await onSnapshot(doc(db, "Users", id), (doc) => {
       setUserRole(doc.data().role);
       setUserName(doc.data().name);
-      setUserWallet(doc.data().wallet);
+      setUserWallet(doc.data().wallet);      
       setUserJoined(doc.data().joined);
       setUserId(doc.data().id);
       setTotalSpent(doc.data().totalSpent);
@@ -136,11 +163,19 @@ export function AuthProvider({ children }) {
         alert("You are not authorized to access this page");
         info();
       } else if (doc.data().role === 1001) {
-        getNewUser();
+        getUserAccounts();
         getDeliveryOrders();
+      } else if (doc.data().role === -11111) {
+        info();
+        handleLogout();
+        alert("You have been permantly banned from the system and the money you had in your wallet has been returned to you");
       } else if (doc.data().role === -111) {
         handleLogout();
-        alert("You have been Banned from the system");
+        alert("You have been banned from the system, the manager has been notified");
+        info();
+      } else if (doc.data().role === -1111) {
+        handleLogout();
+        alert("Your account is still being deleted");
         info();
       } else if (doc.data().role === 33) {
         getDeliveryOrders();
@@ -148,6 +183,18 @@ export function AuthProvider({ children }) {
         console.log(deliveryOrders);
       }
     });
+  }
+
+  async function deleteAccount(id) {
+    await deleteDoc(doc(db, "Users", id));
+    getAuth().deleteUser("ndxDg6D7DmSYMFxajjSqqV8XLrg2")
+    .then(() => {
+      alert("Account deleted");
+      console.log("User Deleted");
+    })
+    .catch((error) => {
+      alert('Error deleting user:', error);
+    });  
   }
 
   async function setDeliveryPerson(orderId, chosenId, secondId, memo) {
@@ -230,13 +277,20 @@ export function AuthProvider({ children }) {
         warnings: 0,
       });
     } else if (state === 2 && userRole === 11) {
-      alert("You have been removed from the system");
-      alert("$" + userWallet + " has been refunded to your account");
+      alert("You have received too many warnings and manager will decide to delete you from the system");
       await updateDoc(doc(db, "Users", userId), {
         role: -111,
-        warnings: 0,
       });
     }
+  }
+
+  async function quitAccount() {
+    alert("Thank you so much! Your account will be deleted and the money refunded to your account");
+    alert(userId);
+    await updateDoc(doc(db, "Users", userId), {
+      role: -1111,
+    });
+    handleLogout();
   }
 
   async function addToOrder(document) {
@@ -364,6 +418,7 @@ export function AuthProvider({ children }) {
     handleLogout,
     userRole,
     getUsers,
+    deleteAccount,
     totalSpent,
     addToOrder,
     orders,
@@ -373,7 +428,10 @@ export function AuthProvider({ children }) {
     AddWarning,
     orderId,
     submitOrderBid,
-    orderDelivered
+    orderDelivered,
+    quitAccount,
+    getQuitUsers,
+    getBannedUsers
   };
 
   return (

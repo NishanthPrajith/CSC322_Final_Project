@@ -6,7 +6,7 @@ import { BiWallet } from "react-icons/bi";
 
 export default function UserProfile() {
 
-    const { orders, userWarnings, writeOrderReviewUser, updateWallet, userRole, userWallet, userName } = useAuth();
+    const { orders, userWarnings, writeOrderReviewUser, quitAccount, updateWallet, userRole, userWallet, userName } = useAuth();
     const [orderChoice, setOrderChoice] = useState(-1);
 
     const rating = useRef();
@@ -138,6 +138,9 @@ export default function UserProfile() {
                 </div>
             </div>
             <h1 className = "userProfileTitle">{userName}</h1>
+            <div className='deleteAccount'>
+                <button onClick={() => quitAccount()}>Delete Account</button>
+            </div>
             <div className='userMetaData'>
                 <div className='userMetaDataOne'>
                     <h4>Warnings</h4>

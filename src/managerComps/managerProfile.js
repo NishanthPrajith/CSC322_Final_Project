@@ -8,7 +8,7 @@ export default function ManagerProfile() {
     const [choice, setChoice] = useState(0);
     const [orderChoice, setOrderChoice] = useState(0);
 
-    const { getUsers, updateRole, setDeliveryPerson, deliveryOrders } = useAuth();
+    const { getUsers, getQuitUsers, getBannedUsers, deleteAccount, updateRole, setDeliveryPerson, deliveryOrders } = useAuth();
 
     let orderNumber = 1;
 
@@ -63,6 +63,8 @@ export default function ManagerProfile() {
     }
     
     useEffect(() => {
+        console.log("-----------------");
+        console.log(getQuitUsers);
         console.log(deliveryOrders);
     }, []);
     
@@ -92,6 +94,12 @@ export default function ManagerProfile() {
                 </div>
                 <div onClick = {() => {handleClick(2)}} style={choice == 2 ? {backgroundColor: "var(--yellow)"} : {}}>
                     Delivery
+                </div>
+                <div onClick = {() => {handleClick(3)}} style={choice == 3 ? {backgroundColor: "var(--yellow)"} : {}}>
+                    Kickedout Customers
+                </div>
+                <div onClick = {() => {handleClick(4)}} style={choice == 4 ? {backgroundColor: "var(--yellow)"} : {}}>
+                    Account Deletion
                 </div>
             </div>
             {choice === 0 &&
@@ -147,6 +155,65 @@ export default function ManagerProfile() {
                                 </div>
                             );
                         }
+                    })
+                    }
+                </div>
+            }
+            {choice === 3 &&
+                <div>
+                    { 
+                    getBannedUsers.map((item) => {
+                        return (
+                            <div className="userCard">
+                                <div>
+                                    <h3>{ item.name }</h3>
+                                    <h4>Warnings : { item.warnings }</h4>
+                                    <p>{ item.email }</p>
+                                </div>
+                                <div>
+                                    <button onClick={() => {
+                                        alert("The account has been forgiven and all warnings have been cleared!");
+                                        alert("$" + item.wallet + " in the wallet has been credited backed to the user");
+                                        updateRole(item.id, 11)
+                                    }}>
+                                        Forgive
+                                    </button>
+                                    <br/>
+                                    <button onClick={() => {
+                                        alert("The account has been blacklisted!");
+                                        alert("$" + item.wallet + " in the wallet has been credited backed to the user");
+                                        updateRole(item.id, -11111);
+                                    }}>
+                                        Ban & Blacklist
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    })
+                    }
+                </div>
+            }
+            {choice === 4 &&
+                <div>
+                    { 
+                    getQuitUsers.map((item) => {
+                        return (
+                            <div className="userCard">
+                                <div>
+                                    <h3>{ item.name }</h3>
+                                    <p>{ item.email }</p>
+                                </div>
+                                <div>
+                                    <button onClick={() => {
+                                        alert("The account has been deleted!");
+                                        alert("$" + item.wallet + " in the wallet has been credited backed to the user");
+                                        deleteAccount(item.id);
+                                    }}>
+                                        Delete Account
+                                    </button>
+                                </div>
+                            </div>
+                        );
                     })
                     }
                 </div>

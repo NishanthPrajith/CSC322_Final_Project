@@ -34,11 +34,14 @@
 }
 
 .userCard button {
+    width: 100%;
     background-color: var(--yellow);
     border-radius: 25px;
     border: none;
     padding: 10% 20%;
     font-size: 0.9em;
+    margin-bottom: 2%;
+    margin-top: 2%;
 }
 
 

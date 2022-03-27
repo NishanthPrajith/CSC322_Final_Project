@@ -168,6 +168,21 @@
     height: 200px;
 }
 
+.deleteAccount {
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+.deleteAccount button {
+    background-color: var(--yellow);
+    border: none;
+    border-radius: 25px;
+    margin-top: 1%;
+    padding: 0.9% 2%;
+    font-size: 0.9em;
+}
+
 .AddToWallet {
     width: 100%;
     background-color: rgb(43, 207, 43);
