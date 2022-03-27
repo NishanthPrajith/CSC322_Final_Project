@@ -58,26 +58,24 @@ export default function Navbar() {
         {loggedIn && (
           <div>
             {/* {userName} */}
-            <Link to="/userProfile">
-              <div class="dropdown">
-                <div class="dropbtn">
-                  Hello,  <p className="username"> {userName} </p>
-                </div>
-                <div class="dropdown-content">
-                  {(userRole == 11 || userRole == 111) && 
-                    <Link to="/userProfile">User Profile</Link> }
-                  {userRole === 22 &&
-                    <Link to="/chefProfile">Chef Profile</Link> }
-                  {userRole === 33 &&
-                    <Link to="/deliveryProfile">Delivery Profile</Link> }
-                  {userRole == 1001 &&
-                    <Link to="/managerProfile">Manager Profile</Link> }
-                  <Link to="/" onClick={handleLogout}>
-                    Sign Out
-                  </Link>
-                </div>
+            <div class="dropdown">
+              <div class="dropbtn">
+                Hello,  <p className="username"> {userName} </p>
               </div>
-            </Link>
+              <div class="dropdown-content">
+                {(userRole == 11 || userRole == 111) && 
+                  <Link to="/userProfile">User Profile</Link> }
+                {userRole === 22 &&
+                  <Link to="/chefProfile">Chef Profile</Link> }
+                {userRole === 33 &&
+                  <Link to="/deliveryProfile">Delivery Profile</Link> }
+                {userRole == 1001 &&
+                  <Link to="/managerProfile">Manager Profile</Link> }
+                <Link to="/" onClick={handleLogout}>
+                  Sign Out
+                </Link>
+              </div>
+            </div>
           </div>
         )}
         {!loggedIn && (
