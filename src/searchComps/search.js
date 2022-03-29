@@ -18,16 +18,14 @@ export default function MainSearch() {
 
     const { userRole, recommendedOrders } = useAuth();
 
-    const [role, setRole] = useState(-1);
+    const [role, setRole] = useState(userRole);
 
     const [info, setInfo] = useState([]);
 
-    
-    useEffect(() => {
-        getDishes();
-    }, []);
-
     if (userRole !== role) {
+        console.log("role changed");
+        console.log(userRole);
+        console.log(role);
         setRole(userRole);
         getDishes();
     }

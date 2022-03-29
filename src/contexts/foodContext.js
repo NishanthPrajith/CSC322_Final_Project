@@ -43,9 +43,8 @@ export function FoodProvider({ children }) {
           });
           setAllFoodItems(data);
           setfilteredFoodItems(data);
+          setChangeState(0);
         });
-
-        
       getHighestRatedDishes(food);
     }
 
@@ -147,6 +146,9 @@ export function FoodProvider({ children }) {
     }
 
     function totalCartCount() {
+      console.log("total cart count");
+      console.log(allFoodItems);
+      console.log("---------------");
       var sum = 0;
       for (let i = 0; i < allFoodItems.length; i++) {
         sum += allFoodItems[i].quantity;
@@ -169,7 +171,8 @@ export function FoodProvider({ children }) {
         changeRecommendedDishes,
         getDishes,
         recommendedDishes,
-        getRecommendedDishes
+        getRecommendedDishes,
+        totalCartCount
     }
 
     return (

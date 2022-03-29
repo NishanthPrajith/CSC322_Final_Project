@@ -94,7 +94,6 @@ export function AuthProvider({ children }) {
         cities.push(doc.data());
       });
       setGetBannedUsers(cities);
-      console.log(cities);
     });
   }
 

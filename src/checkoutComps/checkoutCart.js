@@ -33,7 +33,7 @@ export default function CheckoutCart() {
         if (userRole === 111 && state === 2 && (orderId.length % 4 === 3)) {
             total = (parseFloat(total) - 3).toFixed(2);
         }
-        if (total > 0) {
+        if (totalCount > 0) {
             if (total > userWallet) {
                 alert("You don't have enough money in your wallet");
                 await AddWarning(userId);
