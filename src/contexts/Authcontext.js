@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, onSnapshot, deleteDoc, getDoc, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../firebase";
-import { getAuth} from 'firebase/auth';
+import { useFood } from "./foodContext";
 
 const AuthContext = React.createContext();
 
@@ -33,6 +33,8 @@ export function AuthProvider({ children }) {
   const [userWarnings, setUserWarning] = useState(0);
   const [totalSpent, setTotalSpent] = useState(0);
 
+  const [recommendedOrders, setRecommendedOrders] = useState([]);
+
   // Delivery Related Data
   const [deliveryOrders, setDeliveryOrders] = useState([]);
   const [myOrders, setMyOrders] = useState([]);
@@ -48,6 +50,7 @@ export function AuthProvider({ children }) {
     setCurrentUser(null);
     setUserRole(-1);
     setGetUsers([]);
+    setRecommendedOrders([]);
     setGetQuitUsers([]);
     setGetBannedUsers([]);
     setOrderId([]);
@@ -158,13 +161,14 @@ export function AuthProvider({ children }) {
       setUserWarning(doc.data().warnings);
       getOrders(doc.data().orders);
       console.log("Role : " + doc.data().role);
+      setLoggedIn(true);
       if (doc.data().role === 0) {
         handleLogout();
         alert("You are not authorized to access this page");
         info();
       } else if (doc.data().role === 1001) {
         getUserAccounts();
-        getDeliveryOrders();
+        getDeliveryOrders("manager");
       } else if (doc.data().role === -11111) {
         info();
         handleLogout();
@@ -178,7 +182,7 @@ export function AuthProvider({ children }) {
         alert("Your account is still being deleted");
         info();
       } else if (doc.data().role === 33) {
-        getDeliveryOrders();
+        getDeliveryOrders("delivery");
         getMyOrders(doc.data().id);
         console.log(deliveryOrders);
       }
@@ -187,14 +191,6 @@ export function AuthProvider({ children }) {
 
   async function deleteAccount(id) {
     await deleteDoc(doc(db, "Users", id));
-    getAuth().deleteUser("ndxDg6D7DmSYMFxajjSqqV8XLrg2")
-    .then(() => {
-      alert("Account deleted");
-      console.log("User Deleted");
-    })
-    .catch((error) => {
-      alert('Error deleting user:', error);
-    });  
   }
 
   async function setDeliveryPerson(orderId, chosenId, secondId, memo) {
@@ -225,7 +221,7 @@ export function AuthProvider({ children }) {
     }
   }
 
-  async function getDeliveryOrders() {
+  async function getDeliveryOrders(a) {
     console.log("running getDeliveryOrders");
     const food = collection(db, "Orders");
     const v = await onSnapshot(food, (querySnapshot) => {
@@ -236,7 +232,14 @@ export function AuthProvider({ children }) {
             data.push(doc.data());
           }
         });
+        console.log("delivery Info", data);
         setDeliveryOrders(data);
+        if (!loggedIn) {
+          v();
+        }
+        if (a === "manager") {
+          v();
+        }
       });
   }
 
@@ -252,6 +255,7 @@ export function AuthProvider({ children }) {
           }
         });
         setMyOrders(data);
+        v();
       });
   }
 
@@ -328,11 +332,25 @@ export function AuthProvider({ children }) {
       const q = query(collection(db, "Orders"), where("orderId", "in", ord));
       const querySnapshot = await getDocs(q);
       const data = [];
+      var hello = [];
       querySnapshot.forEach((doc) => {
-        data.unshift(doc.data());      
+        data.unshift(doc.data());
+        for (var i = 0; i < doc.data().order.length; i++) {
+          var check = true;
+          for (var j = 0; j < hello.length; j++) {
+            if (hello[j] === doc.data().order[i].name) {
+              check = false;
+              break;
+            }
+          }
+          if (hello.length != 3 && check) {
+            hello.push(doc.data().order[i].name);
+          }
+        }
+        console.log("recommend : ", hello);
       });
+      setRecommendedOrders(hello);
       setOrders(data);
-      console.log(orders);
     }
   }
 
@@ -416,6 +434,7 @@ export function AuthProvider({ children }) {
     userId,
     myOrders,
     handleLogout,
+    recommendedOrders,
     userRole,
     getUsers,
     deleteAccount,

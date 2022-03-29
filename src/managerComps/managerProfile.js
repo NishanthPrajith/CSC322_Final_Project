@@ -2,6 +2,7 @@ import './managerProfile.css'
 
 import { useEffect, useState, useRef } from "react"
 import { useAuth } from "../contexts/Authcontext";
+import { updatePhoneNumber } from 'firebase/auth';
 
 export default function ManagerProfile() {
 
@@ -47,19 +48,17 @@ export default function ManagerProfile() {
             setinfo(temp);
             document.getElementsByClassName("memo")[0].style.display = "flex";
         }
+
     }
 
     function submitMemo(e) {
-        e.preventDefault();
         setDeliveryPerson(information[0], information[1], information[2], memo.current.value);
-        memo.current.value = "";
+        memo.current.value = "Enter reason here.";
         closeMemo(e);
     }
 
     function closeMemo(e) {
-        e.preventDefault();
         document.getElementsByClassName("memo")[0].style.display = "none";
-        setinfo([]);
     }
     
     useEffect(() => {
@@ -127,7 +126,7 @@ export default function ManagerProfile() {
                 <div style={{marginTop: "5%"}}>
                     {
                     deliveryOrders.map((item, index) => {
-                        if (item.deliveryUserId === "") {
+                        if (item.deliveryUserId === "" || item.deliveryUserId === undefined) {
                             orderNumber = orderNumber + 1;
                             return (
                                 <div className="deliveryCardTwo">

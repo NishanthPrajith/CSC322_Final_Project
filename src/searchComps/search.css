@@ -12,6 +12,11 @@
     letter-spacing: 2px;
 }
 
+.special {
+    color: var(--yellow);
+    margin-left: 2%;
+}
+
 .search > div {
     margin-bottom: 5%;
 }
@@ -183,6 +188,8 @@
     background-position: center;
     background-size: cover;
     border-radius: 15px 0 0 15px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .quantity {

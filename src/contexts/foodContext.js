@@ -1,8 +1,11 @@
 
 import React, { useContext, useState, useEffect } from "react"
-import { collection, onSnapshot, query, orderBy, limit} from "firebase/firestore";
+import { collection, onSnapshot, getDocs, where, query, orderBy, limit} from "firebase/firestore";
 
 import { db } from "../firebase";
+
+import { useAuth } from "./Authcontext";
+
 
 const FoodContext = React.createContext();
 
@@ -18,37 +21,48 @@ export function FoodProvider({ children }) {
     const [highestRated, setHighestRated] = useState([]);
     const [popularDishes, setPopularDishes] = useState([]);
 
-    const [allFoodItems, setAllFoodItems] = useState([]);     
+    const [allFoodItems, setAllFoodItems] = useState([]); 
+    
+    const [recommendedDishes, setRecommendedDishes] = useState([]);
 
-    async function getDishes(db){
-      getHighestRatedDishes();
-      const food = collection(db, "Dishes");
+    const { userRole } = useAuth();
+
+    async function getDishes(){
+      var food = collection(db, "Dishes");
+      if (userRole !== 111) {
+        food = query(food, where("special", "==", false));
+      }
       onSnapshot(food, (querySnapshot) => {
           const data = [];
           querySnapshot.forEach((doc) => {
-            data.push(doc.data());
+            if (userRole !== 111 && doc.data().special !== true) {
+              data.push(doc.data());
+            } else if (userRole === 111) {
+              data.push(doc.data());
+            }
           });
           setAllFoodItems(data);
           setfilteredFoodItems(data);
         });
+
+        
+      getHighestRatedDishes(food);
     }
 
-    async function getHighestRatedDishes() {
-      getPopularDishes();
-        const food = collection(db, "Dishes");
-        const q = query(food, orderBy("rating", "desc"), limit(3));
-        onSnapshot(q, (querySnapshot) => {
-            const data = [];
-            querySnapshot.forEach((doc) => {
-                data.push(doc.data());
-            });
-            setHighestRated(data);
-        });
+    async function getHighestRatedDishes(food) {
+      getPopularDishes(food);
+      var q = query(food, orderBy("rating", "desc"), limit(3));
+      onSnapshot(q, (querySnapshot) => {
+          const data = [];
+          querySnapshot.forEach((doc) => {
+              data.push(doc.data());
+          });
+          setHighestRated(data);
+      });
     }
 
-    async function getPopularDishes() {
-      const food = collection(db, "Dishes");
-      const q = query(food, orderBy("count", "desc"), limit(3));
+    async function getPopularDishes(food) {
+      var q = query(food, orderBy("count", "desc"), limit(3));
       onSnapshot(q, (querySnapshot) => {
           const data = [];
           querySnapshot.forEach((doc) => {
@@ -79,14 +93,28 @@ export function FoodProvider({ children }) {
     }
 
     useEffect(() => {
+      console.log("Food role", userRole);
       setChangeState(0);
-      getDishes(db);
+      getDishes();
       getHighestRatedDishes();
     }, [])
 
     function changeFlilteredFoodItems(value) {
       setfilteredFoodItems(value);
-   }
+    }
+
+    async function getRecommendedDishes(a) {
+      var data = [];
+      for (var i = 0; i < a.length; i++) {
+        var q = query(collection(db, "Dishes"), where("name", "==", a[i]));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          doc.data().quantity = 0;
+          data.push(doc.data());
+        });
+      }
+      setRecommendedDishes(data);
+    }
 
     function changeAllFoodItems(temp, role) {
       var a = allFoodItems;
@@ -114,6 +142,10 @@ export function FoodProvider({ children }) {
       setPopularDishes(temp);
     }
 
+    function changeRecommendedDishes(temp) {
+      setRecommendedDishes(temp);
+    }
+
     function totalCartCount() {
       var sum = 0;
       for (let i = 0; i < allFoodItems.length; i++) {
@@ -134,6 +166,10 @@ export function FoodProvider({ children }) {
         changeAllFoodItems,
         changeHighestRated,
         changePopularDishes,
+        changeRecommendedDishes,
+        getDishes,
+        recommendedDishes,
+        getRecommendedDishes
     }
 
     return (

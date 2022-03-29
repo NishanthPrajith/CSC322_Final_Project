@@ -1,22 +1,49 @@
 import './search.css';
 
+
+import { useAuth } from '../contexts/Authcontext';
+
 import { useFood } from "../contexts/foodContext";
 import { useEffect, useState } from 'react';
 
 import { RiAddFill, RiSubtractFill } from "react-icons/ri";
+import { AiFillStar } from "react-icons/ai";
+import UserProfile from '../userComps/userProfile';
+
 
 export default function MainSearch() {
 
-    const { filteredFoodItems, popularDishes, changeAllFoodItems, changePopularDishes, changeHighestRated, highestRated } = useFood();
+    const { filteredFoodItems, changeRecommendedDishes, getRecommendedDishes, recommendedDishes, getDishes, popularDishes, changeAllFoodItems, changePopularDishes, changeHighestRated, highestRated } = useFood();
     const [loading, setLoading] = useState(true);
 
+    const { userRole, recommendedOrders } = useAuth();
+
+    const [role, setRole] = useState(-1);
+
+    const [info, setInfo] = useState([]);
+
+    
+    useEffect(() => {
+        getDishes();
+    }, []);
+
+    if (userRole !== role) {
+        setRole(userRole);
+        getDishes();
+    }
+
+    if (info !== recommendedOrders && recommendedOrders !== undefined) {
+        setInfo(recommendedOrders);
+        getRecommendedDishes(recommendedOrders);
+    }
+
     if (loading) {
-        if (filteredFoodItems.length > 0) {
+        if (filteredFoodItems.length > 0 && popularDishes.length > 0 && highestRated.length > 0) {
             setLoading(false);
             console.log("-------");
             console.log(filteredFoodItems);
-            console.log("-------");
             console.log(highestRated);
+            console.log(popularDishes);
         }
         return <div className='Loading'>
         </div>
@@ -33,7 +60,7 @@ export default function MainSearch() {
     function addToCartSubtract(id, arr) {
         var temp = arr;
         if (id !== -1) {
-            temp[id].quantity = temp[id].quantity == 0 ? 0 : temp[id].quantity - 1;
+            temp[id].quantity = temp[id].quantity === 0 ? 0 : temp[id].quantity - 1;
         }
         changeAllFoodItems(temp, 2);
     }
@@ -70,6 +97,15 @@ export default function MainSearch() {
         }
         changePopularDishes(b);
         changeAllFoodItems(b, 1);
+
+        var c = recommendedDishes;
+        for (let i = 0; i < c.length; i++) {
+            if (c[i].name === name && c[i].price === price) {
+                c[i].quantity = c[i].quantity + 1;
+            }
+        }
+        changeRecommendedDishes(c);
+        changeAllFoodItems(c, 1);
     }
 
     function modifiedSubtractToCart(name, price) {
@@ -85,7 +121,7 @@ export default function MainSearch() {
         var a = highestRated;
         for (let i = 0; i < a.length; i++) {
             if (a[i].name === name && a[i].price === price) {
-                a[i].quantity = a[i].quantity == 0 ? 0 : a[i].quantity - 1;
+                a[i].quantity = a[i].quantity === 0 ? 0 : a[i].quantity - 1;
             }
         }
         changeHighestRated(a);
@@ -94,15 +130,134 @@ export default function MainSearch() {
         var b = popularDishes;
         for (let i = 0; i < b.length; i++) {
             if (b[i].name === name && b[i].price === price) {
-                b[i].quantity = b[i].quantity == 0 ? 0 : b[i].quantity - 1;
+                b[i].quantity = b[i].quantity === 0 ? 0 : b[i].quantity - 1;
             }
         }
         changePopularDishes(b);
         changeAllFoodItems(b, 2);
+
+        var c = recommendedDishes;
+        for (let i = 0; i < c.length; i++) {
+            if (c[i].name === name && c[i].price === price) {
+                c[i].quantity = c[i].quantity === 0 ? 0 : c[i].quantity - 1;
+            }
+        }
     }
 
     return (
         <div className='search'>
+            {
+                recommendedDishes.length === 3 &&
+                <div>
+                    <p className="searchHeading">Previous Orders</p>
+                    <div className='recommendedUI'>
+                        <div className="recommendedLeftSide">
+                            <div className="dishImage">
+                            </div>
+                            <div>
+                                <h3>{recommendedDishes[0].name} 
+                                {   
+                                    recommendedDishes[0].special &&
+                                    <AiFillStar className='special'/>
+                                }</h3>
+                                <p style={{fontSize: "0.9em"}}>{recommendedDishes[0].description}</p>
+                                <div className="cardSeperation">
+                                    <div>
+                                        <h5>Rating</h5>
+                                        <p>{recommendedDishes[0].rating}</p>
+                                    </div>
+                                    <div>
+                                        <h5>Price</h5>
+                                        <p>${recommendedDishes[0].price}</p>
+                                    </div>
+                                    <div>
+                                        <h5>Quantity</h5>
+                                        <div className='quantity'>
+                                            <button onClick={() => {modifiedSubtractToCart(recommendedDishes[0].name, recommendedDishes[0].price)}}>
+                                                <RiSubtractFill />                                        
+                                            </button>
+                                            <p>{recommendedDishes[0].quantity}</p>
+                                            <button onClick={() => {modifiedAddToCart(recommendedDishes[0].name, recommendedDishes[0].price)}}>
+                                                <RiAddFill />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='recommendedRightSide'>
+                            <div className="recommendRightTop">
+                                <div className="dishImage">
+                                </div>
+                                <div style={{margin: "4% 6% 4% 0"}}>
+                                    <h3>{recommendedDishes[1].name}
+                                    {   
+                                        recommendedDishes[1].special &&
+                                        <AiFillStar className='special'/>
+                                    }</h3>
+                                    <p style={{fontSize: "0.8em"}}>{recommendedDishes[1].description}</p>
+                                    <div className="cardSeperationRight">
+                                        <div>
+                                            <h5>Rating</h5>
+                                            <p>{recommendedDishes[1].rating}</p>
+                                        </div>
+                                        <div>
+                                            <h5>Price</h5>
+                                            <p>${recommendedDishes[1].price}</p>
+                                        </div>
+                                        <div>
+                                            <h5>Quantity</h5>
+                                            <div className='quantity'>
+                                                <button onClick={() => {modifiedSubtractToCart(recommendedDishes[1].name, recommendedDishes[1].price)}}>
+                                                    <RiSubtractFill />
+                                                </button>
+                                                <p>{recommendedDishes[1].quantity}</p>
+                                                <button onClick={() => {modifiedAddToCart(recommendedDishes[1].name, recommendedDishes[1].price)}}>
+                                                    <RiAddFill />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="recommendRightBottom">
+                                <div className="dishImage">
+                                </div>
+                                <div style={{margin: "4% 6% 4% 0"}}>
+                                    <h3>{recommendedDishes[2].name}
+                                    {   
+                                        recommendedDishes[2].special &&
+                                        <AiFillStar className='special'/>
+                                    }</h3>
+                                    <p style={{fontSize: "0.8em"}}>{recommendedDishes[2].description}</p>
+                                    <div className="cardSeperationRight">
+                                        <div>
+                                            <h5>Rating</h5>
+                                            <p>{recommendedDishes[2].rating}</p>
+                                        </div>
+                                        <div>
+                                            <h5>Price</h5>
+                                            <p>${recommendedDishes[2].price}</p>
+                                        </div>
+                                        <div>
+                                            <h5>Quantity</h5>
+                                            <div className='quantity'>
+                                                <button onClick={() => {modifiedSubtractToCart(recommendedDishes[2].name, recommendedDishes[2].price)}}>
+                                                    <RiSubtractFill />
+                                                </button>
+                                                <p>{recommendedDishes[2].quantity}</p>
+                                                <button onClick={() => {modifiedAddToCart(recommendedDishes[2].name, recommendedDishes[2].price)}}>
+                                                    <RiAddFill />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
             <div>
                 <p className="searchHeading">Highest Rated Dishes</p>
                 <div className='recommendedUI'>
@@ -110,7 +265,11 @@ export default function MainSearch() {
                         <div className="dishImage">
                         </div>
                         <div>
-                            <h3>{highestRated[0].name}</h3>
+                            <h3>{highestRated[0].name} 
+                            {   
+                                highestRated[0].special &&
+                                <AiFillStar className='special'/>
+                            }</h3>
                             <p style={{fontSize: "0.9em"}}>{highestRated[0].description}</p>
                             <div className="cardSeperation">
                                 <div>
@@ -125,8 +284,7 @@ export default function MainSearch() {
                                     <h5>Quantity</h5>
                                     <div className='quantity'>
                                         <button onClick={() => {modifiedSubtractToCart(highestRated[0].name, highestRated[0].price)}}>
-                                            <RiSubtractFill />
-                                        </button>
+                                            <RiSubtractFill />                                        </button>
                                         <p>{highestRated[0].quantity}</p>
                                         <button onClick={() => {modifiedAddToCart(highestRated[0].name, highestRated[0].price)}}>
                                             <RiAddFill />
@@ -141,7 +299,11 @@ export default function MainSearch() {
                             <div className="dishImage">
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
-                                <h3>{highestRated[1].name}</h3>
+                                <h3>{highestRated[1].name}
+                                {   
+                                    highestRated[1].special &&
+                                    <AiFillStar className='special'/>
+                                }</h3>
                                 <p style={{fontSize: "0.8em"}}>{highestRated[1].description}</p>
                                 <div className="cardSeperationRight">
                                     <div>
@@ -171,7 +333,11 @@ export default function MainSearch() {
                             <div className="dishImage">
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
-                                <h3>{highestRated[2].name}</h3>
+                                <h3>{highestRated[2].name}
+                                {   
+                                    highestRated[2].special &&
+                                    <AiFillStar className='special'/>
+                                }</h3>
                                 <p style={{fontSize: "0.8em"}}>{highestRated[2].description}</p>
                                 <div className="cardSeperationRight">
                                     <div>
@@ -207,7 +373,11 @@ export default function MainSearch() {
                         <div className="dishImage">
                         </div>
                         <div>
-                            <h3>{popularDishes[0].name}</h3>
+                            <h3>{popularDishes[0].name}
+                            {   
+                                popularDishes[0].special &&
+                                <AiFillStar className='special'/>
+                            }</h3>
                             <p style={{fontSize: "0.9em"}}>{popularDishes[0].description}</p>
                             <div className="cardSeperation">
                                 <div>
@@ -238,7 +408,11 @@ export default function MainSearch() {
                             <div className="dishImage">
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
-                                <h3>{popularDishes[1].name}</h3>
+                                <h3>{popularDishes[1].name}
+                                {   
+                                    popularDishes[1].special &&
+                                    <AiFillStar className='special'/>
+                                }</h3>
                                 <p style={{fontSize: "0.8em"}}>{popularDishes[1].description}</p>
                                 <div className="cardSeperationRight">
                                     <div>
@@ -268,7 +442,11 @@ export default function MainSearch() {
                             <div className="dishImage">
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
-                                <h3>{popularDishes[2].name}</h3>
+                                <h3>{popularDishes[2].name}
+                                {   
+                                    popularDishes[2].special &&
+                                    <AiFillStar className='special'/>
+                                }</h3>
                                 <p style={{fontSize: "0.8em"}}>{popularDishes[2].description}</p>
                                 <div className="cardSeperationRight">
                                     <div>
@@ -308,7 +486,11 @@ export default function MainSearch() {
                                     <p></p>
                                 </div>
                                 <div style  = {{margin: "6% 0"}}>
-                                    <h3>{item.name}</h3>
+                                    <h3>{item.name}
+                                    {
+                                        item.special &&
+                                        <AiFillStar className = "special" />
+                                    }</h3>
                                     <p style={{fontSize: "0.9em", margin: "7% 0 10% 0"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
                                     <div className="cardSeperation">
                                         <div>

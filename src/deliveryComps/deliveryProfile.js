@@ -17,7 +17,6 @@ export default function DeliveryProfile() {
         e.preventDefault();
         console.log(id);
         var a = document.getElementsByClassName("bidInput");
-        console.log(a[index].value);
         await submitOrderBid(a[index].value, id, bids);
     }
 
@@ -85,14 +84,14 @@ export default function DeliveryProfile() {
                                                 })
                                             }
                                         </div>
-                                        {value.bids[userId] ===  undefined &&
+                                        {value.bids[userId] === undefined &&
                                         <div style={{display: "flex", flexDirection: "column"}}>
                                             <input id="check" className="bidInput" ref={check} defaultValue={0} type="number"/>
                                             <button className={"btnBidSubmit"} onClick={function(e) {submitBid(e, value.orderId, index, value.bids)}}>Submit Bid</button>
                                         </div>}
                                         {
                                             value.bids[userId] !== undefined &&
-                                            <div style={{display: "flex", flexDirection: "column", textAlign: "center"}}>
+                                            <div className='bidInput' style={{padding: 0, backgroundColor: "white", display: "flex", flexDirection: "column", textAlign: "center"}}>
                                                 <p style={{margin: "0"}}>Your Bid</p>
                                                 <p className='bidAmount'>$ {value.bids[userId]}</p>
                                             </div>
