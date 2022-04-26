@@ -1,24 +1,68 @@
 import './chefProfile.css'
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useAuth } from "../contexts/Authcontext";
 import { useFood } from "../contexts/foodContext";
+import { AiFillStar } from "react-icons/ai";
 
 export default function() {
 
     const [choice, setChoice] = useState(0);
-    const {allFoodItems} = useFood();
 
-    const { userName, userWallet, userJoined } = useAuth();
+    const { userId, userName, userWallet, userJoined } = useAuth();
+
+    const { addNewDish, chefDishes, getChefFood } = useFood();
+
+    const dishName = useRef("");
+    const description = useRef("");
+    const imageURL = useRef("");
+    const price = useRef(0);
+    const dishType = useRef("");
 
     function handleClick(i) {
         // console.log(allFoodItems);
         setChoice(i);
     }
 
+    async function createANewDish(e) {
+        e.preventDefault();
+        const newDish = {
+            name: dishName.current.value,
+            description: description.current.value,
+            image: imageURL.current.value,
+            price: parseInt(price.current.value),
+            special: dishType.current.value == "chefSpecial" ? true : false,
+            chefId: userId,
+            chef: userName,
+            rating: 0,
+            quantity: 0,
+            count: 0
+        };
+        if (newDish.dishName == "" || newDish.description == "" || newDish.imageURL == "" || newDish.price == "") {
+            document.getElementsByClassName("error")[0].innerHTML = "Please fill all the fields";
+        } else {
+            await addNewDish(newDish);
+            alert("New Dish has been added");
+            dishName.current.value = "";
+            description.current.value = "";
+            imageURL.current.value = "";
+            price.current.value = 0;
+            dishType.current.value = "regular";
+        }
+        console.log(newDish);
+    }
+
+    useEffect(() => {
+        const test = async() => {  
+            await getChefFood(userId); 
+        }
+        test();
+        console.log(chefDishes);
+    }, [])
+
     return (
         <div className="chefProfile">
-            <h1>Chef {userName}</h1>
+            <h1>{userName}</h1>
             <div className="ChoicesLink">
                 <div onClick = {() => {handleClick(0)}} style={choice == 0 ? {backgroundColor: "var(--yellow)"} : {}}>
                     My foods
@@ -31,9 +75,9 @@ export default function() {
                 </div>
             </div>
             {choice == 0 && 
-                <div className='foodItemsUI'>
+                <div className='foodItemsUI' style={{marginTop: "2%"}}>
                 {
-                    allFoodItems.map((item, index) => {
+                    chefDishes.map((item, index) => {
                         // console.log(userName, item.chef)
                         if (userName == item.chef){
                         return (
@@ -42,7 +86,10 @@ export default function() {
                                     <p></p>
                                 </div>
                                 <div style  = {{margin: "6% 0"}}>
-                                    <h3>{item.name}</h3>
+                                    <h3>{item.name}                                {   
+                                        item.special &&
+                                        <AiFillStar className='special'/>
+                                    }</h3>
                                     <p style={{fontSize: "0.9em", margin: "7% 0 10% 0"}}>{item.description}</p>
                                     <div className="cardSeperation">
                                         <div>
@@ -81,30 +128,30 @@ export default function() {
             <div className="createDish">
                 {/*This Section is the SignUp Box*/}
                 <div className={"dishBox"}>
-                    <form onSubmit={() => { return false;} }>
+                    <form onSubmit={(e) => {createANewDish(e)} }>
                         <div className={"labelSpacing"}>
                             <label> Dish Name : </label>
-                            <input type={"text"} className={"input"} placeholder="Enter Dish Name" name="dishName" required />
+                            <input type={"text"} ref = {dishName} className={"input"} placeholder="Enter Dish Name" name="dishName" required />
                         </div>
                         <div className={"labelSpacing"}>
                             <label> Description : </label>
-                            <textarea type={"text"} className={"input"} placeholder="Enter Dish Description" name="description" required rows="8"/>
+                            <textarea type={"text"} ref = {description} className={"input"} placeholder="Enter Dish Description" name="description" required rows="8"/>
                         </div>
                         <div className={"labelSpacing"}>
                             <label> Dish Image url : </label>
-                            <input type={"text"} className={"input"} placeholder="Enter an image URL for your dish" name="dishPic" required />
+                            <input type={"text"} ref = {imageURL} className={"input"} placeholder="Enter an image URL for your dish" name="dishPic" required />
                         </div>
                         <div className={"labelSpacing"}>
                             <label > Price : </label>
-                            <input type={"number"} className={"input"} placeholder="Enter Price" name="price" required />
+                            <input type="number" min = {1} ref = {price} className={"input"} name="price" required />
                         </div>
                         <div className={"labelSpacing"}>
-                            <select>
-                                <option selected value="regukar">Regular</option>
+                            <select ref = {dishType}>
+                                <option value="regular">Regular</option>
                                 <option value="chefSpecial">Chef Special</option>
                             </select>
                         </div>
-                        <div className={"labelSpacingButton"}>
+                        <div className={'labelSpacing'}>
                             <button className={"btnSubmit"}>Create Dish</button>
                         </div>
                         <div className='error' style = {{color: "var(--red)", textAlign: "center", marginTop: "2%"}}></div>

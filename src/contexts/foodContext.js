@@ -1,6 +1,6 @@
 
 import React, { useContext, useState, useEffect } from "react"
-import { collection, onSnapshot, getDocs, where, query, orderBy, limit} from "firebase/firestore";
+import { collection, onSnapshot, addDoc, getDocs, where, query, orderBy, limit} from "firebase/firestore";
 
 import { db } from "../firebase";
 
@@ -26,6 +26,24 @@ export function FoodProvider({ children }) {
     const [recommendedDishes, setRecommendedDishes] = useState([]);
 
     const { userRole } = useAuth();
+
+    const [chefDishes, setChefDishes] = useState([]);
+
+    async function getChefFood(userId) {
+        const chefDishes = collection(db, "Dishes");
+        console.log(userId)
+        onSnapshot(chefDishes, (snapshot) => {
+            const chefDishes = [];
+            snapshot.forEach((doc) => {
+                console.log(doc.data());
+                if (doc.data().chefId == userId) {
+                    chefDishes.push(doc.data());
+                }
+            });
+            setChefDishes(chefDishes);
+        }
+        );
+    }
 
     async function getDishes(){
       var food = collection(db, "Dishes");
@@ -95,6 +113,7 @@ export function FoodProvider({ children }) {
       console.log("Food role", userRole);
       setChangeState(0);
       getDishes();
+      getChefFood();
       getHighestRatedDishes();
     }, [])
 
@@ -113,6 +132,11 @@ export function FoodProvider({ children }) {
         });
       }
       setRecommendedDishes(data);
+    }
+
+    async function addNewDish(data) {
+      var q = collection(db, "Dishes");
+      await addDoc(q, data);
     }
 
     function changeAllFoodItems(temp, role) {
@@ -157,12 +181,15 @@ export function FoodProvider({ children }) {
       setChangeState(sum);
     }
 
+
     const v = {
         changeFlilteredFoodItems,
         filteredFoodItems,
         allFoodItems,
         changeState,
         clearData,
+        addNewDish,
+        getChefFood,
         highestRated,
         popularDishes,
         changeAllFoodItems,
@@ -172,7 +199,8 @@ export function FoodProvider({ children }) {
         getDishes,
         recommendedDishes,
         getRecommendedDishes,
-        totalCartCount
+        totalCartCount,
+        chefDishes
     }
 
     return (

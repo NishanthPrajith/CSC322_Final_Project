@@ -326,7 +326,7 @@ export function AuthProvider({ children }) {
 
   async function getOrders(ord) {
     console.log(ord);
-    if (ord !== []) {
+    if (ord.length !== 0) {
       console.log("check");
       const q = query(collection(db, "Orders"), where("orderId", "in", ord));
       const querySnapshot = await getDocs(q);
