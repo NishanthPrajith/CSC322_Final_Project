@@ -1,6 +1,6 @@
 
 import React, { useContext, useState, useEffect } from "react"
-import { collection, onSnapshot, addDoc, getDocs, where, query, orderBy, limit} from "firebase/firestore";
+import { collection, onSnapshot, addDoc, doc, getDocs, where, query, orderBy, limit, updateDoc} from "firebase/firestore";
 
 import { db } from "../firebase";
 
@@ -136,7 +136,10 @@ export function FoodProvider({ children }) {
 
     async function addNewDish(data) {
       var q = collection(db, "Dishes");
-      await addDoc(q, data);
+      const docRef = await addDoc(q, data);
+      await updateDoc(doc(db, "Dishes", docRef.id), {
+        dishId: docRef.id,
+      });
     }
 
     function changeAllFoodItems(temp, role) {

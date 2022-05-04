@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { RiAddFill, RiSubtractFill } from "react-icons/ri";
 import { AiFillStar } from "react-icons/ai";
 import UserProfile from '../userComps/userProfile';
+import { Link } from 'react-router-dom';
 
 
 export default function MainSearch() {
@@ -150,7 +151,7 @@ export default function MainSearch() {
                     <p className="searchHeading">Previous Orders</p>
                     <div className='recommendedUI'>
                         <div className="recommendedLeftSide">
-                            <div className="dishImage">
+                            <div className="dishImage" style={{backgroundImage: getImage(recommendedDishes[0].image)}}>
                             </div>
                             <div>
                                 <h3>{recommendedDishes[0].name} 
@@ -181,11 +182,16 @@ export default function MainSearch() {
                                         </div>
                                     </div>
                                 </div>
+                                <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                    <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                        <Link to={"/reviews/" + recommendedDishes[0].dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div className='recommendedRightSide'>
                             <div className="recommendRightTop">
-                                <div className="dishImage">
+                                <div className="dishImage" style={{backgroundImage: getImage(recommendedDishes[1].image)}}>
                                 </div>
                                 <div style={{margin: "4% 6% 4% 0"}}>
                                     <h3>{recommendedDishes[1].name}
@@ -216,10 +222,15 @@ export default function MainSearch() {
                                             </div>
                                         </div>
                                     </div>
+                                    <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                        <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                            <Link to={"/reviews/" + recommendedDishes[1].dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div className="recommendRightBottom">
-                                <div className="dishImage">
+                                <div className="dishImage" style={{backgroundImage: getImage(recommendedDishes[2].image)}}>
                                 </div>
                                 <div style={{margin: "4% 6% 4% 0"}}>
                                     <h3>{recommendedDishes[2].name}
@@ -251,6 +262,11 @@ export default function MainSearch() {
                                         </div>
                                     </div>
                                 </div>
+                                <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                    <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                        <Link to={"/reviews/" + recommendedDishes[2].dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -260,7 +276,7 @@ export default function MainSearch() {
                 <p className="searchHeading">Highest Rated Dishes</p>
                 <div className='recommendedUI'>
                     <div className="recommendedLeftSide">
-                        <div className="dishImage">
+                        <div className="dishImage" style={{backgroundImage: getImage(highestRated[0].image)}}>
                         </div>
                         <div>
                             <h3>{highestRated[0].name} 
@@ -290,11 +306,16 @@ export default function MainSearch() {
                                     </div>
                                 </div>
                             </div>
+                            <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                    <Link to={"/reviews/" + highestRated[0].dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div className='recommendedRightSide'>
                         <div className="recommendRightTop">
-                            <div className="dishImage">
+                            <div className="dishImage" style={{backgroundImage: getImage(highestRated[1].image)}}>
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
                                 <h3>{highestRated[1].name}
@@ -325,10 +346,15 @@ export default function MainSearch() {
                                         </div>
                                     </div>
                                 </div>
+                                <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                    <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                        <Link to={"/reviews/" + highestRated[1].dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div className="recommendRightBottom">
-                            <div className="dishImage">
+                            <div className="dishImage" style={{backgroundImage: getImage(highestRated[2].image)}}>
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
                                 <h3>{highestRated[2].name}
@@ -359,6 +385,11 @@ export default function MainSearch() {
                                         </div>
                                     </div>
                                 </div>
+                                <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                    <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                        <Link to={"/reviews/" + highestRated[2].dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -368,7 +399,7 @@ export default function MainSearch() {
                 <p className="searchHeading">Popular Dishes</p>
                 <div className='recommendedUI'>
                     <div className="recommendedLeftSide">
-                        <div className="dishImage">
+                        <div className="dishImage" style={{backgroundImage: getImage(popularDishes[0].image)}}>
                         </div>
                         <div>
                             <h3>{popularDishes[0].name}
@@ -399,11 +430,16 @@ export default function MainSearch() {
                                     </div>
                                 </div>
                             </div>
+                            <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                    <Link to={"/reviews/" + popularDishes[0].dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div className='recommendedRightSide'>
                         <div className="recommendRightTop">
-                            <div className="dishImage">
+                            <div className="dishImage" style={{backgroundImage: getImage(popularDishes[1].image)}}>
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
                                 <h3>{popularDishes[1].name}
@@ -434,10 +470,15 @@ export default function MainSearch() {
                                         </div>
                                     </div>
                                 </div>
+                                <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                    <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                        <Link to={"/reviews/" + popularDishes[1].dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div className="recommendRightBottom">
-                            <div className="dishImage">
+                            <div className="dishImage" style={{backgroundImage: getImage(popularDishes[2].image)}}>
                             </div>
                             <div style={{margin: "4% 6% 4% 0"}}>
                                 <h3>{popularDishes[2].name}
@@ -468,6 +509,11 @@ export default function MainSearch() {
                                         </div>
                                     </div>
                                 </div>
+                                <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                    <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                        <Link to={"/reviews/" + popularDishes[2].dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -489,7 +535,7 @@ export default function MainSearch() {
                                         item.special &&
                                         <AiFillStar className = "special" />
                                     }</h3>
-                                    <p style={{fontSize: "0.9em", margin: "7% 0 10% 0"}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, suscipit voluptatum minima, debitis tempore labore ab cumque maiores culpa quisquam iste cum consectetur tempora recusandae maxime qui earum, ratione adipisci.</p>
+                                    <p style={{fontSize: "0.9em", margin: "7% 0 10% 0"}}>{item.description}</p>
                                     <div className="cardSeperation">
                                         <div>
                                             <h5>Rating</h5>
@@ -511,6 +557,11 @@ export default function MainSearch() {
                                                 </button>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                        <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                            <Link to={"/reviews/" + item.dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                        </button>
                                     </div>
                                 </div>
                             </div>

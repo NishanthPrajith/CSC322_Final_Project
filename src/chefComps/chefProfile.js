@@ -60,6 +60,11 @@ export default function() {
         console.log(chefDishes);
     }, [])
 
+    function getImage(imageName) {
+        var a = "url('" + imageName + "')";
+        return a;
+    }
+
     return (
         <div className="chefProfile">
             <h1>{userName}</h1>
@@ -82,7 +87,7 @@ export default function() {
                         if (userName == item.chef){
                         return (
                             <div className="recommendedLeftSideMain" key = {index}>
-                                <div className="dishImage">
+                                <div className="dishImage" style={{backgroundImage: getImage(item.image)}}>
                                     <p></p>
                                 </div>
                                 <div style  = {{margin: "6% 0"}}>

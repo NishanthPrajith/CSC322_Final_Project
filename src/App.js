@@ -14,6 +14,8 @@ import Navbar from "./navComps/navbar";
 import FinalPage from "./checkoutComps/finalPage";
 import CheckoutCart from "./checkoutComps/checkoutCart";
 
+import Reviews from "./reviewComps/reviews";
+
 import UserProfile from "./userComps/userProfile";
 import ChefProfile from "./chefComps/chefProfile";
 import DeliveryProfile from "./deliveryComps/deliveryProfile";
@@ -64,7 +66,11 @@ function App() {
               path="/deliveryProfile"
               element={<DeliveryProfile />}
             />
-            {/* </Route> */}
+            {/* </Reviwes> */}
+            <Route
+              path="/reviews/:id"
+              element={<Reviews />}
+            />
 
             {/* <Route element={<RequireAuth allowedRoles={[ROLES.Manager]} />}> */}
             <Route exact path="/managerProfile" element={<ManagerProfile />} />
