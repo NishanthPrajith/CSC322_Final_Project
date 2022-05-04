@@ -261,11 +261,11 @@ export default function MainSearch() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
-                                    <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
-                                        <Link to={"/reviews/" + recommendedDishes[2].dishId} style={{color: "#0087bd"}}> See Reviews</Link>
-                                    </button>
+                                    <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                        <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                            <Link to={"/reviews/" + recommendedDishes[2].dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

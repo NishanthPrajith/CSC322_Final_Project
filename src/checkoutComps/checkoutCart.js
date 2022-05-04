@@ -45,6 +45,7 @@ export default function CheckoutCart() {
                 for (var i = 0; i < allFoodItems.length; i++) {
                     var done = {}; 
                     if (allFoodItems[i].quantity > 0) {
+                        done.dishId = allFoodItems[i].dishId;
                         done.name = allFoodItems[i].name;
                         done.count = allFoodItems[i].quantity;
                         order.push(done);

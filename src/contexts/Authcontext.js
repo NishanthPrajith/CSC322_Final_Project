@@ -6,7 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, setDoc, onSnapshot, deleteDoc, getDoc, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
+import { doc, setDoc, onSnapshot, addDoc, deleteDoc, getDoc, updateDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import { useFood } from "./foodContext";
 
@@ -55,7 +55,7 @@ export function AuthProvider({ children }) {
     setGetBannedUsers([]);
     setOrderId([]);
     setOrders([]);
-    setMyOrders(true);
+    setMyOrders([]);
     setDeliveryOrders([]);
     setUserName("");
     setUserId("");
@@ -303,6 +303,7 @@ export function AuthProvider({ children }) {
     document.userId = userId;
     document.orderId = newCityRef.id;
     document.orderDate = date;
+    document.userReviewed = false;
     if (document.state === 2) {
       document.bids = {}
       document.deliveryUserId = "";
@@ -328,28 +329,32 @@ export function AuthProvider({ children }) {
     console.log(ord);
     if (ord.length !== 0) {
       console.log("check");
-      const q = query(collection(db, "Orders"), where("orderId", "in", ord));
-      const querySnapshot = await getDocs(q);
-      const data = [];
+      const q = collection(db, "Orders");
+      var data = [];
       var hello = [];
-      querySnapshot.forEach((doc) => {
-        data.unshift(doc.data());
-        for (var i = 0; i < doc.data().order.length; i++) {
-          var check = true;
-          for (var j = 0; j < hello.length; j++) {
-            if (hello[j] === doc.data().order[i].name) {
-              check = false;
-              break;
+      const v = await onSnapshot(q, (querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          if (ord.includes(doc.data().orderId)) {
+            data.unshift(doc.data());
+            for (var i = 0; i < doc.data().order.length; i++) {
+              var check = true;
+              for (var j = 0; j < hello.length; j++) {
+                if (hello[j] === doc.data().order[i].name) {
+                  check = false;
+                  break;
+                }
+              }
+              if (hello.length != 3 && check) {
+                hello.push(doc.data().order[i].name);
+              }
             }
+            console.log("recommend : ", hello);
           }
-          if (hello.length != 3 && check) {
-            hello.push(doc.data().order[i].name);
-          }
-        }
-        console.log("recommend : ", hello);
+        });
+        setRecommendedOrders(hello);
+        setOrders(data);
+        data = [];
       });
-      setRecommendedOrders(hello);
-      setOrders(data);
     }
   }
 
@@ -382,7 +387,6 @@ export function AuthProvider({ children }) {
       deliveryReview: delivery,
       reviewed: true
     });
-    await getOrders(orderId);
   }
 
   async function updateWallet(amount, type) {
@@ -401,6 +405,28 @@ export function AuthProvider({ children }) {
       });
       setUserWallet(a);
     }
+  }
+
+  async function submitDishReview(info, orderId) {
+    for (var i = 0; i < info.length; i++) {
+      const newCityRef = doc(collection(db, "Reviews"));
+      // later...
+      await setDoc(newCityRef, info[i]);
+    }
+    updateDoc(doc(db, "Orders", orderId), {
+      userReviewed: true
+    });
+  }
+
+  async function submitDeliveryReview(type, message, orderId, name) {
+    const orders = doc(db, "Orders", orderId);
+    console.log(orders);
+    alert(userName);
+    await updateDoc(orders, {
+      deliveryReview: message,
+      deliveryReviewed: true,
+      deliveryType: type,
+    });
   }
 
   useEffect(() => {
@@ -444,7 +470,9 @@ export function AuthProvider({ children }) {
     updateWallet,
     userWarnings,
     AddWarning,
+    submitDishReview,
     orderId,
+    submitDeliveryReview,
     submitOrderBid,
     orderDelivered,
     quitAccount,

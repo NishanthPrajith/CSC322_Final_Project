@@ -3,11 +3,11 @@ import { useAuth } from '../contexts/Authcontext';
 import { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { BiWallet } from "react-icons/bi";
+import { Link } from 'react-router-dom';
 
 export default function UserProfile() {
 
     const { orders, userWarnings, writeOrderReviewUser, quitAccount, updateWallet, userRole, userWallet, userName } = useAuth();
-    const [orderChoice, setOrderChoice] = useState(-1);
 
     const rating = useRef();
     const chefRating = useRef();
@@ -15,32 +15,6 @@ export default function UserProfile() {
 
     const cardNumber = useRef();
     const money = useRef();
-
-
-    function changeOrderChoice(i) {
-        if (orderChoice === i) {
-            setOrderChoice(-1);
-        } else {
-            setOrderChoice(i);
-        }
-    }
-
-    async function formSubmission(event, id, state) {
-        event.preventDefault();
-        var a = rating.current.value;
-        var b = chefRating.current.value;
-        if (state == 2) {
-            var c = deliveryRating.current.value;
-        } else {
-            var c = "";
-        }
-        if (a < 1 || a > 5 || a === "") {
-            alert("Please enter a rating between 1 and 5!");
-        } else {
-            await writeOrderReviewUser(id, a, b, c);
-            alert("Thank you for your rating!");
-        }
-    }
 
     var done = [1, 2, 3, 4, 5];
     
@@ -217,41 +191,13 @@ export default function UserProfile() {
                                 </div>
                             </div>
                             <div className='OrderReview'>
-                                <button onClick={() => {changeOrderChoice(i)}}>
-                                    {!item.reviewed ? "Review Order" : "Order Reviewed"}
+                                <button>
+                                    {!item.userReviewed ? 
+                                    <Link to = {"/orderReview/" + i}>
+                                        Review Order
+                                    </Link> : "Order Reviewed"}
                                 </button>
                             </div>
-                            {
-                                orderChoice === i &&
-                                <div className='OrderRatingForm'>
-                                    <form onSubmit={() => {return false;}}>
-                                        <div>
-                                            <label>Rating :   </label>
-                                            {!item.reviewed &&
-                                                <input type="number" ref= {rating} name="rating" min ="0" max = "5" placeholder="Enter Rating" />
-                                            } {item.reviewed &&
-                                                <p style = {{width: "10%", textAlign: "center", backgroundColor: "var(--white)", padding: "0.5% 1%", borderRadius: "15px"}}>{item.rating}</p>    
-                                            }
-                                        </div>
-                                        <label>Chef Complaint :   </label>
-                                        {!item.reviewed &&
-                                            <textarea ref= {chefRating} name="chefComplaint" rows = "4" defaultValue="Write your complaint for the chef here...">
-                                            </textarea>
-                                        } {item.reviewed &&  
-                                            <p style = {{backgroundColor: "var(--white)", padding: "0.5% 1%", borderRadius: "15px"}}>{item.chefReview}</p>
-                                        }   
-                                        {(item.state == 2) && <label>Delivery Complaint :   </label>}
-                                            {!item.reviewed && (item.state == 2) &&
-                                                <textarea ref={deliveryRating} name="deliveryComplaint" rows = "4" defaultValue = "Write your complaint for the delivery here...">
-                                                </textarea>
-                                            } {item.reviewed && (item.state == 2) &&  
-                                                <p style = {{backgroundColor: "var(--white)", padding: "0.5% 1%", borderRadius: "15px"}}>{item.deliveryReview}</p>
-                                            }
-                                        {!item.reviewed &&
-                                        <button onClick={function(e) {formSubmission(e, item.orderId, item.state)}}>Submit</button>}
-                                    </form>
-                                </div>
-                            }
                         </div>
                     )
                 })

@@ -1,0 +1,52 @@
+.orderReview {
+    margin: 8% 10% 5% 10%;
+}
+
+.dishRating .individualDishReview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.individualDishReview div {
+    display: flex;
+}
+
+.dishRating {
+    margin-top: 3%;
+    margin-bottom: 6%;
+}
+
+.individualDishReview {
+    margin-bottom: 2%;
+}
+
+.individualDishReview input[type = "number"] {
+    border: 1px solid #976627;
+    padding: 0 3%;
+    margin: 0;
+    margin-left: 1%;
+    width: 10%;
+    border-radius: 25px;
+}
+
+.individualDishReview select {
+    border: 1px solid #976627;
+    padding: 0 3%;
+    margin: 0;
+    margin-left: 1%;
+    border-radius: 25px;
+}
+
+.dishRating textarea {
+    resize: none;
+    margin-top: 0.5%;
+    padding: 1%;
+    width: 97.5%;
+    border: 1px solid #976627;
+    border-radius: 15px;
+}
+
+.dishRating textarea:focus {
+    outline: none;
+}
+

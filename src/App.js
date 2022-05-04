@@ -26,6 +26,9 @@ import Unauthorized from "./userComps/unauthorized";
 import MainSearch from "./searchComps/search";
 import { FoodProvider } from "./contexts/foodContext";
 
+import Discussion from "./discussionComps/discussion";
+import OrderReview from "./orderReviewComps/orderReview";
+
 const ROLES = {
   User: 11,
   Chef: 22,
@@ -71,6 +74,13 @@ function App() {
               path="/reviews/:id"
               element={<Reviews />}
             />
+
+            <Route
+              path="/orderReview/:id"
+              element={<OrderReview />}
+            />
+
+            
 
             {/* <Route element={<RequireAuth allowedRoles={[ROLES.Manager]} />}> */}
             <Route exact path="/managerProfile" element={<ManagerProfile />} />

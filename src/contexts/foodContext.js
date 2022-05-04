@@ -27,6 +27,8 @@ export function FoodProvider({ children }) {
 
     const { userRole } = useAuth();
 
+    const [allReviews, setReviews] = useState([]);
+
     const [chefDishes, setChefDishes] = useState([]);
 
     async function getChefFood(userId) {
@@ -43,6 +45,20 @@ export function FoodProvider({ children }) {
             setChefDishes(chefDishes);
         }
         );
+    }
+
+    async function getReviews(dishId) {
+      const g = collection(db, "Reviews");
+      await onSnapshot(g, (snapshot) => {
+        var reviews = [];
+        snapshot.forEach((doc) => {
+            if (doc.data().dishId == dishId) {
+                reviews.push(doc.data());
+            }
+        });
+        console.log(reviews);
+        setReviews(reviews);
+      });
     }
 
     async function getDishes(){
@@ -203,7 +219,9 @@ export function FoodProvider({ children }) {
         recommendedDishes,
         getRecommendedDishes,
         totalCartCount,
-        chefDishes
+        chefDishes,
+        getReviews,
+        allReviews
     }
 
     return (
