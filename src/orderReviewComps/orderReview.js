@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import './orderReview.css';
 import { useAuth } from "../contexts/Authcontext";
 import { useState, useEffect, useRef } from "react";
+import { useFood } from "../contexts/foodContext";
 
 export default function OrderReview() {
     const {id} = useParams();
@@ -10,6 +11,8 @@ export default function OrderReview() {
     const [dishes, setDishes] = useState([]);
 
     const {orders, userName, submitDishReview, submitDeliveryReview} = useAuth();
+
+    const { updateRatings } = useFood();
 
     const rating = useRef(0);
 
@@ -50,7 +53,9 @@ export default function OrderReview() {
                 console.log(allInfo);
             }
         } 
+        await updateRatings(allInfo);
         await submitDishReview(allInfo, specificOrder.orderId);
+        
         alert("Review submitted");
         window.history.back();
     }

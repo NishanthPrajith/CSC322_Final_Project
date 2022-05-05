@@ -20,12 +20,6 @@ export default function Reviews() {
         console.log(allReviews);
     }, []);
 
-    const item = {
-        name : "Nishanth",
-        rating : 3.5,
-        review : "This is a review",
-    }
-
     function goBack(e) {
         e.preventDefault();
         window.history.back();

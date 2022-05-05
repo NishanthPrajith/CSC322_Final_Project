@@ -1,6 +1,6 @@
 
 import React, { useContext, useState, useEffect } from "react"
-import { collection, onSnapshot, addDoc, doc, getDocs, where, query, orderBy, limit, updateDoc} from "firebase/firestore";
+import { collection, onSnapshot, addDoc, doc, getDoc, getDocs, where, query, orderBy, limit, updateDoc} from "firebase/firestore";
 
 import { db } from "../firebase";
 
@@ -150,6 +150,25 @@ export function FoodProvider({ children }) {
       setRecommendedDishes(data);
     }
 
+    async function updateRatings(info) {
+      var d = info;
+      for (var i = 0; i < info.length; i++) {
+        const docRef = doc(db, "Dishes", d[i].dishId);
+        const docSnap = await getDoc(docRef);
+        const info = docSnap.data();
+        console.log(info);
+        var count = info.count;
+        var rating = info.rating;
+        var newRating = rating * count;
+        newRating = newRating + parseInt(d[i].rating);
+        newRating = newRating / (count + 1);
+        await updateDoc(docRef, {
+          count: count + 1,
+          rating: newRating
+        });
+      }
+    }
+
     async function addNewDish(data) {
       var q = collection(db, "Dishes");
       const docRef = await addDoc(q, data);
@@ -221,7 +240,8 @@ export function FoodProvider({ children }) {
         totalCartCount,
         chefDishes,
         getReviews,
-        allReviews
+        allReviews,
+        updateRatings
     }
 
     return (

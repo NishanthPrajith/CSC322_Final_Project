@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react"
 import { useAuth } from "../contexts/Authcontext";
 import { useFood } from "../contexts/foodContext";
 import { AiFillStar } from "react-icons/ai";
+import { Link } from 'react-router-dom';
 
 export default function() {
 
@@ -109,6 +110,11 @@ export default function() {
                                             <h5>Chef</h5>
                                             <p>{ item.chef } </p>
                                         </div> */}
+                                    </div>
+                                    <div style={{width: "100%", marginTop: "3%", textAlign: "right"}}>
+                                        <button style={{backgroundColor: "transparent", cursor: "pointer", outline: "none", border: "none", color: "#0087bd"}}>
+                                            <Link to={"/reviews/" + item.dishId} style={{color: "#0087bd"}}> See Reviews</Link>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
