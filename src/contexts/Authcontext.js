@@ -224,8 +224,7 @@ export function AuthProvider({ children }) {
     console.log("running getDeliveryOrders");
     const food = collection(db, "Orders");
     const v = await onSnapshot(food, (querySnapshot) => {
-        const data = [];
-        const a = [];
+        var data = [];
         querySnapshot.forEach((doc) => {
           if (doc.data().orderStatus === true) {
             data.push(doc.data());
@@ -233,6 +232,7 @@ export function AuthProvider({ children }) {
         });
         console.log("delivery Info", data);
         setDeliveryOrders(data);
+        data = [];
         if (!loggedIn) {
           v();
         }
@@ -245,7 +245,7 @@ export function AuthProvider({ children }) {
   async function getMyOrders(id) {
     const food = collection(db, "Orders");
     const v = await onSnapshot(food, (querySnapshot) => {
-        const data = [];
+        var data = [];
         querySnapshot.forEach((doc) => {
           if (doc.data().deliveryUserId === id) {
             console.log("made a push");
@@ -254,7 +254,7 @@ export function AuthProvider({ children }) {
           }
         });
         setMyOrders(data);
-        v();
+        data = [];
       });
   }
 
@@ -421,13 +421,19 @@ export function AuthProvider({ children }) {
   async function submitDeliveryReview(type, message, orderId, name) {
     const orders = doc(db, "Orders", orderId);
     console.log(orders);
-    alert(userName);
     await updateDoc(orders, {
       deliveryReview: message,
-      deliveryReviewed: true,
       deliveryType: type,
     });
   }
+
+  async function addDeliveryPersonReview(review, orderId) {
+    await updateDoc(doc(db, "Orders", orderId), {
+      deliveryPersonReviewed: true,
+      deliveryPersonReview: review
+    });
+  }
+
 
   useEffect(() => {
     handleLogout();
@@ -477,7 +483,8 @@ export function AuthProvider({ children }) {
     orderDelivered,
     quitAccount,
     getQuitUsers,
-    getBannedUsers
+    getBannedUsers,
+    addDeliveryPersonReview
   };
 
   return (

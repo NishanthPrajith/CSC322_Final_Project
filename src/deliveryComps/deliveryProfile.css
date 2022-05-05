@@ -122,3 +122,16 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.deliveryFinal {
+    width: 100%;
+}
+
+.additionalStyle {
+    margin-right: 3%;
+}
+
+.additionalStyle button {
+    padding: 2.5% 3%;
+}
+

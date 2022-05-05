@@ -4,6 +4,8 @@ import { useAuth } from '../contexts/Authcontext';
 
 import {GoCheck} from 'react-icons/go'
 
+import { Link } from 'react-router-dom';
+
 export default function DeliveryProfile() {
 
     const [selection, setSelection] = useState(1);
@@ -113,7 +115,7 @@ export default function DeliveryProfile() {
                                         <h2>Order #{index + 1}</h2>
                                         <h5>{value.orderDate}</h5>
                                     </div>
-                                    <div className='deliveryCard'>
+                                    <div className='deliveryCard' style={{marginBottom: "5%"}}>
                                         <div>
                                             {
                                                 value.order.map((v) => {
@@ -136,11 +138,23 @@ export default function DeliveryProfile() {
                                     </div>
                                     }   
                                     {value.orderStatus == false &&
-                                        <div style= {{display: 'flex', alignItems: "flex-end", flexDirection: "column-reverse"}}>
-                                        <button className='OrderDelivered' style = {{backgroundColor: "lightgreen"}}>
-                                            Delivered <GoCheck style={{marginLeft: "2%"}}/>
-                                        </button>
-                                    </div>
+                                        <div className="deliveryFinal">
+                                            <div style= {{display: 'flex', alignItems: "flex-end", flexDirection: "row"}}>
+                                                <div className='OrderReview additionalStyle'>
+                                                    <button> 
+                                                        {!value.deliveryPersonReviewed ?
+                                                            <Link to = {"/deliveryOrderReview/" + index}>
+                                                                Review Order
+                                                            </Link> :
+                                                            <p style = {{margin: "0%"}}>Order Reviewed</p>
+                                                        }   
+                                                    </button>
+                                                </div>
+                                                <button className='OrderDelivered' style = {{backgroundColor: "lightgreen"}}>
+                                                    Delivered <GoCheck style={{marginLeft: "2%"}}/>
+                                                </button>
+                                            </div>
+                                        </div>
                                     }
                                     {
                                         value.memo !== undefined &&

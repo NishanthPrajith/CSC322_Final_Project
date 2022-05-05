@@ -89,7 +89,7 @@ export default function OrderReview() {
                                         <input ref = {rating} required type="number" name="rating" min ="0" max = "5" placeholder="Enter Rating" />
                                     </div>
                                     <div style={{display: "flex", justifyContent: "flex-end", width: "100%"}}>
-                                        <div style={{width: "56%", float: "right"}}>
+                                        <div style={{width: "46%", float: "right"}}>
                                             <p>Complaint / Complement : </p>
                                             <select required>
                                                 <option>Complaint</option>
@@ -107,6 +107,13 @@ export default function OrderReview() {
                         )
                     })
                 }
+
+                {specificOrder.deliveryPersonReviewed && 
+                    <div>
+                        <h3>Delivery Person feedback</h3>
+                        <p><strong>Review</strong> : {specificOrder.deliveryPersonReview}</p>
+                    </div>
+                }
                 {
                     specificOrder.state == 2 && 
                     <div className="dishRating">
@@ -121,7 +128,7 @@ export default function OrderReview() {
                         </div>
                         <div>
                             <p>Delivery Person Review : </p>
-                            <textarea required name="chefComplaint" rows = "6" defaultValue="Chef Review...">
+                            <textarea required name="chefComplaint" rows = "6">
                             </textarea>
                         </div>
                     </div>

@@ -29,6 +29,8 @@ import { FoodProvider } from "./contexts/foodContext";
 import Discussion from "./discussionComps/discussion";
 import OrderReview from "./orderReviewComps/orderReview";
 
+import DeliveryReview from "./deliveryReviewComps/deliveryReview";
+
 const ROLES = {
   User: 11,
   Chef: 22,
@@ -78,6 +80,11 @@ function App() {
             <Route
               path="/orderReview/:id"
               element={<OrderReview />}
+            />
+
+            <Route
+              path="/deliveryOrderReview/:id"
+              element={<DeliveryReview />}
             />
 
             
