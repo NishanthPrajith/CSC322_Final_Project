@@ -154,11 +154,16 @@ export default function ManagerProfile() {
                                             <h4>Delivery Name : {deliveryName[item.deliveryUserId]}</h4>
                                         </div>
                                         <div>
+                                            {item.caseClosed ?
+                                            <button style={{backgroundColor: "lightgreen", width: "100%"}}>
+                                                Review Handled
+                                            </button> :
                                             <button>
                                                 <Link to={"/seeFullReview/" + index}>
                                                     Review
                                                 </Link>
                                             </button>
+                                            }
                                         </div>
                                     </div>
                                 );

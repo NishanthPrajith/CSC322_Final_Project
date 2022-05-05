@@ -137,14 +137,17 @@ export function FoodProvider({ children }) {
       setfilteredFoodItems(value);
     }
 
+
     async function getRecommendedDishes(a) {
       var data = [];
       for (var i = 0; i < a.length; i++) {
         var q = query(collection(db, "Dishes"), where("name", "==", a[i]));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-          doc.data().quantity = 0;
-          data.push(doc.data());
+          if (doc.data().special !== true && userRole !== 111) {
+            doc.data().quantity = 0;
+            data.push(doc.data());
+          }
         });
       }
       setRecommendedDishes(data);

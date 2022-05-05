@@ -11,7 +11,7 @@ export default function FullReview() {
 
     const { id } = useParams();
     
-    const { deliveryOrders } = useAuth();
+    const { deliveryOrders, closeComplaint, giveDeliveryWarning, giveUserWarning } = useAuth();
 
     useEffect(() => {
         const fetchAPI = async () => {
@@ -22,6 +22,20 @@ export default function FullReview() {
 
     function goBack(e) {
         e.preventDefault();
+        window.history.back();
+    }
+
+    async function punish(whom) {
+        if (whom === "user") {
+            await giveUserWarning(reviews.userId);
+        } else if (whom === "delivery") {
+            await giveDeliveryWarning(reviews.deliveryUserId);
+        } else if (whom === "both") {
+            await giveDeliveryWarning(reviews.deliveryUserId);
+            await giveUserWarning(reviews.userId);
+        } 
+        await closeComplaint(reviews.orderId);
+        alert("Case Handled");
         window.history.back();
     }
 
@@ -39,6 +53,14 @@ export default function FullReview() {
                 <div style={{marginTop: "4%"}}>
                     <h3>Delivery Person's Review</h3>
                     <p><strong>Review</strong> : {reviews.deliveryPersonReview}</p>
+                </div>
+            }
+            {(reviews.userReviewed || reviews.deliveryPersonReviewed) &&
+                <div className='punishChoices'>
+                    <button onClick={(e) => punish("user")}>Give Warning to Customer</button>
+                    <button onClick={(e) => punish("delivery")}>Give Warning to Delivery Person</button>
+                    <button onClick={(e) => punish("both")}>Give Warning to Both Parties</button>
+                    <button onClick={(e) => punish("")}>No Warnings</button>
                 </div>
             }
         </div>

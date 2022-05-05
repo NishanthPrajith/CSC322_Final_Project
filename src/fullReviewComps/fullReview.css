@@ -1,0 +1,16 @@
+.punishChoices {
+    margin-top: 6%;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(4, 23%);
+    column-gap: 2%;
+}
+
+.punishChoices button {
+    background-color: var(--yellow);
+    outline: none;
+    border-radius: 15px;
+    padding: 5% 0;
+    border: none;
+    cursor: pointer;
+}

@@ -235,9 +235,6 @@ export function AuthProvider({ children }) {
         console.log("delivery Info", data);
         setDeliveryOrders(data);
         data = [];
-        if (!loggedIn) {
-          v();
-        }
       });
   }
 
@@ -284,7 +281,7 @@ export function AuthProvider({ children }) {
       alert("You have received too many warnings and manager will decide to delete you from the system");
       await updateDoc(doc(db, "Users", userId), {
         role: 222,
-        userWarnings: 3
+        warnings: 3
       });
     }
   }
@@ -456,6 +453,54 @@ export function AuthProvider({ children }) {
     return v.name;
   }
 
+  async function closeComplaint(id) {
+    const docRef = doc(db, "Orders", id);
+    await updateDoc(docRef, {
+      caseClosed: true
+    });
+  }
+
+  async function giveDeliveryWarning(id) {
+    const docRef = doc(db, "Users", id);
+    const docSnap = await getDoc(docRef);
+    const count = docSnap.data().warnings;
+    await updateDoc(doc(db, "Users", id), {
+      warnings: count + 1
+    });
+  }
+
+  async function giveUserWarning(id) {
+    const docRef = doc(db, "Users", id);
+    const docSnap = await getDoc(docRef);
+    const count = docSnap.data().warnings;
+    const role = docSnap.data().role;    
+    if (count + 1 === 2 && role === 111) {
+      await changeAccountStatus(id, role, 0);
+    } else if (count + 1 === 3 && role === 11) {
+      await changeAccountStatus(id, role, count + 1);
+    } else {
+      await updateDoc(doc(db, "Users", id), {
+        warnings: count + 1
+      });
+    }
+  }
+
+  async function changeAccountStatus(id, role, warnings) {
+    if (role === 111) {
+      await updateDoc(doc(db, "Users", id), {
+        role: 11,
+        warnings: 0,
+      });
+    } else if (role === 11) {
+      await updateDoc(doc(db, "Users", id), {
+        role: 222,
+        warnings: warnings,
+      });
+    }
+  }
+
+
+
 
   useEffect(() => {
     handleLogout();
@@ -479,12 +524,15 @@ export function AuthProvider({ children }) {
     login,
     signup,
     loggedIn,
+    giveDeliveryWarning,
+    giveUserWarning,
     userName,
     getUsersName,
     userWallet,
     userJoined,
     deliveryOrders,
     setDeliveryPerson,
+    closeComplaint,
     userId,
     myOrders,
     handleLogout,
