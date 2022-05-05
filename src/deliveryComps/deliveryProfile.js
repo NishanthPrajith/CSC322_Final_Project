@@ -63,7 +63,7 @@ export default function DeliveryProfile() {
                         <p>Bidding</p>
                     </div>
                     <div onClick={() => {setSelection(2)}} style={selection === 2 ? {backgroundColor: "var(--yellow)"} : {}}>
-                        <p>Orders</p>
+                        <p>My Orders</p>
                     </div>
                 </div>
                 { selection === 1 && 

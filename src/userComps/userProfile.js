@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 export default function UserProfile() {
 
-    const { orders, userWarnings, writeOrderReviewUser, quitAccount, updateWallet, userRole, userWallet, userName } = useAuth();
+    const { orders, userWarnings, writeOrderReviewUser, handleLogout, quitAccount, updateWallet, userRole, userWallet, userName } = useAuth();
 
     const rating = useRef();
     const chefRating = useRef();
@@ -23,6 +23,10 @@ export default function UserProfile() {
         console.log(done);
         console.log(orders);
     }, []);
+
+    async function deleteMe() {
+        await quitAccount();
+    }
 
     function openForm() {
         console.log("Open form");
@@ -113,7 +117,7 @@ export default function UserProfile() {
             </div>
             <h1 className = "userProfileTitle">{userName}</h1>
             <div className='deleteAccount'>
-                <button onClick={() => quitAccount()}>Delete Account</button>
+                <button onClick={() => deleteMe()}>Delete Account</button>
             </div>
             <div className='userMetaData'>
                 <div className='userMetaDataOne'>

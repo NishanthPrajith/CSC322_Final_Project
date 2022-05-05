@@ -31,6 +31,9 @@ import OrderReview from "./orderReviewComps/orderReview";
 
 import DeliveryReview from "./deliveryReviewComps/deliveryReview";
 
+import FullReview from "./fullReviewComps/fullReview";
+
+
 const ROLES = {
   User: 11,
   Chef: 22,
@@ -85,6 +88,11 @@ function App() {
             <Route
               path="/deliveryOrderReview/:id"
               element={<DeliveryReview />}
+            />
+
+            <Route
+              path="/seeFullReview/:id"
+              element={<FullReview />}
             />
 
             

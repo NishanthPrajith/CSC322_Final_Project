@@ -2,14 +2,16 @@ import './managerProfile.css'
 
 import { useEffect, useState, useRef } from "react"
 import { useAuth } from "../contexts/Authcontext";
-import { updatePhoneNumber } from 'firebase/auth';
+
+import { Link } from 'react-router-dom';
 
 export default function ManagerProfile() {
 
     const [choice, setChoice] = useState(0);
     const [orderChoice, setOrderChoice] = useState(0);
+    const [usersOrderNames, setUsersOrderNames] = useState([]);
 
-    const { getUsers, getQuitUsers, getBannedUsers, deleteAccount, updateRole, setDeliveryPerson, deliveryOrders } = useAuth();
+    const { getUsers, getQuitUsers, getBannedUsers, deleteAccount, updateRole, setDeliveryPerson, deliveryOrders, getUsersName } = useAuth();
 
     let orderNumber = 1;
 
@@ -65,6 +67,15 @@ export default function ManagerProfile() {
         console.log("-----------------");
         console.log(getQuitUsers);
         console.log(deliveryOrders);
+        for (var i = 0; i < deliveryOrders.length; i++) {
+            const getAPI = async() => {
+                var s = await getUsersName(deliveryOrders[i].userId);
+                var data = usersOrderNames;
+                data.push(s);
+                setUsersOrderNames(data);
+            };
+            getAPI();
+        }
     }, []);
     
     return (
@@ -92,7 +103,7 @@ export default function ManagerProfile() {
                     Complaints
                 </div>
                 <div onClick = {() => {handleClick(2)}} style={choice == 2 ? {backgroundColor: "var(--yellow)"} : {}}>
-                    Delivery
+                    Delivery Bids
                 </div>
                 <div onClick = {() => {handleClick(3)}} style={choice == 3 ? {backgroundColor: "var(--yellow)"} : {}}>
                     Kickedout Customers
@@ -119,6 +130,40 @@ export default function ManagerProfile() {
                             </div>
                         );
                     })
+                    }
+                </div>
+            }
+            {
+                choice === 1 &&
+                <div style={{marginTop: "5%"}}>
+                    {
+                        deliveryOrders.map((item, index) => {
+                            if (item.deliveryUserId !== "") {
+                                return (
+                                    <div className='userCard'>
+                                        <div>
+                                            <h3>Order #{ index + 1 }</h3>
+                                            {
+                                                item.order.map((v, i) => {
+                                                    return (
+                                                        <p>{ v.name } x {v.count}</p>
+                                                    );
+                                                })
+                                            }
+                                            <h4>User : {usersOrderNames[index]} </h4>
+                                            <h4>Delivery Name : {deliveryName[item.deliveryUserId]}</h4>
+                                        </div>
+                                        <div>
+                                            <button>
+                                                <Link to={"/seeFullReview/" + index}>
+                                                    Review
+                                                </Link>
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                        })
                     }
                 </div>
             }
@@ -181,7 +226,7 @@ export default function ManagerProfile() {
                                     <button onClick={() => {
                                         alert("The account has been blacklisted!");
                                         alert("$" + item.wallet + " in the wallet has been credited backed to the user");
-                                        updateRole(item.id, -11111);
+                                        updateRole(item.id, 333);
                                     }}>
                                         Ban & Blacklist
                                     </button>

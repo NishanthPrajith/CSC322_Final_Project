@@ -43,6 +43,7 @@ export function AuthProvider({ children }) {
   const [getUsers, setGetUsers] = useState([]);
   const [getQuitUsers, setGetQuitUsers] = useState([]);
   const [getBannedUsers, setGetBannedUsers] = useState([]);
+  const [getComplaints, setGetComplaints] = useState([]);
 
   async function handleLogout() {
     await signOut(auth);
@@ -57,6 +58,7 @@ export function AuthProvider({ children }) {
     setOrders([]);
     setMyOrders([]);
     setDeliveryOrders([]);
+    setGetComplaints([]);
     setUserName("");
     setUserId("");
     setUserWallet(0);
@@ -77,7 +79,7 @@ export function AuthProvider({ children }) {
       console.log(cities);
     });
     console.log("get quit users");
-    const g = await query(collection(db, "Users"), where("role", "==", -1111));
+    const g = await query(collection(db, "Users"), where("quit", "==", true));
     onSnapshot(g, (querySnapshot) => {
       const cities = [];
       querySnapshot.forEach((doc) => {
@@ -87,7 +89,7 @@ export function AuthProvider({ children }) {
       console.log(cities);
     });
     console.log("get banned users");
-    const h = await query(collection(db, "Users"), where("role", "==", -111));
+    const h = await query(collection(db, "Users"), where("role", "==", 222));
     onSnapshot(h, (querySnapshot) => {
       const cities = [];
       querySnapshot.forEach((doc) => {
@@ -167,18 +169,17 @@ export function AuthProvider({ children }) {
         info();
       } else if (doc.data().role === 1001) {
         getUserAccounts();
+        getOrderComplaints();
         getDeliveryOrders("manager");
-      } else if (doc.data().role === -11111) {
+      } else if (doc.data().role === 333) {
         info();
         handleLogout();
         alert("You have been permantly banned from the system and the money you had in your wallet has been returned to you");
-      } else if (doc.data().role === -111) {
+      } else if (doc.data().role === 222) {
         handleLogout();
-        alert("You have been banned from the system, the manager has been notified");
         info();
-      } else if (doc.data().role === -1111) {
+      } else if (doc.data().quit === true) {
         handleLogout();
-        alert("Your account is still being deleted");
         info();
       } else if (doc.data().role === 33) {
         getDeliveryOrders("delivery");
@@ -187,6 +188,7 @@ export function AuthProvider({ children }) {
       }
     });
   }
+  
 
   async function deleteAccount(id) {
     await deleteDoc(doc(db, "Users", id));
@@ -236,9 +238,6 @@ export function AuthProvider({ children }) {
         if (!loggedIn) {
           v();
         }
-        if (a === "manager") {
-          v();
-        }
       });
   }
 
@@ -279,21 +278,24 @@ export function AuthProvider({ children }) {
         role: 11,
         warnings: 0,
       });
+      setUserWarning(0);
+      setUserRole(11);
     } else if (state === 2 && userRole === 11) {
       alert("You have received too many warnings and manager will decide to delete you from the system");
       await updateDoc(doc(db, "Users", userId), {
-        role: -111,
+        role: 222,
+        userWarnings: 3
       });
     }
   }
 
   async function quitAccount() {
     alert("Thank you so much! Your account will be deleted and the money refunded to your account");
-    alert(userId);
+    console.log(userId);
     await updateDoc(doc(db, "Users", userId), {
-      role: -1111,
+      quit: true
     });
-    handleLogout();
+    await handleLogout();
   }
 
   async function addToOrder(document) {
@@ -367,15 +369,16 @@ export function AuthProvider({ children }) {
   }
 
   async function AddWarning(id) {
-    await updateDoc(doc(db, "Users", id), {
-      warnings: userWarnings + 1
-    });
     if (userWarnings + 1 === 2 && userRole === 111) {
       await accountStatusChange(2);
     } else if (userWarnings + 1 === 3 && userRole === 11) {
       await accountStatusChange(2);
+    } else {
+      await updateDoc(doc(db, "Users", id), {
+        warnings: userWarnings + 1
+      });
+      setUserWarning(userWarnings + 1);
     }
-    setUserWarning(userWarnings + 1);
   }
 
   async function writeOrderReviewUser(id, rating, chef, delivery) {
@@ -434,6 +437,25 @@ export function AuthProvider({ children }) {
     });
   }
 
+  async function getOrderComplaints() {
+    const v = await onSnapshot(collection(db, "Orders"), (querySnapshot) => {
+      var data = [];
+      querySnapshot.forEach((doc) => {
+        if (doc.data().complaints) {
+          data.push(doc.data());
+        }
+      });
+    });
+  }
+
+  async function getUsersName(id) {
+    const docRef = doc(db, "Users", id);
+    const docSnap = await getDoc(docRef);
+
+    var v = docSnap.data();
+    return v.name;
+  }
+
 
   useEffect(() => {
     handleLogout();
@@ -458,6 +480,7 @@ export function AuthProvider({ children }) {
     signup,
     loggedIn,
     userName,
+    getUsersName,
     userWallet,
     userJoined,
     deliveryOrders,
