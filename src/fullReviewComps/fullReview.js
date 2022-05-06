@@ -11,11 +11,11 @@ export default function FullReview() {
 
     const { id } = useParams();
     
-    const { deliveryOrders, closeComplaint, giveDeliveryWarning, giveUserWarning } = useAuth();
+    const { getComplaints, closeComplaint, giveDeliveryWarning, giveUserWarning } = useAuth();
 
     useEffect(() => {
         const fetchAPI = async () => {
-            setAllReviews(deliveryOrders[id]);
+            setAllReviews(getComplaints[id]);
         };
         fetchAPI();
     }, []);

@@ -14,10 +14,10 @@ import { Link } from 'react-router-dom';
 
 export default function MainSearch() {
 
-    const { filteredFoodItems, changeRecommendedDishes, getRecommendedDishes, recommendedDishes, getDishes, popularDishes, changeAllFoodItems, changePopularDishes, changeHighestRated, highestRated } = useFood();
+    const { filteredFoodItems, changeRecommendedDishes, recommendedDishes, getRecommendedDishes, getDishes, popularDishes, changeAllFoodItems, changePopularDishes, changeHighestRated, highestRated } = useFood();
     const [loading, setLoading] = useState(true);
 
-    const { userRole, recommendedOrders } = useAuth();
+    const { userRole, recommendedOrders} = useAuth();
 
     const [role, setRole] = useState(userRole);
 
@@ -29,11 +29,6 @@ export default function MainSearch() {
         console.log(role);
         setRole(userRole);
         getDishes();
-    }
-
-    if (info !== recommendedOrders && recommendedOrders !== undefined) {
-        setInfo(recommendedOrders);
-        getRecommendedDishes(recommendedOrders);
     }
 
     if (loading) {

@@ -31,7 +31,7 @@ export function FoodProvider({ children }) {
     const [chefJobsApplications, setChefJobsApplications] = useState([]);
     const [deliveryJobsApplications, setDeliveryJobsApplications] = useState([]);
 
-    const { userRole } = useAuth();
+    const { userRole, recommendedOrders } = useAuth();
 
     const [allReviews, setReviews] = useState([]);
 
@@ -69,11 +69,9 @@ export function FoodProvider({ children }) {
 
     async function getDishes(){
       var food = collection(db, "Dishes");
-      if (userRole !== 111) {
-        food = query(food, where("special", "==", false));
-      }
+      
       onSnapshot(food, (querySnapshot) => {
-          const data = [];
+          var data = [];
           querySnapshot.forEach((doc) => {
             if (userRole !== 111 && doc.data().special !== true) {
               data.push(doc.data());
@@ -85,29 +83,36 @@ export function FoodProvider({ children }) {
           setfilteredFoodItems(data);
           setChangeState(0);
         });
+      if (userRole !== 111) {
+        food = query(food, where("special", "==", false));
+      }
       getHighestRatedDishes(food);
+      getRecommendedDishes();
     }
 
     async function getHighestRatedDishes(food) {
       getPopularDishes(food);
       var q = query(food, orderBy("rating", "desc"), limit(3));
       onSnapshot(q, (querySnapshot) => {
-          const data = [];
+          var data = [];
           querySnapshot.forEach((doc) => {
-              data.push(doc.data());
+            data.push(doc.data());
+            console.log(data);
           });
           setHighestRated(data);
+          data = [];
       });
     }
 
     async function getPopularDishes(food) {
       var q = query(food, orderBy("count", "desc"), limit(3));
       onSnapshot(q, (querySnapshot) => {
-          const data = [];
+          var data = [];
           querySnapshot.forEach((doc) => {
               data.push(doc.data());
           });
           setPopularDishes(data);
+          data = [];
       });
   }
 
@@ -141,6 +146,7 @@ export function FoodProvider({ children }) {
       getChefPeople();
       getDeliveryJobApplications();
       getChefJobApplications();
+      getRecommendedDishes();
     }, [])
 
     function changeFlilteredFoodItems(value) {
@@ -198,22 +204,31 @@ export function FoodProvider({ children }) {
         setChefPeople(data);
       });
     }
-
-
-
-    async function getRecommendedDishes(a) {
-      var data = [];
-      for (var i = 0; i < a.length; i++) {
-        var q = query(collection(db, "Dishes"), where("name", "==", a[i]));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          if (doc.data().special !== true && userRole !== 111) {
-            doc.data().quantity = 0;
-            data.push(doc.data());
+    
+    async function getRecommendedDishes() {
+      var dishes = collection(db, "Dishes");
+      onSnapshot(dishes, (querySnapshot) => {
+        var data = [];
+        var count = 0;
+        querySnapshot.forEach((doc) => { 
+          if (count != 3) {
+            if (doc.data().special !== true) {
+              if (recommendedOrders.includes(doc.data().name)) {
+                data.push(doc.data());
+                count += 1;
+              }
+            } else if (doc.data().special === true && userRole === 111) {
+              if (recommendedOrders.includes(doc.data().name)) {
+                data.push(doc.data());
+                count += 1;
+              }
+            }
           }
         });
-      }
-      setRecommendedDishes(data);
+        setRecommendedDishes(data);
+        data = [];
+        count = 0;
+      });
     }
 
     async function updateRatings(info) {
@@ -228,7 +243,7 @@ export function FoodProvider({ children }) {
         var newRating = rating * count;
         newRating = newRating + parseInt(d[i].rating);
         newRating = newRating / (count + 1);
-        newRating = Number.parseFloat(newRating).toFixed(2)
+        newRating = parseFloat(newRating.toFixed(2));
         await updateDoc(docRef, {
           count: count + 1,
           rating: newRating

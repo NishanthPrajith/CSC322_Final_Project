@@ -243,7 +243,6 @@ export function AuthProvider({ children }) {
   }
 
   async function getDeliveryOrders(a) {
-    console.log("running getDeliveryOrders");
     const food = collection(db, "Orders");
     const v = await onSnapshot(food, (querySnapshot) => {
         var data = [];
@@ -363,7 +362,7 @@ export function AuthProvider({ children }) {
                   break;
                 }
               }
-              if (hello.length != 3 && check) {
+              if (hello.length !== 3 && check) {
                 hello.push(doc.data().order[i].name);
               }
             }
@@ -373,6 +372,7 @@ export function AuthProvider({ children }) {
         setRecommendedOrders(hello);
         setOrders(data);
         data = [];
+        hello = [];
       });
     }
   }
@@ -458,10 +458,12 @@ export function AuthProvider({ children }) {
     const v = await onSnapshot(collection(db, "Orders"), (querySnapshot) => {
       var data = [];
       querySnapshot.forEach((doc) => {
-        if (doc.data().complaints) {
+        if (doc.data().state === 2) {
           data.push(doc.data());
         }
       });
+      setGetComplaints(data);
+      data = [];
     });
   }
 
@@ -642,6 +644,7 @@ export function AuthProvider({ children }) {
     updateRole, 
     currentUser,
     updateDelivery,
+    getComplaints,
     login,
     signup,
     loggedIn,

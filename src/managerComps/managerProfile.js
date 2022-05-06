@@ -16,7 +16,7 @@ export default function ManagerProfile() {
 
     const [subchoice, setSubchoice] = useState(0);
 
-    const { getUsers, getQuitUsers, getBannedUsers, deleteAccount, updateRole, setDeliveryPerson, deliveryOrders, getUsersName } = useAuth();
+    const { getUsers, getQuitUsers, getBannedUsers, getComplaints, deleteAccount, updateRole, setDeliveryPerson, deliveryOrders, getUsersName } = useAuth();
 
     const {deliveryPeople, chefPeople, chefJobsApplications, deliveryJobsApplications} = useFood();
 
@@ -82,9 +82,9 @@ export default function ManagerProfile() {
         console.log("-----------------");
         console.log(getQuitUsers);
         console.log(deliveryOrders);
-        for (var i = 0; i < deliveryOrders.length; i++) {
+        for (var i = 0; i < getComplaints.length; i++) {
             const getAPI = async() => {
-                var s = await getUsersName(deliveryOrders[i].userId);
+                var s = await getUsersName(getComplaints[i].userId);
                 var data = usersOrderNames;
                 data.push(s);
                 setUsersOrderNames(data);
@@ -158,37 +158,35 @@ export default function ManagerProfile() {
                 choice === 1 &&
                 <div style={{marginTop: "5%"}}>
                     {
-                        deliveryOrders.map((item, index) => {
-                            if (item.deliveryUserId !== "") {
-                                return (
-                                    <div className='userCard'>
-                                        <div>
-                                            <h3>Order #{ index + 1 }</h3>
-                                            {
-                                                item.order.map((v, i) => {
-                                                    return (
-                                                        <p>{ v.name } x {v.count}</p>
-                                                    );
-                                                })
-                                            }
-                                            <h4>User : {usersOrderNames[index]} </h4>
-                                            <h4>Delivery Name : {deliveryName[item.deliveryUserId]}</h4>
-                                        </div>
-                                        <div>
-                                            {item.caseClosed ?
-                                            <button style={{backgroundColor: "lightgreen", width: "100%"}}>
-                                                Review Handled
-                                            </button> :
-                                            <button>
-                                                <Link to={"/seeFullReview/" + index}>
-                                                    Review
-                                                </Link>
-                                            </button>
-                                            }
-                                        </div>
+                        getComplaints.map((item, index) => {
+                            return (
+                                <div className='userCard'>
+                                    <div>
+                                        <h3>Order #{ index + 1 }</h3>
+                                        {
+                                            item.order.map((v, i) => {
+                                                return (
+                                                    <p>{ v.name } x {v.count}</p>
+                                                );
+                                            })
+                                        }
+                                        <h4>User : {usersOrderNames[index]} </h4>
+                                        <h4>Delivery Name : {deliveryName[item.deliveryUserId]}</h4>
                                     </div>
-                                );
-                            }
+                                    <div>
+                                        {item.caseClosed ?
+                                        <button style={{backgroundColor: "lightgreen", width: "100%"}}>
+                                            Review Handled
+                                        </button> :
+                                        <button>
+                                            <Link to={"/seeFullReview/" + index}>
+                                                Review
+                                            </Link>
+                                        </button>
+                                        }
+                                    </div>
+                                </div>
+                            );
                         })
                     }
                 </div>
