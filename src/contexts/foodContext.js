@@ -165,6 +165,7 @@ export function FoodProvider({ children }) {
         var newRating = rating * count;
         newRating = newRating + parseInt(d[i].rating);
         newRating = newRating / (count + 1);
+        newRating = Number.parseFloat(newRating).toFixed(2)
         await updateDoc(docRef, {
           count: count + 1,
           rating: newRating

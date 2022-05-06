@@ -10,7 +10,7 @@ export default function() {
 
     const [choice, setChoice] = useState(0);
 
-    const { userId, userName, userWallet, userJoined } = useAuth();
+    const { userId, userName, totalReviewCount, totalComplaints, totalCompliments, demotions} = useAuth();
 
     const { addNewDish, chefDishes, getChefFood } = useFood();
 
@@ -68,15 +68,39 @@ export default function() {
 
     return (
         <div className="chefProfile">
-            <h1>{userName}</h1>
+            <h1 style={{textAlign: "center"}}>{userName}</h1>
+
+            <div className="deliveryStatsChef">
+                <div>
+                    <p>Complaints</p>
+                    <h3>{totalComplaints !== undefined ? totalComplaints : 0}</h3>
+                </div>
+                <div>
+                    <p>Compliments</p>
+                    <h3>{totalCompliments !== undefined ? totalCompliments : 0}</h3>
+                </div>
+                <div>
+                    <p>Bonus</p>
+                    {(Math.floor(Math.abs(totalReviewCount / 3)) === 0 || totalReviewCount === undefined) &&
+                        <h3>Nothing</h3>
+                    }
+                    {(Math.floor(totalReviewCount / 3) > 0) &&
+                        <h3 style={{color: "green"}}>Bonus</h3>
+                    }
+                    {(Math.floor(Math.abs(totalReviewCount / 3)) > 0) && totalReviewCount < 0 &&
+                        <h3 style={{color: "darkred"}}>Salary Cut</h3>
+                    }
+                </div>
+                <div>
+                    <p>Demotions</p>
+                    <h3>{demotions !== undefined ? demotions : 0}</h3>
+                </div>
+            </div>
             <div className="ChoicesLink">
                 <div onClick = {() => {handleClick(0)}} style={choice == 0 ? {backgroundColor: "var(--yellow)"} : {}}>
                     My foods
                 </div>
                 <div onClick = {() => {handleClick(1)}} style={choice == 1 ? {backgroundColor: "var(--yellow)"} : {}}>
-                    Compensation
-                </div>
-                <div onClick = {() => {handleClick(2)}} style={choice == 2 ? {backgroundColor: "var(--yellow)"} : {}}>
                     Create new dish
                 </div>
             </div>
@@ -124,18 +148,6 @@ export default function() {
                 </div>
             }
             {choice == 1 &&
-              <div className='Salary'>
-                <hr/>
-                <b>Total Base Pay :&nbsp;&nbsp;</b> $ {userWallet}
-                <hr/>
-                <b>Currency :&nbsp;&nbsp;</b> USD
-                <hr/>
-                <b>Frequency :&nbsp;&nbsp;</b> Hourly
-                <hr/>
-                <b>Employment Start Date :&nbsp;&nbsp;</b> {userJoined}
-              </div>
-            }
-            {choice == 2 &&
             <div className="createDish">
                 {/*This Section is the SignUp Box*/}
                 <div className={"dishBox"}>

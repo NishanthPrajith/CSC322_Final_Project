@@ -10,7 +10,7 @@ export default function OrderReview() {
     const [specificOrder, setOrder] = useState([]);
     const [dishes, setDishes] = useState([]);
 
-    const {orders, userName, submitDishReview, submitDeliveryReview} = useAuth();
+    const {orders, userName, submitDishReview, submitDeliveryReview, updateChefs, updateDelivery} = useAuth();
 
     const { updateRatings } = useFood();
 
@@ -30,6 +30,7 @@ export default function OrderReview() {
             var reviewMessage = e.target[i].value;
             n -= 3;
             await submitDeliveryReview(reviewType, reviewMessage, specificOrder.orderId);
+            await updateDelivery(reviewType, specificOrder.deliveryUserId);
         }
 
         var dish = {};
@@ -55,6 +56,7 @@ export default function OrderReview() {
         } 
         await updateRatings(allInfo);
         await submitDishReview(allInfo, specificOrder.orderId);
+        await updateChefs(allInfo);
         
         alert("Review submitted");
         window.history.back();
@@ -93,7 +95,7 @@ export default function OrderReview() {
                                             <p>Complaint / Complement : </p>
                                             <select required>
                                                 <option>Complaint</option>
-                                                <option>Complement</option>
+                                                <option>Compliment</option>
                                             </select>
                                         </div>
                                     </div>
@@ -121,8 +123,8 @@ export default function OrderReview() {
                             <div style={{width: "80%", float: "right"}}>
                                 <p>Complaint / Complement Delivery : </p>
                                 <select required>
-                                    <option value = "complaint">Complaint</option>
-                                    <option value = "complement">Complement</option>
+                                    <option>Complaint</option>
+                                    <option>Compliment</option>
                                 </select>
                             </div>
                         </div>

@@ -7,6 +7,7 @@
     width: 100%;
     display: flex;
     margin-top: 3%;
+    justify-content: center;
 }
 
 .ChoicesLink div {
@@ -103,3 +104,21 @@ hr {
 .createDish button:hover {   
     opacity: 0.7;   
 }
+
+.deliveryStatsChef {
+    width: 100%;
+    margin-top: 2%;
+    display: grid;
+    grid-template-columns: repeat(4, 20%);
+    justify-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 7%;
+}
+
+.deliveryStatsChef h3 {
+    font-size: 2em;
+    margin: 0;
+    font-weight: bold;
+}
+

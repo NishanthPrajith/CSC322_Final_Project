@@ -39,6 +39,11 @@ export function AuthProvider({ children }) {
   const [deliveryOrders, setDeliveryOrders] = useState([]);
   const [myOrders, setMyOrders] = useState([]);
 
+  const [totalReviewCount, setTotalReviewCount] = useState(0);
+  const [totalComplaints, setTotalComplaints] = useState(0);
+  const [totalCompliments, setTotalCompliments] = useState(0);
+  const [demotions, setDemotions] = useState(0);
+
   // Manager related Data
   const [getUsers, setGetUsers] = useState([]);
   const [getQuitUsers, setGetQuitUsers] = useState([]);
@@ -47,6 +52,11 @@ export function AuthProvider({ children }) {
 
   async function handleLogout() {
     await signOut(auth);
+    setDemotions(0);
+    setCurrentUser(null);
+    setTotalComplaints(0);
+    setTotalCompliments(0);
+    setTotalReviewCount(0);
     setLoggedIn(false);
     setCurrentUser(null);
     setUserRole(-1);
@@ -153,6 +163,10 @@ export function AuthProvider({ children }) {
   async function getUserData(id) {
     const info = await onSnapshot(doc(db, "Users", id), (doc) => {
       setUserRole(doc.data().role);
+      setTotalComplaints(doc.data().totalComplaints);
+      setTotalCompliments(doc.data().totalCompliments);
+      setTotalReviewCount(doc.data().totalReviewCount);
+      setDemotions(doc.data().demotions);
       setUserName(doc.data().name);
       setUserWallet(doc.data().wallet);      
       setUserJoined(doc.data().joined);
@@ -499,7 +513,106 @@ export function AuthProvider({ children }) {
     }
   }
 
+  async function updateChefs(info) {
+    var v = info;
+    for(var i = 0; i < info.length; i++) {
+      const docRef = doc(db, "Dishes", v[i].dishId);
+      const docSnap = await getDoc(docRef);
+      const chefData = docSnap.data().chefId;
 
+      const a = doc(db, "Users", chefData);
+      const b = await getDoc(a);
+      const compliments = b.data().totalCompliments;
+      const complaints = b.data().totalComplaints;
+      const total = b.data().totalReviewCount;
+      if (v[i].ratingType === "Compliment") {
+        if (compliments === undefined) {
+          await updateDoc(a, {
+            totalCompliments: 1
+          });
+        } else {
+          await updateDoc(a, {
+            totalCompliments: compliments + 1
+          });
+        }
+        if (total === undefined) {
+          await updateDoc(a, {
+            totalReviewCount: 1
+          });
+        } else {
+          await updateDoc(a, {
+            totalReviewCount: total + 1
+          });
+        }
+      } else {
+        if (complaints === undefined) {
+          await updateDoc(a, {
+            totalComplaints: 1
+          });
+        } else {
+          await updateDoc(a, {
+            totalComplaints: complaints + 1
+          });
+        }
+        if (total === undefined) {
+          await updateDoc(a, {
+            totalReviewCount: -1
+          });
+        } else {
+          await updateDoc(a, {
+            totalReviewCount: total - 1
+          });
+        }
+      }
+    }
+  }
+
+  async function updateDelivery(type, id) {
+    const a = doc(db, "Users", id);
+    const b = await getDoc(a);
+    const compliments = b.data().totalCompliments;
+    const complaints = b.data().totalComplaints;
+    const total = b.data().totalReviewCount;
+    if (type === "Compliment") {
+      if (compliments === undefined) {
+        await updateDoc(a, {
+          totalCompliments: 1
+        });
+      } else {
+        await updateDoc(a, {
+          totalCompliments: compliments + 1
+        });
+      }
+      if (total === undefined) {
+        await updateDoc(a, {
+          totalReviewCount: 1
+        });
+      } else {
+        await updateDoc(a, {
+          totalReviewCount: total + 1
+        });
+      }
+    } else {
+      if (complaints === undefined) {
+        await updateDoc(a, {
+          totalComplaints: 1
+        });
+      } else {
+        await updateDoc(a, {
+          totalComplaints: complaints + 1
+        });
+      }
+      if (total === undefined) {
+        await updateDoc(a, {
+          totalReviewCount: -1
+        });
+      } else {
+        await updateDoc(a, {
+          totalReviewCount: total - 1
+        });
+      }
+    }
+  }
 
 
   useEffect(() => {
@@ -519,8 +632,10 @@ export function AuthProvider({ children }) {
   }, []);
 
   const value = {
+    totalReviewCount, totalComplaints, totalCompliments, demotions,
     updateRole, 
     currentUser,
+    updateDelivery,
     login,
     signup,
     loggedIn,
@@ -555,6 +670,7 @@ export function AuthProvider({ children }) {
     quitAccount,
     getQuitUsers,
     getBannedUsers,
+    updateChefs,
     addDeliveryPersonReview
   };
 

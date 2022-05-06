@@ -11,7 +11,7 @@ export default function DeliveryProfile() {
     const [selection, setSelection] = useState(1);
     const [loading, setLoading] = useState(true)
 
-    const { totalSpent, myOrders, userName, userWallet, orderDelivered, deliveryOrders, userId, submitOrderBid, userWarnings } = useAuth();
+    const { totalSpent, myOrders, userName, userWallet, totalComplaints, totalCompliments, totalReviewCount, demotions, orderDelivered, deliveryOrders, userId, submitOrderBid, userWarnings } = useAuth();
     
     const check = useRef();
 
@@ -45,6 +45,30 @@ export default function DeliveryProfile() {
             <div className="deliveryProfileMainContent">
                 <h1>{ userName }</h1>
                 <div className="deliveryStats">
+                    <div>
+                        <p>Complaints</p>
+                        <h3>{totalComplaints !== undefined ? totalComplaints : 0}</h3>
+                    </div>
+                    <div>
+                        <p>Compliments</p>
+                        <h3>{totalCompliments !== undefined ? totalCompliments : 0}</h3>
+                    </div>
+                    <div>
+                        <p>Bonus</p>
+                        {(Math.floor(Math.abs(totalReviewCount / 3)) === 0 || totalReviewCount === undefined) &&
+                            <h3>Nothing</h3>
+                        }
+                        {(Math.floor(totalReviewCount / 3) > 0) &&
+                            <h3 style={{color: "green"}}>Bonus</h3>
+                        }
+                        {(Math.floor(Math.abs(totalReviewCount / 3)) > 0) && totalReviewCount < 0 &&
+                            <h3 style={{color: "darkred"}}>Salary Cut</h3>
+                        }
+                    </div>
+                    <div>
+                        <p>Demotions</p>
+                        <h3>{demotions !== undefined ? demotions : 0}</h3>
+                    </div>
                     <div>
                         <p>Warnings</p>
                         <h3>{userWarnings}</h3>
