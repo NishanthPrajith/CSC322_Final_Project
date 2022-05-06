@@ -1,4 +1,4 @@
-# Norm's Pizza (CSC 322 software engineering)
+# Norm's Pizza (CSC 322 software engineering Final Project)
 Group project for ***CSC 322 @CCNY***.
 This is Norm's Pizza, a Electronic Restaurant Order and Delivery System.
 
