@@ -370,6 +370,11 @@ export default function ManagerProfile() {
                                             </p>
                                         </div>
                                     </div>
+                                    <div style={{marginTop: "2%", marginBottom: "1%", textAlign: "right"}}>
+                                        <Link to={"/allFoods/" + item.id} style={{color: "#0087bd"}}>
+                                            See User Dishes
+                                        </Link>
+                                    </div>
                                 </div>
                             );  
                         })

@@ -32,6 +32,7 @@ import OrderReview from "./orderReviewComps/orderReview";
 import DeliveryReview from "./deliveryReviewComps/deliveryReview";
 
 import FullReview from "./fullReviewComps/fullReview";
+import ChefDishes from "./ChefDishesComps/chefDishes";
 
 
 const ROLES = {
@@ -95,6 +96,10 @@ function App() {
               element={<FullReview />}
             />
 
+            <Route 
+              path="/allFoods/:id"
+              element = {<ChefDishes />}
+            />
             
 
             {/* <Route element={<RequireAuth allowedRoles={[ROLES.Manager]} />}> */}
