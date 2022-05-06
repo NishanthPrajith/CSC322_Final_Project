@@ -18,6 +18,7 @@ export default function SignUp() {
         var name = x[0].value;
         var email = x[1].value;
         var pass = x[2].value;
+        var role = x[3].value;
 
         if (name === "" || email === "" || pass === "") {
             document.getElementsByClassName("error")[0].innerHTML = "Please fill out all fields";
@@ -27,7 +28,7 @@ export default function SignUp() {
                 console.log("Name ", name);
                 console.log("Email ", email);
                 console.log("Password ", pass);
-                var temp = await signup(name, email, pass);
+                var temp = await signup(name, email, pass, role);
                 if (temp != 1) {
                     console.log("temp: ", temp);
                     setError(temp.message);
@@ -64,6 +65,14 @@ export default function SignUp() {
                     <div className={"labelSpacing"}>
                         <label > Password : </label>
                         <input type={"password"} className={"input"} placeholder="Enter Password" name="password" required />
+                    </div>
+                    <div className={"labelSpacing"}>
+                        <label> Type of Account : </label>
+                        <select className={"input"} required >
+                            <option>Customer</option>
+                            <option>Delivery Person</option>
+                            <option>Chef</option>
+                        </select>
                     </div>
                     <div className={"labelSpacingButton"}>
                         <button className={"btnSubmit"} onClick={SignUp}>Sign Up</button>

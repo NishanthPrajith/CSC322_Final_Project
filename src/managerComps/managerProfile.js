@@ -5,13 +5,20 @@ import { useAuth } from "../contexts/Authcontext";
 
 import { Link } from 'react-router-dom';
 
+import { useFood } from '../contexts/foodContext';
+
 export default function ManagerProfile() {
 
     const [choice, setChoice] = useState(0);
     const [orderChoice, setOrderChoice] = useState(0);
     const [usersOrderNames, setUsersOrderNames] = useState([]);
+    const [j, setJ] = useState(0);
+
+    const [subchoice, setSubchoice] = useState(0);
 
     const { getUsers, getQuitUsers, getBannedUsers, deleteAccount, updateRole, setDeliveryPerson, deliveryOrders, getUsersName } = useAuth();
+
+    const {deliveryPeople, chefPeople, chefJobsApplications, deliveryJobsApplications} = useFood();
 
     let orderNumber = 1;
 
@@ -27,6 +34,14 @@ export default function ManagerProfile() {
     function handleClick(i) {
         console.log(getUsers);
         setChoice(i);
+    }
+
+    function handleJ(i) {
+        setJ(i);
+    }
+
+    function handleSubClick(i) {
+        setSubchoice(i);
     }
 
     function pickDelivery(e, orderId, id, idTwo, role, bidOne, bidTwo) {
@@ -94,7 +109,7 @@ export default function ManagerProfile() {
                     </div>
                 </div>
             </div>
-            <h1>Managers Page</h1>
+            <h1 style={{marginBottom: "5%"}}>Managers Page</h1>
             <div className="ChoicesLink">
                 <div onClick = {() => {handleClick(0)}} style={choice == 0 ? {backgroundColor: "var(--yellow)"} : {}}>
                     Customer Approvals
@@ -110,6 +125,12 @@ export default function ManagerProfile() {
                 </div>
                 <div onClick = {() => {handleClick(4)}} style={choice == 4 ? {backgroundColor: "var(--yellow)"} : {}}>
                     Account Deletion
+                </div>
+                <div onClick = {() => {handleClick(5)}} style={choice == 5 ? {backgroundColor: "var(--yellow)"} : {}}>
+                    Employees
+                </div>
+                <div onClick = {() => {handleClick(6)}} style={choice == 6 ? {backgroundColor: "var(--yellow)"} : {}}>
+                    Job Applications
                 </div>
             </div>
             {choice === 0 &&
@@ -264,6 +285,148 @@ export default function ManagerProfile() {
                             </div>
                         );
                     })
+                    }
+                </div>
+            }
+            {
+                choice === 5 &&
+                <div>
+                    <div className="ChoicesLink" style={{marginTop: "6%", marginBottom: "4%", justifyContent : "flex-start"}}>
+                        <div onClick = {() => {handleSubClick(0)}} style={subchoice == 0 ? {backgroundColor: "var(--yellow)"} : {}}>
+                            Delivery People
+                        </div>
+                        <div onClick = {() => {handleSubClick(1)}} style={subchoice == 1 ? {backgroundColor: "var(--yellow)"} : {}}>
+                            Chefs
+                        </div>
+                    </div>
+                    {   subchoice === 0 &&
+                        deliveryPeople.map((item, index) => {
+                            return (
+                                <div className="userCard" style = {{marginBottom: "2%"}}>
+                                    <div>
+                                        <h3>{ item.name }</h3>
+                                        <h5>{ item.email }</h5>
+                                        <div style = {{display: "grid", gridTemplateColumns: "15% 15% 22% 15% 15% 20% 20%", textAlign: "left"}}>
+                                            <p>
+                                                Complaints : {item.totalComplaints !== undefined ? item.totalComplaints : 0}
+                                            </p>
+                                            <p>
+                                                Compliments : {item.totalCompliments !== undefined ? item.totalCompliments : 0}
+                                            </p>
+                                            {(Math.floor(Math.abs(item.totalReviewCount / 3)) === 0 || item.totalReviewCount === undefined) &&
+                                                <p>Salary Change : <strong>Nothing</strong></p>
+                                            }
+                                            {(Math.floor(item.totalReviewCount / 3) > 0) &&
+                                                <p style={{color: "green"}}>Salary Change : <strong>Bonus</strong></p>
+                                            }
+                                            {(Math.floor(Math.abs(item.totalReviewCount / 3)) > 0) && item.totalReviewCount < 0 &&
+                                                <p style={{color: "darkred"}}>Salary Change : <strong>Salary Cut</strong></p>
+                                            }
+                                            <p>
+                                                Demotions : {item.demotions !== undefined ? item.demotions : 0}
+                                            </p>
+                                            <p>
+                                                Warnings : {item.warnings !== undefined ? item.warnings : 0}
+                                            </p>
+                                            <p>
+                                                Total Earnings : ${item.totalSpent}
+                                            </p>
+                                            <p>
+                                                Orders Delivered : {item.wallet}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                    </div>
+                                </div>
+                            );  
+                        })
+                    }
+                    {   subchoice === 1 &&
+                        chefPeople.map((item, index) => {
+                            return (
+                                <div className="userCard" style = {{marginBottom: "2%"}}>
+                                    <div>
+                                        <h3>{ item.name }</h3>
+                                        <h5>{ item.email }</h5>
+                                        <div style = {{display: "grid", gridTemplateColumns: "repeat(4, 30%)", textAlign: "left"}}>
+                                            <p>
+                                                Complaints : {item.totalComplaints !== undefined ? item.totalComplaints : 0}
+                                            </p>
+                                            <p>
+                                                Compliments : {item.totalCompliments !== undefined ? item.totalCompliments : 0}
+                                            </p>
+                                            {(Math.floor(Math.abs(item.totalReviewCount / 3)) === 0 || item.totalReviewCount === undefined) &&
+                                                <p>Salary Change : <strong>Nothing</strong></p>
+                                            }
+                                            {(Math.floor(item.totalReviewCount / 3) > 0) &&
+                                                <p style={{color: "green"}}>Salary Change : <strong>Bonus</strong></p>
+                                            }
+                                            {(Math.floor(Math.abs(item.totalReviewCount / 3)) > 0) && item.totalReviewCount < 0 &&
+                                                <p style={{color: "darkred"}}>Salary Change : <strong>Salary Cut</strong></p>
+                                            }
+                                            <p>
+                                                Demotions : {item.demotions !== undefined ? item.demotions : 0}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            );  
+                        })
+                    }
+                </div>
+            }{
+                choice === 6 &&
+                <div>
+                    <div className="ChoicesLink" style={{marginTop: "6%", marginBottom: "4%", justifyContent : "flex-start"}}>
+                        <div onClick = {() => {handleJ(0)}} style={j == 0 ? {backgroundColor: "var(--yellow)"} : {}}>
+                            Delivery People
+                        </div>
+                        <div onClick = {() => {handleJ(1)}} style={j == 1 ? {backgroundColor: "var(--yellow)"} : {}}>
+                            Chefs
+                        </div>
+                    </div>
+                    {j === 0 &&
+                        <div>
+                            { 
+                            deliveryJobsApplications.map((item) => {
+                                return (
+                                    <div className="userCard">
+                                        <div>
+                                            <h3>{ item.name }</h3>
+                                            <p>{ item.email }</p>
+                                        </div>
+                                        <div>
+                                            <button onClick={() => {updateRole(item.id, 33)}}>
+                                                Approve
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })
+                            }
+                        </div>
+                    }
+                    {j === 1 &&
+                        <div>
+                            { 
+                            chefJobsApplications.map((item) => {
+                                return (
+                                    <div className="userCard">
+                                        <div>
+                                            <h3>{ item.name }</h3>
+                                            <p>{ item.email }</p>
+                                        </div>
+                                        <div>
+                                            <button onClick={() => {updateRole(item.id, 22)}}>
+                                                Approve
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })
+                            }
+                        </div>
                     }
                 </div>
             }

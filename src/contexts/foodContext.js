@@ -25,6 +25,12 @@ export function FoodProvider({ children }) {
     
     const [recommendedDishes, setRecommendedDishes] = useState([]);
 
+    const [deliveryPeople, setDeliveryPeople] = useState([]);
+    const [chefPeople, setChefPeople] = useState([]);
+
+    const [chefJobsApplications, setChefJobsApplications] = useState([]);
+    const [deliveryJobsApplications, setDeliveryJobsApplications] = useState([]);
+
     const { userRole } = useAuth();
 
     const [allReviews, setReviews] = useState([]);
@@ -131,11 +137,68 @@ export function FoodProvider({ children }) {
       getDishes();
       getChefFood();
       getHighestRatedDishes();
+      getDeliveryPeople();
+      getChefPeople();
+      getDeliveryJobApplications();
+      getChefJobApplications();
     }, [])
 
     function changeFlilteredFoodItems(value) {
       setfilteredFoodItems(value);
     }
+
+    async function getDeliveryJobApplications() {
+      var people = collection(db, "Users");
+      onSnapshot(people, (querySnapshot) => {
+        const data = [];
+        querySnapshot.forEach((doc) => {
+          if (doc.data().role === 2) {
+            data.push(doc.data());
+          }
+        });
+        setDeliveryJobsApplications(data);
+      });
+    }
+
+    async function getChefJobApplications() {
+      var people = collection(db, "Users");
+      onSnapshot(people, (querySnapshot) => {
+        const data = [];
+        querySnapshot.forEach((doc) => {
+          if (doc.data().role === 1) {
+            data.push(doc.data());
+          }
+        });
+        setChefJobsApplications(data);
+      });
+    }
+
+    async function getDeliveryPeople() {
+      var people = collection(db, "Users");
+      onSnapshot(people, (querySnapshot) => {
+        const data = [];
+        querySnapshot.forEach((doc) => {
+          if (doc.data().role === 33) {
+            data.push(doc.data());
+          }
+        });
+        setDeliveryPeople(data);
+      });
+    }
+
+    async function getChefPeople() {
+      var people = collection(db, "Users");
+      onSnapshot(people, (querySnapshot) => {
+        const data = [];
+        querySnapshot.forEach((doc) => {
+          if (doc.data().role === 22) {
+            data.push(doc.data());
+          }
+        });
+        setChefPeople(data);
+      });
+    }
+
 
 
     async function getRecommendedDishes(a) {
@@ -225,6 +288,8 @@ export function FoodProvider({ children }) {
 
 
     const v = {
+        deliveryPeople, chefPeople,
+        chefJobsApplications, deliveryJobsApplications,
         changeFlilteredFoodItems,
         filteredFoodItems,
         allFoodItems,

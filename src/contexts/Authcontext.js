@@ -117,16 +117,22 @@ export function AuthProvider({ children }) {
     });
   }
 
-  async function addusertoDB(name, email, id) {
+  async function addusertoDB(name, email, id, type) {
     var temp = id;
     let today = new Date();
     let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    var r = 0;
+    if (type === "Delivery Person") {
+      r = 2;
+    } else if (type === "Chef") {
+      r = 1;
+    }
     await handleLogout();
     await setDoc(doc(db, "Users", temp), {
       name: name,
       email: email,
       wallet: 0.0,
-      role: 0,
+      role: r,
       id: id,
       joined: date,
       orders: [],
@@ -135,12 +141,12 @@ export function AuthProvider({ children }) {
     }); 
   }
 
-  async function signup(name, email, password) {
+  async function signup(name, email, password, role) {
     // Our async function is important because this allows our data to update live rather than waiting to refresh.
     const ret3 = await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         let ret1 = userCredential.user.uid;
-        addusertoDB(name, email, ret1);
+        addusertoDB(name, email, ret1, role);
         return 1;
       })
       .catch((error) => {
@@ -177,7 +183,7 @@ export function AuthProvider({ children }) {
       getOrders(doc.data().orders);
       console.log("Role : " + doc.data().role);
       setLoggedIn(true);
-      if (doc.data().role === 0) {
+      if (doc.data().role === 0 || doc.data().role === 1 || doc.data().role === 2) {
         handleLogout();
         alert("You are not authorized to access this page");
         info();

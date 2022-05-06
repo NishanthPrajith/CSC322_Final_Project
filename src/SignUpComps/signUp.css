@@ -14,7 +14,7 @@
     align-items: center;
 }
 
-.SignIn input[type=text], .SignIn input[type=password] {   
+.SignIn input[type=text], .SignIn input[type=password], .SignIn select {   
     width: 100%;   
     margin: 8px 0;  
     padding: 12px 20px;   
