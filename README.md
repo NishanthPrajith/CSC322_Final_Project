@@ -38,5 +38,5 @@ npm install react scripts --save
  1. admin 
  
 ## Project Documentation
-1. [Phase 1 Report : Software Requirements & Description]()
-2. [Phase 2 Report : Design report](https://github.com/NishanthPrajith/Csc-322-Final-Project/blob/cc86ebd76973b3b0b5832b8b7972f3d7d5ea4c88/CSC32200_GES_Phase2.pdf)
+1. [Phase 1 Report : Software Requirements & Description](https://github.com/NishanthPrajith/CSC322_Final_Project/blob/master/Team_W_report.pdf)
+2. [Phase 2 Report : Design report](https://github.com/NishanthPrajith/CSC322_Final_Project/blob/master/Team_W_Phase_2_report.pdf)
