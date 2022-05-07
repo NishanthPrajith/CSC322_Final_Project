@@ -526,11 +526,19 @@ export function AuthProvider({ children }) {
         }
         if (total === undefined) {
           await updateDoc(a, {
-            totalReviewCount: 1
+            totalReviewCount: 1,
+            demotions: 0
           });
         } else {
+          var demote = total + 1;
+          if (demote < 0) {
+            demote = Math.floor(Math.abs(demote));
+          } else {
+            demote = 0;
+          }
           await updateDoc(a, {
-            totalReviewCount: total + 1
+            totalReviewCount: total + 1,
+            demotions: demote
           });
         }
       } else {
@@ -545,12 +553,23 @@ export function AuthProvider({ children }) {
         }
         if (total === undefined) {
           await updateDoc(a, {
-            totalReviewCount: -1
+            totalReviewCount: -1,
+            demotions: 0
           });
         } else {
+          var demote = total - 1;
+          if (demote < 0) {
+            demote = Math.floor(Math.abs(demote));
+          } else {
+            demote = 0;
+          }
           await updateDoc(a, {
-            totalReviewCount: total - 1
+            totalReviewCount: total - 1,
+            demotions: demote
           });
+          if (demote === 2) {
+            updateRole(chefData, 333);
+          }
         }
       }
     }
@@ -574,11 +593,19 @@ export function AuthProvider({ children }) {
       }
       if (total === undefined) {
         await updateDoc(a, {
-          totalReviewCount: 1
+          totalReviewCount: 1,
+          demotions: 0
         });
       } else {
+        var demote = total + 1;
+        if (demote < 0) {
+          demote = Math.floor(Math.abs(demote) / 3);
+        } else {
+          demote = 0;
+        }
         await updateDoc(a, {
-          totalReviewCount: total + 1
+          totalReviewCount: total + 1,
+          demotions: demote
         });
       }
     } else {
@@ -593,12 +620,23 @@ export function AuthProvider({ children }) {
       }
       if (total === undefined) {
         await updateDoc(a, {
-          totalReviewCount: -1
+          totalReviewCount: -1,
+          demotions: 0
         });
       } else {
+        var demote = total - 1;
+        if (demote < 0) {
+          demote = Math.floor(Math.abs(demote) / 3);
+        } else {
+          demote = 0;
+        }
         await updateDoc(a, {
-          totalReviewCount: total - 1
+          totalReviewCount: total - 1,
+          demotions: demote
         });
+        if (demote === 2) {
+          updateRole(id, 333);
+        }
       }
     }
   }

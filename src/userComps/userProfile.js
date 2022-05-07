@@ -194,14 +194,17 @@ export default function UserProfile() {
                                     <h3>${item.totalPrice}</h3>
                                 </div>
                             </div>
-                            <div className='OrderReview'>
-                                <button>
-                                    {!item.userReviewed ? 
-                                    <Link to = {"/orderReview/" + i}>
-                                        Review Order
-                                    </Link> : "Order Reviewed"}
-                                </button>
-                            </div>
+                            {
+                                item.deliveryUserId !== "" &&
+                                <div className='OrderReview'>
+                                    <button>
+                                        {!item.userReviewed? 
+                                        <Link to = {"/orderReview/" + i}>
+                                            Review Order
+                                        </Link> : "Order Reviewed"}
+                                    </button>
+                                </div>
+                            }
                         </div>
                     )
                 })

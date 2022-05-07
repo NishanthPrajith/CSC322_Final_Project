@@ -304,7 +304,7 @@ export default function ManagerProfile() {
                                     <div>
                                         <h3>{ item.name }</h3>
                                         <h5>{ item.email }</h5>
-                                        <div style = {{display: "grid", gridTemplateColumns: "15% 15% 22% 15% 15% 20% 20%", textAlign: "left"}}>
+                                        <div style = {{display: "grid", gridTemplateColumns: "15% 15% 22% 15% 15%", textAlign: "left"}}>
                                             <p>
                                                 Complaints : {item.totalComplaints !== undefined ? item.totalComplaints : 0}
                                             </p>
@@ -334,8 +334,9 @@ export default function ManagerProfile() {
                                             </p>
                                         </div>
                                     </div>
-                                    <div>
-                                    </div>
+                                    <button onClick={() => {updateRole(item.id, 333)}}>
+                                        Fire
+                                    </button>
                                 </div>
                             );  
                         })
@@ -347,7 +348,7 @@ export default function ManagerProfile() {
                                     <div>
                                         <h3>{ item.name }</h3>
                                         <h5>{ item.email }</h5>
-                                        <div style = {{display: "grid", gridTemplateColumns: "repeat(4, 30%)", textAlign: "left"}}>
+                                        <div style = {{display: "grid", gridTemplateColumns: "repeat(4, 23%)", textAlign: "left"}}>
                                             <p>
                                                 Complaints : {item.totalComplaints !== undefined ? item.totalComplaints : 0}
                                             </p>
@@ -368,7 +369,10 @@ export default function ManagerProfile() {
                                             </p>
                                         </div>
                                     </div>
-                                    <div style={{marginTop: "2%", marginBottom: "1%", textAlign: "right"}}>
+                                    <div style={{marginTop: "2%", marginBottom: "1%", textAlign: "center"}}>
+                                        <button style={{marginBottom: "15%"}} onClick={() => {updateRole(item.id, 333)}}>
+                                            Fire
+                                        </button>
                                         <Link to={"/allFoods/" + item.id} style={{color: "#0087bd"}}>
                                             See User Dishes
                                         </Link>
