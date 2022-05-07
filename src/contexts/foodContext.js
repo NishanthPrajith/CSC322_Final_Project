@@ -31,7 +31,7 @@ export function FoodProvider({ children }) {
     const [chefJobsApplications, setChefJobsApplications] = useState([]);
     const [deliveryJobsApplications, setDeliveryJobsApplications] = useState([]);
 
-    const { userRole, recommendedOrders } = useAuth();
+    const { userRole, userId } = useAuth();
 
     const [allReviews, setReviews] = useState([]);
 
@@ -83,11 +83,12 @@ export function FoodProvider({ children }) {
           setfilteredFoodItems(data);
           setChangeState(0);
         });
+      
+      getRecommendedDishes(userId);
       if (userRole !== 111) {
         food = query(food, where("special", "==", false));
       }
       getHighestRatedDishes(food);
-      getRecommendedDishes();
     }
 
     async function getHighestRatedDishes(food) {
@@ -146,7 +147,7 @@ export function FoodProvider({ children }) {
       getChefPeople();
       getDeliveryJobApplications();
       getChefJobApplications();
-      getRecommendedDishes();
+      getRecommendedDishes(userId);
     }, [])
 
     function changeFlilteredFoodItems(value) {
@@ -205,30 +206,41 @@ export function FoodProvider({ children }) {
       });
     }
     
-    async function getRecommendedDishes() {
-      var dishes = collection(db, "Dishes");
-      onSnapshot(dishes, (querySnapshot) => {
+    async function getRecommendedDishes(id) {
+      if (id !== "") {
+        var users = doc(db, "Users", id);
+        var docSnap = await getDoc(users);
+        var orderIds = docSnap.data().orders;
+
+        var orders = collection(db, "Orders");
+        var q = query(orders, where("orderId", "in", orderIds));
+        const querySnapshot = await getDocs(q);
+
+        var dishes = [];
+        querySnapshot.forEach((doc) => {
+          var v = doc.data().order;
+          for(var i = 0; i < v.length; i++) {
+            dishes.push(v[i].dishId);
+          }
+        });
+        
+        var food = collection(db, "Dishes");
+        var q = query(food, where("dishId", "in", dishes));
+        const querySnapshotTwo = await getDocs(q);
         var data = [];
-        var count = 0;
-        querySnapshot.forEach((doc) => { 
-          if (count != 3) {
+        querySnapshotTwo.forEach((doc) => {
+          if (data.length !== 3) {
             if (doc.data().special !== true) {
-              if (recommendedOrders.includes(doc.data().name)) {
-                data.push(doc.data());
-                count += 1;
-              }
-            } else if (doc.data().special === true && userRole === 111) {
-              if (recommendedOrders.includes(doc.data().name)) {
-                data.push(doc.data());
-                count += 1;
-              }
+              data.push(doc.data());
+            } else if (userRole === 111) {
+              data.push(doc.data());
             }
           }
         });
         setRecommendedDishes(data);
-        data = [];
-        count = 0;
-      });
+      } else {
+        setRecommendedDishes([]);
+      }
     }
 
     async function updateRatings(info) {

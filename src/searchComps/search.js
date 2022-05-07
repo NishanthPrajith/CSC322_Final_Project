@@ -17,15 +17,14 @@ export default function MainSearch() {
     const { filteredFoodItems, changeRecommendedDishes, recommendedDishes, getRecommendedDishes, getDishes, popularDishes, changeAllFoodItems, changePopularDishes, changeHighestRated, highestRated } = useFood();
     const [loading, setLoading] = useState(true);
 
-    const { userRole, recommendedOrders} = useAuth();
+    const { userRole, userId, loggedIn } = useAuth();
 
-    const [role, setRole] = useState(userRole);
+    const [role, setRole] = useState(-1);
 
-    const [info, setInfo] = useState([]);
+    const [info, setInfo] = useState([]);      
 
     if (userRole !== role) {
         console.log("role changed");
-        console.log(userRole);
         console.log(role);
         setRole(userRole);
         getDishes();

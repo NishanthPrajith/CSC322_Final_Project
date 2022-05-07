@@ -33,8 +33,6 @@ export function AuthProvider({ children }) {
   const [userWarnings, setUserWarning] = useState(0);
   const [totalSpent, setTotalSpent] = useState(0);
 
-  const [recommendedOrders, setRecommendedOrders] = useState([]);
-
   // Delivery Related Data
   const [deliveryOrders, setDeliveryOrders] = useState([]);
   const [myOrders, setMyOrders] = useState([]);
@@ -52,6 +50,7 @@ export function AuthProvider({ children }) {
 
   async function handleLogout() {
     await signOut(auth);
+    setUserId("");
     setDemotions(0);
     setCurrentUser(null);
     setTotalComplaints(0);
@@ -61,7 +60,6 @@ export function AuthProvider({ children }) {
     setCurrentUser(null);
     setUserRole(-1);
     setGetUsers([]);
-    setRecommendedOrders([]);
     setGetQuitUsers([]);
     setGetBannedUsers([]);
     setOrderId([]);
@@ -70,7 +68,6 @@ export function AuthProvider({ children }) {
     setDeliveryOrders([]);
     setGetComplaints([]);
     setUserName("");
-    setUserId("");
     setUserWallet(0);
     setUserJoined(0);
     setUserWarning(0);
@@ -168,6 +165,7 @@ export function AuthProvider({ children }) {
 
   async function getUserData(id) {
     const info = await onSnapshot(doc(db, "Users", id), (doc) => {
+      setUserId(doc.data().id);
       setUserRole(doc.data().role);
       setTotalComplaints(doc.data().totalComplaints);
       setTotalCompliments(doc.data().totalCompliments);
@@ -176,7 +174,6 @@ export function AuthProvider({ children }) {
       setUserName(doc.data().name);
       setUserWallet(doc.data().wallet);      
       setUserJoined(doc.data().joined);
-      setUserId(doc.data().id);
       setTotalSpent(doc.data().totalSpent);
       setOrderId(doc.data().orders);
       setUserWarning(doc.data().warnings);
@@ -349,30 +346,14 @@ export function AuthProvider({ children }) {
       console.log("check");
       const q = collection(db, "Orders");
       var data = [];
-      var hello = [];
       const v = await onSnapshot(q, (querySnapshot) => {
         querySnapshot.forEach((doc) => {
           if (ord.includes(doc.data().orderId)) {
             data.unshift(doc.data());
-            for (var i = 0; i < doc.data().order.length; i++) {
-              var check = true;
-              for (var j = 0; j < hello.length; j++) {
-                if (hello[j] === doc.data().order[i].name) {
-                  check = false;
-                  break;
-                }
-              }
-              if (hello.length !== 3 && check) {
-                hello.push(doc.data().order[i].name);
-              }
-            }
-            console.log("recommend : ", hello);
           }
         });
-        setRecommendedOrders(hello);
         setOrders(data);
         data = [];
-        hello = [];
       });
     }
   }
@@ -660,7 +641,6 @@ export function AuthProvider({ children }) {
     userId,
     myOrders,
     handleLogout,
-    recommendedOrders,
     userRole,
     getUsers,
     deleteAccount,
