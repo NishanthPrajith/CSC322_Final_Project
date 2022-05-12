@@ -97,6 +97,8 @@ export default function UserProfile() {
             alert("Please enter a positive amount!");
         } else if(b > 101) {
             alert("Please enter an amount less than or equal to 100!"); 
+        } else if (b == "" || b == null) {
+            alert("Please enter an amount!");
         } else if (validateCardNumber(a) == false) {
             alert("Please enter a valid card number!");
         } else {

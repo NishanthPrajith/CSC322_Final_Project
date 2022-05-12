@@ -88,7 +88,7 @@ export default function OrderReview() {
                                 <div className="individualDishReview">
                                     <div>
                                         <p>Rating : </p>
-                                        <input ref = {rating} required type="number" name="rating" min ="0" max = "5" placeholder="Enter Rating" />
+                                        <input ref = {rating} required type="number" name="rating" min ="1" max = "5" placeholder="Enter Rating" />
                                     </div>
                                     <div style={{display: "flex", justifyContent: "flex-end", width: "100%"}}>
                                         <div style={{width: "46%", float: "right"}}>
