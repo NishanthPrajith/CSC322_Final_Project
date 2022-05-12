@@ -36,6 +36,9 @@ npm install react scripts --save
 
 ## Default Users
  1. admin 
+
+## Fake Card Number
+ - 0123765443210190
  
 ## Project Documentation
 1. [Phase 1 Report : Software Requirements & Description](https://github.com/NishanthPrajith/CSC322_Final_Project/blob/master/Team_W_report.pdf)
