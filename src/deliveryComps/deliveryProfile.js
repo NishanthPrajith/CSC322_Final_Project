@@ -19,7 +19,13 @@ export default function DeliveryProfile() {
         e.preventDefault();
         console.log(id);
         var a = document.getElementsByClassName("bidInput");
-        await submitOrderBid(a[index].value, id, bids);
+        if (a[index].value == "" || a[index].value == null) {
+            alert("Please enter a bid");
+        } else if (a[index].value < 1) {
+            alert("Please enter a valid bid (bid must be greater than or equal to 1)");
+        } else {
+            await submitOrderBid(a[index].value, id, bids);
+        }
     }
 
     async function delivered(e, id, bid){
@@ -112,7 +118,7 @@ export default function DeliveryProfile() {
                                         </div>
                                         {value.bids[userId] === undefined &&
                                         <div style={{display: "flex", flexDirection: "column"}}>
-                                            <input id="check" className="bidInput" ref={check} defaultValue={0} type="number"/>
+                                            <input id="check" className="bidInput" ref={check} defaultValue={0} min = {0} type="number"/>
                                             <button className={"btnBidSubmit"} onClick={function(e) {submitBid(e, value.orderId, index, value.bids)}}>Submit Bid</button>
                                         </div>}
                                         {
