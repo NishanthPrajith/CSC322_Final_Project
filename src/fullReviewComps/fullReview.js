@@ -42,6 +42,7 @@ export default function FullReview() {
     return (
         <div className="Reviews">
             <button className="goBackReviews" onClick={(e) => goBack(e)}>Go Back</button>
+            {!reviews.userReviewed && !reviews.deliveryReviewed && <h3>No Reviews Yet</h3>}
             {reviews.userReviewed &&
                 <div>
                     <h3>Customer's Review</h3>
