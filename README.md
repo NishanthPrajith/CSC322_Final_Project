@@ -3,7 +3,7 @@ Group project for ***CSC 322 @CCNY***.
 This is Norm's Pizza, a Electronic Restaurant Order and Delivery System.
 
 ## Live Website Link
-[Norm's Pizza Live](https://csc-322-project.web.app/)
+[Norm's Pizza Live](https://ccnycsc322-730da.web.app/)
 
 ## Group Members Team E
 - Nishanth Prajith
