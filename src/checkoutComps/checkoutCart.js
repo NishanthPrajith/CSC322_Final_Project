@@ -163,12 +163,12 @@ export default function CheckoutCart() {
                           
                 </div>
                 {
-                    !loggedIn &&
+                    (!loggedIn || (userRole !== 111 && userRole !== 11)) &&
                     <div style={{marginTop: "10%", fontSize: "1.2em", color: "var(--red)"}}>
                         <p>You have to be a registered customer to purchase!</p>
                     </div>
                 }
-                {loggedIn &&   
+                {loggedIn && (userRole === 111 || userRole === 11) && 
                 <div>
                     <button className='checkoutPageButton' style = {foodDeliveryChoice ? {backgroundColor: "var(--yellow)"}: {}} onClick={() => {setfoodDeliveryChoice(true)}}>
                         Pick Up <FiArrowRightCircle className='checkoutArrow'/>
@@ -179,7 +179,7 @@ export default function CheckoutCart() {
                 </div>
                 }
                 {
-                    loggedIn &&
+                    loggedIn && (userRole === 111 || userRole === 11) &&
                     <div>
                         <button className='checkoutPageButtonFinal' onClick={() => {placeOrder(foodDeliveryChoice ? 1 : 2)}}>
                             Checkout Out <FiArrowRightCircle className='checkoutArrow'/>
