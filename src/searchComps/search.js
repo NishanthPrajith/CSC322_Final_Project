@@ -140,7 +140,7 @@ export default function MainSearch() {
     return (
         <div className='search'>
             {
-                recommendedDishes.length === 3 &&
+                recommendedDishes.length === 3 && loggedIn &&
                 <div>
                     <p className="searchHeading">Previous Orders</p>
                     <div className='recommendedUI'>
