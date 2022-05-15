@@ -211,7 +211,7 @@ export function AuthProvider({ children }) {
     await deleteDoc(doc(db, "Users", id));
   }
 
-  async function setDeliveryPerson(orderId, chosenId, secondId, memo) {
+  async function setDeliveryPerson(orderId, chosenId, memo, deliveryPeople) {
     await updateDoc(doc(db, "Orders", orderId), {
       deliveryUserId: chosenId,
     });
@@ -224,18 +224,26 @@ export function AuthProvider({ children }) {
       countOrders: 0
     });
 
-    const docRef = doc(db, "Users", secondId);
-    const docSnap = await getDoc(docRef);
-    const count = docSnap.data().countOrders;
-    if (count % 5 === 4 && count !== 0) {
-      await updateDoc(doc(db, "Users", secondId), {
-        countOrders: 0,
-        warnings: docSnap.data().warnings + 1
-      });
-    } else {
-      await updateDoc(doc(db, "Users", secondId), {
-        countOrders: count + 1
-      });
+    for (var i = 0; i < deliveryPeople.length; i++) {
+      if (deliveryPeople[i].id !== chosenId) {
+        var secondId = deliveryPeople[i].id;
+        const docRef = doc(db, "Users", secondId);
+        const docSnap = await getDoc(docRef);
+        var count = docSnap.data().countOrders;
+        if (count === undefined) {
+          count = 0;
+        }
+        if (count % 5 === 4 && count !== 0) {
+          await updateDoc(doc(db, "Users", secondId), {
+            countOrders: 0,
+            warnings: docSnap.data().warnings + 1
+          });
+        } else {
+          await updateDoc(doc(db, "Users", secondId), {
+            countOrders: count + 1
+          });
+        }
+      }
     }
   }
 

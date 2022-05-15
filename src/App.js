@@ -34,6 +34,8 @@ import DeliveryReview from "./deliveryReviewComps/deliveryReview";
 import FullReview from "./fullReviewComps/fullReview";
 import ChefDishes from "./ChefDishesComps/chefDishes";
 
+import SeeBids from "./seeBidsComps/seeBids";
+
 
 const ROLES = {
   User: 11,
@@ -100,7 +102,11 @@ function App() {
               path="/allFoods/:id"
               element = {<ChefDishes />}
             />
-            
+
+            <Route
+              path="/seeBids/:id"
+              element = {<SeeBids />}
+            />     
 
             {/* <Route element={<RequireAuth allowedRoles={[ROLES.Manager]} />}> */}
             <Route exact path="/managerProfile" element={<ManagerProfile />} />

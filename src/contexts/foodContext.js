@@ -5,6 +5,7 @@ import { collection, onSnapshot, addDoc, doc, getDoc, getDocs, where, query, ord
 import { db } from "../firebase";
 
 import { useAuth } from "./Authcontext";
+import { async } from "@firebase/util";
 
 
 const FoodContext = React.createContext();
@@ -22,6 +23,8 @@ export function FoodProvider({ children }) {
     const [popularDishes, setPopularDishes] = useState([]);
 
     const [allFoodItems, setAllFoodItems] = useState([]); 
+
+    const [allBids, setAllBids] = useState([]);
     
     const [recommendedDishes, setRecommendedDishes] = useState([]);
 
@@ -313,8 +316,24 @@ export function FoodProvider({ children }) {
       setChangeState(sum);
     }
 
+    async function getBids(id) {
+      const unsub = await onSnapshot(doc(db, "Orders", id), (doc) => {
+        console.log("Current data: ", doc.data().bids);
+        var bids = doc.data().bids;
+        var data = [];
+        for (let x in bids) {
+          var temp = {};
+          temp.deliveryId = x;
+          temp.bid = bids[x];
+          data.push(temp);
+        }
+        setAllBids(data);
+      });
+    }
+
 
     const v = {
+        allBids, getBids,
         deliveryPeople, chefPeople,
         chefJobsApplications, deliveryJobsApplications,
         changeFlilteredFoodItems,

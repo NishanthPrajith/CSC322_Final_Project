@@ -16,7 +16,7 @@ export default function ManagerProfile() {
 
     const [subchoice, setSubchoice] = useState(0);
 
-    const { getUsers, getQuitUsers, getBannedUsers, getComplaints, deleteAccount, updateRole, setDeliveryPerson, deliveryOrders, getUsersName } = useAuth();
+    const { getUsers, getQuitUsers, getBannedUsers, getComplaints, deleteAccount, updateRole, deliveryOrders, getUsersName } = useAuth();
 
     const {deliveryPeople, chefPeople, chefJobsApplications, deliveryJobsApplications} = useFood();
 
@@ -26,10 +26,6 @@ export default function ManagerProfile() {
         "qO2pUOremGaTHm4LGHnh9lP30C82": "Delivery One",
         "pF7O1rG6FIZre0Xpo4M5LQzUV7C2": "Delivery Two",
     }
-
-    const [information, setinfo] = useState([]); 
-
-    var memo = useRef();
 
     function handleClick(i) {
         console.log(getUsers);
@@ -42,40 +38,6 @@ export default function ManagerProfile() {
 
     function handleSubClick(i) {
         setSubchoice(i);
-    }
-
-    function pickDelivery(e, orderId, id, idTwo, role, bidOne, bidTwo) {
-        e.preventDefault();
-        var check = false;
-        if (role === 1) {
-            if (bidOne > bidTwo) {
-                check = true
-            } else {
-                setDeliveryPerson(orderId, id, idTwo, "");
-            }
-        } else if (role === 2) {
-            if (bidTwo > bidOne) {
-                check = true;
-            } else {
-                setDeliveryPerson(orderId, id, idTwo, "");
-            }
-        }
-        if (check) {
-            var temp = [orderId, id, idTwo];
-            setinfo(temp);
-            document.getElementsByClassName("memo")[0].style.display = "flex";
-        }
-
-    }
-
-    function submitMemo(e) {
-        setDeliveryPerson(information[0], information[1], information[2], memo.current.value);
-        memo.current.value = "Enter reason here.";
-        closeMemo(e);
-    }
-
-    function closeMemo(e) {
-        document.getElementsByClassName("memo")[0].style.display = "none";
     }
     
     useEffect(() => {
@@ -95,20 +57,6 @@ export default function ManagerProfile() {
     
     return (
         <div className="managerProfile">
-            <div className='memo' id = "memo">
-                <div>
-                    <h1>Memo</h1>
-                    <div className='memoBox'>
-                        <label>Reason</label>
-                        <textarea ref = {memo} style={{resize : "none", marginTop: "2%"}} rows="10" cols="70" defaultValue={"Enter reason here."}>
-                        </textarea>
-                    </div>
-                    <div className='memoBox'>
-                        <button onClick={function(e) {submitMemo(e)}}>Submit Memo</button>
-                        <button onClick={function(e) {closeMemo(e)}}>Close</button>
-                    </div>
-                </div>
-            </div>
             <h1 style={{marginBottom: "5%"}}>Managers Page</h1>
             <div className="ChoicesLink">
                 <div onClick = {() => {handleClick(0)}} style={choice == 0 ? {backgroundColor: "var(--yellow)"} : {}}>
@@ -208,18 +156,10 @@ export default function ManagerProfile() {
                                     <div style={{display: "flex", justifyContent: "flex-end"}}>
                                         <h5 className={"labelOrderDate"}>{item.orderDate}</h5>
                                     </div>
-                                    {item.bids["qO2pUOremGaTHm4LGHnh9lP30C82"] === undefined &&
-                                        <button className={"btnDelivery1"}>{deliveryName["qO2pUOremGaTHm4LGHnh9lP30C82"]} did not bid yet!</button>
-                                    }
-                                    {item.bids["qO2pUOremGaTHm4LGHnh9lP30C82"] !== undefined &&
-                                        <button className={"btnDelivery1"} onClick={function(e) {pickDelivery(e, item.orderId, "qO2pUOremGaTHm4LGHnh9lP30C82", "pF7O1rG6FIZre0Xpo4M5LQzUV7C2", 1, item.bids["qO2pUOremGaTHm4LGHnh9lP30C82"], item.bids["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"])}}>{deliveryName["qO2pUOremGaTHm4LGHnh9lP30C82"]} Bid : ${item.bids["qO2pUOremGaTHm4LGHnh9lP30C82"]}!</button>
-                                    }
-                                    {item.bids["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"] === undefined &&
-                                        <button className={"btnDelivery2"}>{deliveryName["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"]} did not bid yet!</button>
-                                    }
-                                    {item.bids["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"] !== undefined &&
-                                        <button className={"btnDelivery2"} onClick={function(e) {pickDelivery(e, item.orderId, "pF7O1rG6FIZre0Xpo4M5LQzUV7C2", "qO2pUOremGaTHm4LGHnh9lP30C82", 2, item.bids["qO2pUOremGaTHm4LGHnh9lP30C82"], item.bids["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"])}}>{deliveryName["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"]} Bid : ${item.bids["pF7O1rG6FIZre0Xpo4M5LQzUV7C2"]}!</button>
-                                    }
+                                                                            
+                                    <Link to={"/seeBids/" + item.orderId} style = {{width: "200%", paddingBottom: "5%", color: "var(--yellow)", textAlign: "right"}}>
+                                        See all the bids
+                                    </Link>
                                 </div>
                             );
                         }
