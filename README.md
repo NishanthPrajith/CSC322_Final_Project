@@ -35,11 +35,11 @@ npm install react scripts --save
  - React.js
 
 ## Default Users
- 1. Manager -> email :test@gmail.com     password : test1234
- 2. Chef One -> email : chefOne@gmail.com     password : test1234
- 3. Chef Two -> email : chefTwo@gmail.com     password : test1234
- 4. Delivery One -> email : deliveryOne@gmail.com     password : test1234
- 5. Delivery Two -> email : deliveryTwo@gmail.com     password : test1234
+ 1. **Manager** &ensp; email :test@gmail.com &emsp; password : test1234
+ 2. **Chef One** &ensp; email : chefOne@gmail.com &emsp; password : test1234
+ 3. **Chef Two** &ensp; email : chefTwo@gmail.com &emsp; password : test1234
+ 4. **Delivery One** &ensp; email : deliveryOne@gmail.com &emsp; password : test1234
+ 5. **Delivery Two** &ensp; email : deliveryTwo@gmail.com &emsp; password : test1234
 
 ## Fake Card Number
  - 0123765443210190
