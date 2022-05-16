@@ -522,57 +522,60 @@ export function AuthProvider({ children }) {
       const compliments = b.data().totalCompliments;
       const complaints = b.data().totalComplaints;
       const total = b.data().totalReviewCount;
+
+      var control = userRole === 111 ? 2 : 1; // Check for VIP
+
       if (v[i].ratingType === "Compliment") {
         if (compliments === undefined) {
           await updateDoc(a, {
-            totalCompliments: 1
+            totalCompliments: control
           });
         } else {
           await updateDoc(a, {
-            totalCompliments: compliments + 1
+            totalCompliments: compliments + control
           });
         }
         if (total === undefined) {
           await updateDoc(a, {
-            totalReviewCount: 1,
+            totalReviewCount: control,
             demotions: 0
           });
         } else {
-          var demote = total + 1;
+          var demote = total + control;
           if (demote < 0) {
             demote = Math.floor(Math.abs(demote));
           } else {
             demote = 0;
           }
           await updateDoc(a, {
-            totalReviewCount: total + 1,
+            totalReviewCount: total + control,
             demotions: demote
           });
         }
       } else {
         if (complaints === undefined) {
           await updateDoc(a, {
-            totalComplaints: 1
+            totalComplaints: control
           });
         } else {
           await updateDoc(a, {
-            totalComplaints: complaints + 1
+            totalComplaints: complaints + control
           });
         }
         if (total === undefined) {
           await updateDoc(a, {
-            totalReviewCount: -1,
+            totalReviewCount: -control,
             demotions: 0
           });
         } else {
-          var demote = total - 1;
+          var demote = total - control;
           if (demote < 0) {
             demote = Math.floor(Math.abs(demote));
           } else {
             demote = 0;
           }
           await updateDoc(a, {
-            totalReviewCount: total - 1,
+            totalReviewCount: total - control,
             demotions: demote
           });
           if (demote === 2) {
@@ -589,57 +592,60 @@ export function AuthProvider({ children }) {
     const compliments = b.data().totalCompliments;
     const complaints = b.data().totalComplaints;
     const total = b.data().totalReviewCount;
+
+    var control = userRole === 111 ? 2 : 1; // Check for VIP
+
     if (type === "Compliment") {
       if (compliments === undefined) {
         await updateDoc(a, {
-          totalCompliments: 1
+          totalCompliments: control
         });
       } else {
         await updateDoc(a, {
-          totalCompliments: compliments + 1
+          totalCompliments: compliments + control
         });
       }
       if (total === undefined) {
         await updateDoc(a, {
-          totalReviewCount: 1,
+          totalReviewCount: control,
           demotions: 0
         });
       } else {
-        var demote = total + 1;
+        var demote = total + control;
         if (demote < 0) {
           demote = Math.floor(Math.abs(demote) / 3);
         } else {
           demote = 0;
         }
         await updateDoc(a, {
-          totalReviewCount: total + 1,
+          totalReviewCount: total + control,
           demotions: demote
         });
       }
     } else {
       if (complaints === undefined) {
         await updateDoc(a, {
-          totalComplaints: 1
+          totalComplaints: control
         });
       } else {
         await updateDoc(a, {
-          totalComplaints: complaints + 1
+          totalComplaints: complaints + control
         });
       }
       if (total === undefined) {
         await updateDoc(a, {
-          totalReviewCount: -1,
+          totalReviewCount: - control,
           demotions: 0
         });
       } else {
-        var demote = total - 1;
+        var demote = total - control;
         if (demote < 0) {
           demote = Math.floor(Math.abs(demote) / 3);
         } else {
           demote = 0;
         }
         await updateDoc(a, {
-          totalReviewCount: total - 1,
+          totalReviewCount: total - control,
           demotions: demote
         });
         if (demote === 2) {
