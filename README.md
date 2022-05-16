@@ -5,7 +5,7 @@ This is Norm's Pizza, a Electronic Restaurant Order and Delivery System.
 ## Live Website Link
 [Norm's Pizza Live](https://ccnycsc322-730da.web.app/)
 
-## Group Members Team E
+## Group Members Team W
 - Nishanth Prajith
 - Dawa Sherpa
 - Azwad Shameen
@@ -35,11 +35,16 @@ npm install react scripts --save
  - React.js
 
 ## Default Users
- 1. admin 
+ 1. Manager -> email :test@gmail.com     password : test1234
+ 2. Chef One -> email : chefOne@gmail.com     password : test1234
+ 3. Chef Two -> email : chefTwo@gmail.com     password : test1234
+ 4. Delivery One -> email : deliveryOne@gmail.com     password : test1234
+ 5. Delivery Two -> email : deliveryTwo@gmail.com     password : test1234
 
 ## Fake Card Number
  - 0123765443210190
  
 ## Project Documentation
-1. [Phase 1 Report : Software Requirements & Description](https://github.com/NishanthPrajith/CSC322_Final_Project/blob/master/Team_W_report.pdf)
-2. [Phase 2 Report : Design report](https://github.com/NishanthPrajith/CSC322_Final_Project/blob/master/Team_W_Phase_2_report.pdf)
+1. [Final Project Report](https://github.com/NishanthPrajith/CSC322_Final_Project/blob/master/322_final_report.pdf)
+2. [Phase 1 Report : Software Requirements & Description](https://github.com/NishanthPrajith/CSC322_Final_Project/blob/master/Team_W_report.pdf)
+3. [Phase 2 Report : Design report](https://github.com/NishanthPrajith/CSC322_Final_Project/blob/master/Team_W_Phase_2_report.pdf)
