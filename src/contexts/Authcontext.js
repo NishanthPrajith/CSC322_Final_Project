@@ -348,6 +348,12 @@ export function AuthProvider({ children }) {
     });
   }
 
+  function run(a, b) {
+    var v = new Date(a.orderDate);
+    var g = new Date(b.orderDate);
+    return g - v;
+  }
+
   async function getOrders(ord) {
     console.log(ord);
     if (ord.length !== 0) {
@@ -360,6 +366,8 @@ export function AuthProvider({ children }) {
             data.unshift(doc.data());
           }
         });
+        data.sort((a, b) => run(a, b))
+        console.log(data);
         setOrders(data);
         data = [];
       });

@@ -223,23 +223,62 @@ export function FoodProvider({ children }) {
         querySnapshot.forEach((doc) => {
           var v = doc.data().order;
           for(var i = 0; i < v.length; i++) {
-            dishes.push(v[i].dishId);
-          }
-        });
-        
-        var food = collection(db, "Dishes");
-        var q = query(food, where("dishId", "in", dishes));
-        const querySnapshotTwo = await getDocs(q);
-        var data = [];
-        querySnapshotTwo.forEach((doc) => {
-          if (data.length !== 3) {
-            if (doc.data().special !== true) {
-              data.push(doc.data());
-            } else if (userRole === 111) {
-              data.push(doc.data());
+            var info = {};
+            var check = false;
+            var index = 0;
+            for (var j = 0; j < dishes.length; j++) {
+              if (dishes[j].dishId === v[i].dishId) {
+                console.log(j.dishId);
+                check = true;
+                index = j;
+                break
+              }
+            }
+            if (check) {
+              dishes[index].count += v[i].count;
+            } else {
+              info.dishId = v[i].dishId;
+              info.count = v[i].count;
+              dishes.push(info);
             }
           }
         });
+
+        dishes.sort((a, b) => b.count - a.count);
+        console.log(dishes);
+
+        var dishId = [];
+        for (var i = 0; i < dishes.length; i++) {
+          dishId.push(dishes[i].dishId);
+        }
+        
+        // var food = collection(db, "Dishes");
+        // q = query(food, where("dishId", "in", dishId));
+        // const querySnapshotTwo = await getDocs(q);
+        // var data = [];
+        // querySnapshotTwo.forEach((doc) => {
+        //   if (data.length !== 3) {
+        //     if (doc.data().special !== true) {
+        //       data.push(doc.data());
+        //     } else if (userRole === 111) {
+        //       data.push(doc.data());
+        //     }
+        //   }
+        // });
+        var data = [];
+        for (var h = 0; h < dishId.length; h++) {
+          console.log("1");
+          console.log(dishId[h])
+          const docRef = doc(db, "Dishes", dishId[h]);
+          const docInfo = await getDoc(docRef);
+          if (data.length !== 3) {
+            if (docInfo.data().special !== true) {
+              data.push(docInfo.data());
+            } else if (userRole === 111) {
+              data.push(docInfo.data());
+            }
+          }
+        }
         setRecommendedDishes(data);
       } else {
         setRecommendedDishes([]);
